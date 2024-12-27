@@ -24,9 +24,8 @@ const Customer = () => {
   const fetchcustomers = async () => {
     console.log(API_URL);
     try {
-      let response = await axios.get(`${API_URL}/Employee`);
-      console.log(response);
-      console.log(response.data);
+      let response = await axios.get(`${API_URL}/Customer`);
+
       setcustomers(response.data);
     } catch (error) {
       console.log(error);
