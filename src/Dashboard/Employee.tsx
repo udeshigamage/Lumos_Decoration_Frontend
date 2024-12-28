@@ -39,12 +39,19 @@ const Employee = () => {
     console.log(API_URL);
     try {
       let response = await axios.get(`${API_URL}/Employee`);
-      console.log(response);
-      console.log(response.data);
+
       setEmployee(response.data);
     } catch (error) {
       console.log(error);
     }
+  };
+  const handledelete = async (id: any) => {
+    try {
+      await axios.delete(`${API_URL}/Employee/${id}`);
+    } catch (error) {
+      console.log(error);
+    }
+    fetchemployees();
   };
   return (
     <div className="flex flex-col">
@@ -78,7 +85,13 @@ const Employee = () => {
                 />
               </svg>
             </div>
-            <button className="btn" onClick={() => setmodelopen(true)}>
+            <button
+              className="btn"
+              onClick={() => {
+                setSelectedEmployee(null);
+                setmodelopen(true);
+              }}
+            >
               Add Employee
             </button>
           </div>
@@ -143,17 +156,29 @@ const Employee = () => {
                         </a>
                       </td>
                       <td>
-                        <a className="text-black text-hover-primary fs-6 ">
-                          <button
-                            className="bg-slate-200 text-black px-2 py-2  rounded-md"
-                            onClick={() => {
-                              setSelectedEmployee(item);
-                              setmodelopen(true);
-                            }}
-                          >
-                            Edit
-                          </button>
-                        </a>
+                        <div className="flex position-relative">
+                          <div className="px-5">
+                            <button
+                              className="bg-slate-200 text-black px-2 py-2  rounded-md"
+                              onClick={() => {
+                                setSelectedEmployee(item);
+                                setmodelopen(true);
+                              }}
+                            >
+                              Edit
+                            </button>
+                          </div>
+                          <div>
+                            <button
+                              className="bg-slate-200 text-black px-2 py-2  rounded-md"
+                              onClick={() => {
+                                handledelete(item?.emp_ID);
+                              }}
+                            >
+                              delete
+                            </button>
+                          </div>
+                        </div>
                       </td>
                     </tr>
                   ))
@@ -226,10 +251,9 @@ const Employee = () => {
                       emp_allowance: values.Allowance,
                     });
                   }
-
-                  fetchemployees();
                   resetForm();
                   setmodelopen(false);
+                  fetchemployees();
                 } catch (e) {
                   console.error("Error:", e);
                 }
@@ -371,9 +395,9 @@ const Employee = () => {
                       </button>
                     </div>
                   </div>
-                  <pre>Values: {JSON.stringify(values, null, 2)}</pre>
+                  {/* <pre>Values: {JSON.stringify(values, null, 2)}</pre>
                   <pre>Errors: {JSON.stringify(errors, null, 2)}</pre>
-                  <pre>Is Submitting: {JSON.stringify(isSubmitting)}</pre>
+                  <pre>Is Submitting: {JSON.stringify(isSubmitting)}</pre> */}
                 </Form>
               )}
             </Formik>
