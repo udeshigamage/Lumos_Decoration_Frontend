@@ -4,16 +4,35 @@ import pic08 from "../assets/pic08.jpg";
 const Contact_us = () => {
   return (
     <div>
-      <div className="flex  flex-row min-h-screen ">
-        <div className="basis-1/3">
-          <img src={pic08} className="h-full object-cover object-right" />
+      <div className="flex  flex-row min-h-screen px-5 py-5 ">
+        <div
+          className="basis-1/3 "
+          style={{
+            backgroundImage: `url(${pic08})`,
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "cover", // optional, to cover the entire element
+          }}
+        >
+          {/* <div className="basis-1/3 ">
+            <div className="flex flex-row items-start justify-center min-h-screen">
+              <div className="px-5 py-5 self-center z-30">
+                <h1>Address</h1>
+                <span>no 262/E</span>
+                <span>ihalabiyanwiiila</span>
+                <span>mankada road</span>
+                <span> kadawtha</span>
+                <h1 className="mt-5">Contact Number</h1>
+                <span>077-1234567</span>
+              </div>
+            </div>
+          </div> */}
         </div>
 
-        <div className="basis-1/3">
+        <div className="basis-1/3 bg-white ">
+          <div className="px-5 py-5">
+            <h1 className="text-6xl text-black font-bold">Contact Us</h1>
+          </div>
           <div className="flex flex-col">
-            <div className="px-5 py-5">
-              <h1 className="text-5xl">Contact Us</h1>
-            </div>
             <div className="px-5 py-5">
               <input
                 type="text"
@@ -21,7 +40,7 @@ const Contact_us = () => {
                 className="input input-bordered w-full max-w-md"
               />
             </div>
-            <div className="px-5 py-5">
+            <div className="px-5 py-5 w-">
               <input
                 type="email"
                 placeholder="Email"
@@ -39,7 +58,7 @@ const Contact_us = () => {
             </div>
           </div>
         </div>
-        <div className="basis-1/3 ">
+        <div className="basis-1/3 bg-white ">
           <div className="flex flex-row items-start justify-center min-h-screen">
             <div className="px-5 py-5 self-center z-30">
               <h1>Address</h1>
