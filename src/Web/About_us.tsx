@@ -3,7 +3,7 @@ import about_us from "../assets/about_us.jpg";
 
 const About_us = () => {
   return (
-    <div>
+    <div id="about_us">
       <div className=" w-screen h-screen">
         <div className="flex items-center justify-center h-screen rounded-lg">
           <div className="w-2/3 h-1/2 bg-white flex items-center justify-center rounded-lg">

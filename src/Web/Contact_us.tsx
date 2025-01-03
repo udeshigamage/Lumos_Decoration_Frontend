@@ -3,7 +3,7 @@ import pic08 from "../assets/pic08.jpg";
 
 const Contact_us = () => {
   return (
-    <div>
+    <div id="contact_us">
       <div className="flex  flex-row min-h-screen px-5 py-5 ">
         <div
           className="basis-1/3 "

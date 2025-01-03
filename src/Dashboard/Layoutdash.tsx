@@ -7,6 +7,7 @@ const Layoutdash = () => {
     <div>
       <div className="flex flex-row">
         <Drawer />
+        <Employee />
       </div>
     </div>
   );

@@ -2,7 +2,7 @@ import React from "react";
 
 const Employee = () => {
   return (
-    <div>
+    <div style={{ minHeight: "calc(100vh - 320px)" }}>
       <div className="overflow-x-auto">
         <table className="table">
           {/* head */}
