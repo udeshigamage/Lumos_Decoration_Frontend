@@ -1,39 +1,61 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import Employee from "./Employee";
+import Customer from "./Customer";
 
-const Drawer = () => {
+const SideNavigationPanel = () => {
+  const [activeComponent, setActiveComponent] = React.useState("Employee");
+
+  const renderComponent = () => {
+    switch (activeComponent) {
+      case "Employee":
+        return <Employee />;
+
+      case "Customers":
+        return <Customer />;
+      case "Settings":
+      // return <Settings />;
+      default:
+      // return <Employee />;
+    }
+  };
+
   return (
-    <div>
-      <div className="drawer position:fixed lg:drawer-open">
-        <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
-        <div className="drawer-content flex flex-col items-center justify-center">
-          {/* Page content here */}
-          <label
-            htmlFor="my-drawer-2"
-            className="btn btn-primary drawer-button lg:hidden"
+    <div className="flex h-screen">
+      {/* Side Navigation Panel */}
+      <div className="w-1/4 bg-gray-800 text-white p-4">
+        <h2 className="text-2xl font-bold mb-4">Menu</h2>
+        <ul className="space-y-2">
+          <li
+            className={`p-2 cursor-pointer rounded-lg hover:bg-gray-700 ${
+              activeComponent === "Employee" ? "bg-gray-700" : ""
+            }`}
+            onClick={() => setActiveComponent("Employee")}
           >
-            Open drawer
-          </label>
-        </div>
-        <div className="drawer-side">
-          <label
-            htmlFor="my-drawer-2"
-            aria-label="close sidebar"
-            className="drawer-overlay"
-          ></label>
-          <ul className="menu bg-base-200 text-base-content min-h-full w-80 p-4">
-            {/* Sidebar content here */}
-            <li>
-              <a>Sidebar Item 1</a>
-            </li>
-            <li>
-              <a>Sidebar Item 2</a>
-            </li>
-          </ul>
-        </div>
+            Employee
+          </li>
+          <li
+            className={`p-2 cursor-pointer rounded-lg hover:bg-gray-700 ${
+              activeComponent === "Settings" ? "bg-gray-700" : ""
+            }`}
+            onClick={() => setActiveComponent("Settings")}
+          >
+            Settings
+          </li>
+          <li
+            className={`p-2 cursor-pointer rounded-lg hover:bg-gray-700 ${
+              activeComponent === "Customers" ? "bg-gray-700" : ""
+            }`}
+            onClick={() => setActiveComponent("Customers")}
+          >
+            Customers
+          </li>
+        </ul>
       </div>
+
+      {/* Content Display */}
+      <div className="w-3/4 p-6">{renderComponent()}</div>
     </div>
   );
 };
 
-export default Drawer;
+export default SideNavigationPanel;
