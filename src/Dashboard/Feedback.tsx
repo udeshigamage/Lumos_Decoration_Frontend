@@ -13,25 +13,26 @@ import React, { useEffect, useState } from "react";
 //   }
 // };
 const API_URL = import.meta.env.VITE_API_URL;
-const Employee = () => {
-  const [Employee, setEmployee] = useState([]);
+const Feedbacks = () => {
+  const [customers, setcustomers] = useState([]);
   const [ismodelopen, setmodelopen] = useState(false);
 
   useEffect(() => {
-    fetchemployees();
+    fetchcustomers();
   }, []);
 
-  const fetchemployees = async () => {
+  const fetchcustomers = async () => {
     console.log(API_URL);
     try {
       let response = await axios.get(`${API_URL}/Employee`);
       console.log(response);
       console.log(response.data);
-      setEmployee(response.data);
+      setcustomers(response.data);
     } catch (error) {
       console.log(error);
     }
   };
+
   return (
     <div className="flex flex-col">
       <div className="px-5 py-5 rounded-lg ">
@@ -39,7 +40,7 @@ const Employee = () => {
         <div className="flex flex-row items-center justify-between w-full">
           <div className="">
             <h1 className="text-2xl text-white font-bold font-serif">
-              Employee
+              Feedbacks
             </h1>
           </div>
           <div className="flex items-center gap-4 px-5">
@@ -64,77 +65,86 @@ const Employee = () => {
                 />
               </svg>
             </div>
-            <button
-              className="btn btn-primary"
-              onClick={() => setmodelopen(true)}
-            >
-              Add Customer
-            </button>
           </div>
         </div>
       </div>
       <div>
         <div style={{ minHeight: "calc(100vh - 320px)" }}>
           <div className="overflow-x-auto">
-            <table className="table border-white bg-slate-700">
+            <table className="table border-white bg-neutral-800">
               {/* head */}
               <thead>
                 <tr>
                   {/* <th>
-            <label>
-              <input type="checkbox" className="checkbox" />
-            </label>
-          </th> */}
-                  <th>Id</th>
-                  <th>Name</th>
-                  <th>Contact number</th>
-                  <th>Role</th>
-                  <th>Allowance</th>
+              <label>
+                <input type="checkbox" className="checkbox" />
+              </label>
+            </th> */}
+                  <th>Customer_ID</th>
+                  <th>Customer_Name</th>
+                  <th>ratings</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {Employee?.length > 0 ? (
-                  Employee?.map((item: any, index: any) => (
+                {customers?.length > 0 ? (
+                  customers?.map((item: any, index: any) => (
                     <tr>
                       <td>
                         <div className="d-flex justify-content-start flex-column">
                           <a className="text-white text-hover-primary fs-6">
-                            {item?.emp_ID ?? "-"}
+                            {/* {item?.cus_ID ?? "-"} */} 067
+                          </a>
+                        </div>
+                      </td>
+                      <td>
+                        <div className="d-flex justify-content-start flex-column">
+                          <a className="text-white text-hover-primary fs-6">
+                            {/* {item?.cus_name ?? "-"} */} udeshi
                           </a>
                         </div>
                       </td>
 
                       <td>
-                        <div className="d-flex justify-content-start flex-column">
-                          <a className="text-white text-hover-primary fs-6">
-                            {item?.emp_Name ?? "-"}
-                          </a>
+                        <div className="rating">
+                          <input
+                            type="radio"
+                            name="rating-2"
+                            className="mask mask-star-2 bg-orange-400"
+                          />
+                          <input
+                            type="radio"
+                            name="rating-2"
+                            className="mask mask-star-2 bg-orange-400"
+                            defaultChecked
+                          />
+                          <input
+                            type="radio"
+                            name="rating-2"
+                            className="mask mask-star-2 bg-orange-400"
+                          />
+                          <input
+                            type="radio"
+                            name="rating-2"
+                            className="mask mask-star-2 bg-orange-400"
+                          />
+                          <input
+                            type="radio"
+                            name="rating-2"
+                            className="mask mask-star-2 bg-orange-400"
+                          />
                         </div>
                       </td>
+
                       <td>
-                        <div className="d-flex justify-content-start flex-column">
-                          <a className="text-white text-hover-primary ">
-                            {item?.emp_contact_no ?? "-"}
-                          </a>
-                        </div>
-                      </td>
-                      <td>
-                        <div className="d-flex justify-content-start flex-column">
+                        <div className="flex position-relative gap-5">
                           <a className="text-white text-hover-primary fs-6 ">
-                            {item?.emp_Role ?? "-"}
+                            <button>View</button>
+                          </a>
+                          <a className="text-white text-hover-primary fs-6 ">
+                            <button>Delete</button>
                           </a>
                         </div>
-                      </td>
-                      <td>
-                        <a className="text-white text-hover-primary fs-6 ">
-                          {item?.allowance ?? "-"}
-                        </a>
-                      </td>
-                      <td>
-                        <a className="text-white text-hover-primary fs-6 ">
-                          <button>Edit</button>
-                        </a>
                       </td>
                     </tr>
                   ))
@@ -212,4 +222,4 @@ const Employee = () => {
   );
 };
 
-export default Employee;
+export default Feedbacks;

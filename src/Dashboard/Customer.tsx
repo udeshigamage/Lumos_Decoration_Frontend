@@ -77,7 +77,7 @@ const Customer = () => {
       <div>
         <div style={{ minHeight: "calc(100vh - 320px)" }}>
           <div className="overflow-x-auto">
-            <table className="table border-white bg-slate-700">
+            <table className="table border-white bg-neutral-800">
               {/* head */}
               <thead>
                 <tr>
@@ -162,17 +162,49 @@ const Customer = () => {
         </div>
       </div>
       {ismodelopen && (
-        <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle">
+        <dialog open className="modal modal-bottom sm:modal-middle">
           <div className="modal-box">
-            <h3 className="font-bold text-lg">Hello!</h3>
-            <p className="py-4">
-              Press ESC key or click the button below to close
-            </p>
-            <div className="modal-action">
-              <form method="dialog">
-                {/* if there is a button in form, it will close the modal */}
-                <button className="btn">Close</button>
-              </form>
+            <h3 className="font-bold text-lg">Add Employee</h3>
+            <div className="flex position-relative justify-between gap-2 py-5">
+              <input
+                type="text"
+                placeholder="First name"
+                className="input input-bordered w-ful  "
+              />
+              <input
+                type="text"
+                placeholder="Last name"
+                className="input input-bordered w-full "
+              />
+            </div>
+            <input
+              type="text"
+              placeholder="Contact Number (+94760305481)"
+              className="input input-bordered w-full py-5"
+            />
+            <select className="select select-bordered w-full mt-5">
+              <option disabled selected>
+                Select Role
+              </option>
+              <option>Floral Designer</option>
+              <option>Event Stylist</option>
+              <option>Visual Merchandiser</option>
+              <option>Event Coordinator</option>
+              <option>Customer Service Representative</option>
+              <option>Other</option>
+            </select>
+            <input
+              type="number"
+              placeholder="Allowance"
+              className="input input-bordered w-full mt-5"
+            />
+            <div className="modal-action ">
+              <div className="flex positon-relative gap-5">
+                <button className="btn">Submit</button>
+                <button className="btn" onClick={() => setmodelopen(false)}>
+                  Close
+                </button>
+              </div>
             </div>
           </div>
         </dialog>
