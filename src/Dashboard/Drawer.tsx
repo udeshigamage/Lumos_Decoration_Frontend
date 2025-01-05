@@ -4,6 +4,8 @@ import Employee from "./Employee";
 import Dashboard from "./Dashboard";
 import Order from "./Orders";
 import Feedbacks from "./Feedback";
+import Notificationmanagement from "./Notificationmanagement";
+import Report from "./Report";
 
 const SideNavigationPanel = () => {
   const [activeComponent, setActiveComponent] = React.useState("Dashboard");
@@ -19,7 +21,10 @@ const SideNavigationPanel = () => {
         return <Employee />;
       case "Feedbacks":
         return <Feedbacks />;
-
+      case "Notifications":
+        return <Notificationmanagement />;
+      case "Report":
+        return <Report />;
       case "Customers":
         return <Customer />;
       case "Settings":

@@ -4,20 +4,19 @@ import Login from "../Auth/Login";
 import Signup from "../Auth/Signup";
 import Layoutdash from "../Dashboard/Layoutdash";
 import Employee from "../Dashboard/Employee";
+import Services from "../CustomerInterface/Services";
+import Addtobooking from "../CustomerInterface/Addtobooking";
 const router = createBrowserRouter([
   { path: "/", element: <Layout /> },
   { path: "/login", element: <Login /> },
   { path: "/signup", element: <Signup /> },
+  { path: "/customer/services", element: <Services /> },
+  { path: "customer/addtobooking", element: <Addtobooking /> },
 
   {
     path: "/app",
     element: <Layoutdash />,
-    children: [
-      { path: "employee", element: <Employee /> },
-      //   { path: "Product_Management", element: <ProductManagemnet /> },
-      //   { path: "Masterdata", element: <Masterdata /> },
-      //   { path: "Stock", element: <Stock /> },
-    ],
+    children: [{ path: "employee", element: <Employee /> }],
   },
 ]);
 const PrivateRoutes = () => {
