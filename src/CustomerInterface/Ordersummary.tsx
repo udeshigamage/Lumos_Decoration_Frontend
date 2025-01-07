@@ -28,6 +28,10 @@ const Ordersummary = () => {
         <button className="btn btn-primary">Submit</button>
         <button className="btn btn-primary">Cancel</button>
       </div>
+      <div>
+        <p>once we estimate your order, we will contact you</p>
+        <p>we make sure your order is delivered on time</p>
+      </div>
     </div>
   );
 };
