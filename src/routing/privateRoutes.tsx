@@ -6,12 +6,14 @@ import Layoutdash from "../Dashboard/Layoutdash";
 import Employee from "../Dashboard/Employee";
 import Services from "../CustomerInterface/Services";
 import Addtobooking from "../CustomerInterface/Addtobooking";
+import Ordersummary from "../CustomerInterface/Ordersummary";
 const router = createBrowserRouter([
   { path: "/", element: <Layout /> },
   { path: "/login", element: <Login /> },
   { path: "/signup", element: <Signup /> },
   { path: "/customer/services", element: <Services /> },
   { path: "customer/addtobooking", element: <Addtobooking /> },
+  { path: "customer/ordersummary", element: <Ordersummary /> },
 
   {
     path: "/app",

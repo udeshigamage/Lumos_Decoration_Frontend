@@ -3,17 +3,14 @@ import React from "react";
 const Navbarcustomer = () => {
   return (
     <div>
-      <div className="navbar bg-base-100 bg-slate-500">
+      <div className="navbar bg-base-100 bg-slate-500 fixed">
         <div className="flex-1">
           <a className="btn btn-ghost text-xl">Lumos Decorations</a>
         </div>
         <div className="flex-none gap-2">
           <div className="form-control">
             <select className="select select-bordered w-full max-w-xs">
-              <option disabled selected>
-                Select Services
-              </option>
-              <option>Services</option>
+              <option defaultChecked>Services</option>
               <option>Orders</option>
             </select>
           </div>

@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import Navbarcustomer from "./Navbarcustomer";
 import { useLocation } from "react-router-dom";
 
 const Addtobooking = () => {
   const location = useLocation();
+  const [ver, setver] = useState("white");
+  const [name, setname] = useState("Book Now");
+  const [isbooked, setisbooked] = useState(false);
   const image = location.state?.image;
   return (
     <div>
@@ -26,10 +29,39 @@ const Addtobooking = () => {
             </p>
           </div>
 
-          <button className="btn btn-primary my-10">Add to Booking</button>
+          <button
+            className="btn btn-primary my-10"
+            style={{ backgroundColor: ver }}
+            onClick={() => {
+              setver("green");
+              setname("Booked");
+              setisbooked(true);
+            }}
+          >
+            {name}
+          </button>
+          {isbooked && (
+            <button
+              className="btn btn-primary my-10 mx-20"
+              style={{ backgroundColor: "red" }}
+              onClick={() => {
+                setver("white");
+                setname("Book Now");
+                setisbooked(false);
+              }}
+            >
+              remove
+            </button>
+          )}
         </div>
         <div className="basis-1/2 ml-20 my-20">
-          <img src={image} width={400} height={400} />
+          <img src={image} width={400} height={400} className="rounded-md" />
+          <a
+            className="btn btn-primary my-10 ml-24"
+            href="/customer/ordersummary"
+          >
+            View my Order history
+          </a>
         </div>
       </div>
     </div>
