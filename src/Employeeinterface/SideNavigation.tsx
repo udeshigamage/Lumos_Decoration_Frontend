@@ -1,0 +1,228 @@
+import React from "react";
+import Home from "./Home";
+import Dashboard from "./Dashboard";
+import Notifications from "./Notifications";
+import Allowances from "./Allowances";
+import Setting from "./Setting";
+import Logout from "./Logout";
+import Help from "./Help";
+
+const SideNavigationPanel2 = () => {
+  const [activeComponent, setActiveComponent] = React.useState("Dashboard");
+
+  const renderComponent = () => {
+    switch (activeComponent) {
+      case "Home":
+        return <Home />;
+      case "Dashboard":
+        return <Dashboard />;
+
+      case "Notifications":
+        return <Notifications />;
+      case "Allowances":
+        return <Allowances />;
+
+      case "Settings":
+        return <Setting />;
+      case "logout":
+        return <Logout />;
+      case "help":
+        return <Help />;
+      default:
+      // return <Employee />;
+    }
+  };
+
+  return (
+    <div className="flex h-screen">
+      {/* Side Navigation Panel */}
+      <div className="w-1/4 bg-gray-800 text-white p-4">
+        <h2 className="text-2xl font-bold mb-4">Lumos Decorations</h2>
+        <ul className="space-y-2 mt-10">
+          <div className="flex position-relative gap-2 mt-5">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="size-6 mt-2"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z"
+              />
+            </svg>
+
+            <li
+              className={`p-2 cursor-pointer rounded-lg hover:bg-gray-700 ${
+                activeComponent === "Home" ? "bg-gray-700" : ""
+              }`}
+              onClick={() => setActiveComponent("Home")}
+            >
+              Home
+            </li>
+          </div>
+          <div className="flex position-relative gap-2 mt-5">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="size-6 mt-2"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5m-9-6h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z"
+              />
+            </svg>
+
+            <li
+              className={`p-2 cursor-pointer rounded-lg hover:bg-gray-700 ${
+                activeComponent === "Dashboard" ? "bg-gray-700" : ""
+              }`}
+              onClick={() => setActiveComponent("Dashboard")}
+            >
+              Dashboard
+            </li>
+          </div>
+          <div className="flex position-relative gap-2 mt-5">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="size-6 mt-2"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
+              />
+            </svg>
+
+            <li
+              className={`p-2 cursor-pointer rounded-lg hover:bg-gray-700 ${
+                activeComponent === "Notifications" ? "bg-gray-700" : ""
+              }`}
+              onClick={() => setActiveComponent("Notifications")}
+            >
+              Notifications
+            </li>
+          </div>
+          <div className="flex position-relative gap-2 mt-5">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="size-6 mt-2"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
+              />
+            </svg>
+
+            <li
+              className={`p-2 cursor-pointer rounded-lg hover:bg-gray-700 ${
+                activeComponent === "Allowances" ? "bg-gray-700" : ""
+              }`}
+              onClick={() => setActiveComponent("Allowances")}
+            >
+              Allowances
+            </li>
+          </div>
+
+          <div className="flex flex-col my-32">
+            <div className="flex position-relative gap-2 mt-5">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="size-6 mt-2"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M11.42 15.17 17.25 21A2.652 2.652 0 0 0 21 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 1 1-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 0 0 4.486-6.336l-3.276 3.277a3.004 3.004 0 0 1-2.25-2.25l3.276-3.276a4.5 4.5 0 0 0-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437 1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008Z"
+                />
+              </svg>
+
+              <li
+                className={`p-2 cursor-pointer rounded-lg hover:bg-gray-700 ${
+                  activeComponent === "Settings" ? "bg-gray-700" : ""
+                }`}
+                onClick={() => setActiveComponent("Settings")}
+              >
+                Settings
+              </li>
+            </div>
+            <div className="flex position-relative gap-2 mt-5">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="size-6 mt-2"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M11.42 15.17 17.25 21A2.652 2.652 0 0 0 21 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 1 1-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 0 0 4.486-6.336l-3.276 3.277a3.004 3.004 0 0 1-2.25-2.25l3.276-3.276a4.5 4.5 0 0 0-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437 1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008Z"
+                />
+              </svg>
+
+              <li
+                className={`p-2 cursor-pointer rounded-lg hover:bg-gray-700 ${
+                  activeComponent === "Logout" ? "bg-gray-700" : ""
+                }`}
+                onClick={() => setActiveComponent("Logout")}
+              >
+                Logout
+              </li>
+            </div>
+            <div className="flex position-relative gap-2 mt-5">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="size-6 mt-2"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z"
+                />
+              </svg>
+              <li
+                className={`p-2 cursor-pointer rounded-lg hover:bg-gray-700 ${
+                  activeComponent === "Help" ? "bg-gray-700" : ""
+                }`}
+                onClick={() => setActiveComponent("Help")}
+              >
+                Help
+              </li>
+            </div>
+          </div>
+        </ul>
+      </div>
+
+      {/* Content Display */}
+      <div className="w-3/4 p-6">{renderComponent()}</div>
+    </div>
+  );
+};
+
+export default SideNavigationPanel2;
