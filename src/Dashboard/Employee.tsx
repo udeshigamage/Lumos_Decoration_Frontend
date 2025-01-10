@@ -1,5 +1,8 @@
 import axios from "axios";
+import { Formik } from "formik";
 import React, { useEffect, useState } from "react";
+import { Form } from "react-router-dom";
+import * as Yup from "yup";
 
 //   // setIsLoading(true)
 //   try {
@@ -16,7 +19,18 @@ const API_URL = import.meta.env.VITE_API_URL;
 const Employee = () => {
   const [Employee, setEmployee] = useState([]);
   const [ismodelopen, setmodelopen] = useState(false);
+  const [selectedEmployee, setSelectedEmployee] = useState<any>(null);
 
+  const EmployeeSchema = Yup.object().shape({
+    firstName: Yup.string().required("First name is required"),
+    lastName: Yup.string().required("Last name is required"),
+    contactno: Yup.string().matches(
+      /^\+?[1-9]\d{1,14}$/,
+      "Contact number must be valid"
+    ),
+    role: Yup.string().required("Role is required"),
+    Allowance: Yup.number().required("Allowance is required"),
+  });
   useEffect(() => {
     fetchemployees();
   }, []);
@@ -64,11 +78,8 @@ const Employee = () => {
                 />
               </svg>
             </div>
-            <button
-              className="btn btn-primary"
-              onClick={() => setmodelopen(true)}
-            >
-              Add Customer
+            <button className="btn" onClick={() => setmodelopen(true)}>
+              Add Employee
             </button>
           </div>
         </div>
@@ -127,13 +138,21 @@ const Employee = () => {
                         </div>
                       </td>
                       <td>
-                        <a className="text-white text-hover-primary fs-6 ">
-                          {item?.allowance ?? "-"}
+                        <a className=" text-hover-primary fs-6 px-5 py-5 rounded-md ">
+                          {item?.emp_allowance ?? "-"}
                         </a>
                       </td>
                       <td>
-                        <a className="text-white text-hover-primary fs-6 ">
-                          <button>Edit</button>
+                        <a className="text-black text-hover-primary fs-6 ">
+                          <button
+                            className="bg-slate-200 text-black px-2 py-2  rounded-md"
+                            onClick={() => {
+                              setSelectedEmployee(item);
+                              setmodelopen(true);
+                            }}
+                          >
+                            Edit
+                          </button>
                         </a>
                       </td>
                     </tr>
@@ -164,47 +183,200 @@ const Employee = () => {
         <dialog open className="modal modal-bottom sm:modal-middle">
           <div className="modal-box">
             <h3 className="font-bold text-lg">Add Employee</h3>
-            <div className="flex position-relative justify-between gap-2 py-5">
-              <input
-                type="text"
-                placeholder="First name"
-                className="input input-bordered w-ful  "
-              />
-              <input
-                type="text"
-                placeholder="Last name"
-                className="input input-bordered w-full "
-              />
-            </div>
-            <input
-              type="text"
-              placeholder="Contact Number (+94760305481)"
-              className="input input-bordered w-full py-5"
-            />
-            <select className="select select-bordered w-full mt-5">
-              <option disabled selected>
-                Select Role
-              </option>
-              <option>Floral Designer</option>
-              <option>Event Stylist</option>
-              <option>Visual Merchandiser</option>
-              <option>Event Coordinator</option>
-              <option>Customer Service Representative</option>
-              <option>Other</option>
-            </select>
-            <input
-              type="number"
-              placeholder="Allowance"
-              className="input input-bordered w-full mt-5"
-            />
-            <div className="modal-action ">
-              <div className="flex positon-relative gap-5">
-                <button className="btn">Submit</button>
-                <button className="btn" onClick={() => setmodelopen(false)}>
-                  Close
-                </button>
-              </div>
-            </div>
+            <Formik
+              initialValues={{
+                firstName: selectedEmployee
+                  ? selectedEmployee.emp_Name.split(" ")[0]
+                  : "",
+                lastName: selectedEmployee
+                  ? selectedEmployee.emp_Name.split(" ")[1] || ""
+                  : "",
+                email: selectedEmployee?.email || "",
+                Address: selectedEmployee?.emp_address || "",
+                contactno: selectedEmployee?.emp_contact_no || "",
+                role: selectedEmployee?.emp_Role || "",
+                Allowance: selectedEmployee?.emp_allowance || "",
+              }}
+              validationSchema={EmployeeSchema}
+              onSubmit={async (values, { setSubmitting, resetForm }) => {
+                setSubmitting(true);
+
+                try {
+                  if (selectedEmployee) {
+                    // If editing, send PUT request
+                    await axios.put(
+                      `${API_URL}/Employee/${selectedEmployee.emp_ID}`,
+                      {
+                        emp_Name: `${values.firstName} ${values.lastName}`,
+                        emp_address: values.Address,
+                        email: values.email,
+                        emp_Role: values.role,
+                        emp_contact_no: values.contactno,
+                        emp_allowance: values.Allowance,
+                      }
+                    );
+                  } else {
+                    // If adding a new employee, send POST request
+                    await axios.post(`${API_URL}/Employee`, {
+                      emp_Name: `${values.firstName} ${values.lastName}`,
+                      emp_address: values.Address,
+                      email: values.email,
+                      emp_Role: values.role,
+                      emp_contact_no: values.contactno,
+                      emp_allowance: values.Allowance,
+                    });
+                  }
+
+                  fetchemployees();
+                  resetForm();
+                  setmodelopen(false);
+                } catch (e) {
+                  console.error("Error:", e);
+                }
+              }}
+            >
+              {({
+                handleChange,
+                values,
+                setFieldValue,
+                handleSubmit,
+                errors,
+                isSubmitting,
+                resetForm,
+                touched,
+              }) => (
+                <Form onSubmit={handleSubmit}>
+                  <div className="flex position-relative justify-between gap-2 py-5">
+                    <input
+                      type="text"
+                      placeholder="First name"
+                      className="input input-bordered w-full"
+                      onChange={(e) =>
+                        setFieldValue("firstName", e.target.value)
+                      }
+                      value={values.firstName}
+                    />
+                    {touched.firstName && errors.firstName && (
+                      <div className="fv-plugins-message-container">
+                        <div className="fv-help-block">
+                          {/* <span role="alert">{errors.firstName}</span> */}
+                        </div>
+                      </div>
+                    )}
+
+                    <input
+                      name="lastName"
+                      type="text"
+                      placeholder="Last name"
+                      className="input input-bordered w-full"
+                      onChange={(e) =>
+                        setFieldValue("lastName", e.target.value)
+                      }
+                      value={values.lastName}
+                    />
+                    {touched.lastName && errors.lastName && (
+                      <div className="fv-plugins-message-container">
+                        <div className="fv-help-block">
+                          {/* <span role="alert">{errors.lastName}</span> */}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                  <div className="py-5">
+                    <input
+                      type="email"
+                      name="email"
+                      placeholder="Email address"
+                      className="input input-bordered w-full "
+                      onChange={(e) => setFieldValue("email", e.target.value)}
+                      value={values.email}
+                    />
+                  </div>
+                  <div className="py-5">
+                    <textarea
+                      name="address"
+                      placeholder="Address"
+                      className="textarea textarea-bordered w-full"
+                      onChange={(e) => setFieldValue("Address", e.target.value)}
+                      value={values.Address}
+                    />
+                  </div>
+                  <div className="mt-5">
+                    <input
+                      name="contactno"
+                      type="text"
+                      placeholder="Contact Number (+94760305481)"
+                      className="input input-bordered w-full "
+                      onChange={(e) =>
+                        setFieldValue("contactno", e.target.value)
+                      }
+                      value={values.contactno}
+                    />
+                  </div>
+                  <div className="py-5">
+                    <select
+                      className="select select-bordered w-full mt-5"
+                      name="role"
+                      onChange={(e) => setFieldValue("role", e.target.value)}
+                      value={values.role}
+                    >
+                      <option disabled value="">
+                        Select Role
+                      </option>
+                      <option value="Floral Designer">Floral Designer</option>
+                      <option value="Event Stylist">Event Stylist</option>
+                      <option value="Visual Merchandiser">
+                        Visual Merchandiser
+                      </option>
+                      <option value="Event Coordinator">
+                        Event Coordinator
+                      </option>
+                      <option value="Customer Service Representative">
+                        Customer Service Representative
+                      </option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+                  <div className="">
+                    <input
+                      name="Allowance"
+                      type="number"
+                      placeholder="Allowance"
+                      className="input input-bordered w-full mt-5"
+                      onChange={(e) =>
+                        setFieldValue("Allowance", e.target.value)
+                      }
+                      value={values.Allowance}
+                    />
+                  </div>
+                  <div className="modal-action">
+                    <div className="flex positon-relative gap-5">
+                      <button
+                        type="submit"
+                        className="btn"
+                        data-kt-users-modal-action="submit"
+                      >
+                        Submit
+                      </button>
+
+                      <button
+                        type="button"
+                        className="btn"
+                        onClick={() => {
+                          setmodelopen(false);
+                          resetForm;
+                        }}
+                      >
+                        Close
+                      </button>
+                    </div>
+                  </div>
+                  <pre>Values: {JSON.stringify(values, null, 2)}</pre>
+                  <pre>Errors: {JSON.stringify(errors, null, 2)}</pre>
+                  <pre>Is Submitting: {JSON.stringify(isSubmitting)}</pre>
+                </Form>
+              )}
+            </Formik>
           </div>
         </dialog>
       )}
