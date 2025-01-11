@@ -1,5 +1,8 @@
 import axios from "axios";
+import { Formik } from "formik";
 import React, { useEffect, useState } from "react";
+import { Form } from "react-router-dom";
+import * as Yup from "yup";
 
 //   // setIsLoading(true)
 //   try {
@@ -14,9 +17,18 @@ import React, { useEffect, useState } from "react";
 // };
 const API_URL = import.meta.env.VITE_API_URL;
 const Customer = () => {
-  const [customers, setcustomers] = useState([]);
+  const [Customer, setCustomer] = useState([]);
   const [ismodelopen, setmodelopen] = useState(false);
+  const [selectedCustomer, setSelectedCustomer] = useState<any>(null);
 
+  const CustomerSchema = Yup.object().shape({
+    firstName: Yup.string().required("First name is required"),
+
+    contactno: Yup.string().matches(
+      /^\+?[1-9]\d{1,14}$/,
+      "Contact number must be valid"
+    ),
+  });
   useEffect(() => {
     fetchcustomers();
   }, []);
@@ -26,12 +38,19 @@ const Customer = () => {
     try {
       let response = await axios.get(`${API_URL}/Customer`);
 
-      setcustomers(response.data);
+      setCustomer(response.data);
     } catch (error) {
       console.log(error);
     }
   };
-
+  const handledelete = async (id: any) => {
+    try {
+      await axios.delete(`${API_URL}/Customer/${id}`);
+    } catch (error) {
+      console.log(error);
+    }
+    fetchcustomers();
+  };
   return (
     <div className="flex flex-col">
       <div className="px-5 py-5 rounded-lg ">
@@ -65,8 +84,11 @@ const Customer = () => {
               </svg>
             </div>
             <button
-              className="btn btn-primary"
-              onClick={() => setmodelopen(true)}
+              className="btn"
+              onClick={() => {
+                setSelectedCustomer(null);
+                setmodelopen(true);
+              }}
             >
               Add Customer
             </button>
@@ -76,31 +98,31 @@ const Customer = () => {
       <div>
         <div style={{ minHeight: "calc(100vh - 320px)" }}>
           <div className="overflow-x-auto">
-            <table className="table border-white bg-neutral-800">
+            <table className="table border-white bg-slate-700">
               {/* head */}
               <thead>
                 <tr>
                   {/* <th>
-              <label>
-                <input type="checkbox" className="checkbox" />
-              </label>
-            </th> */}
-                  <th>Id</th>
+            <label>
+              <input type="checkbox" className="checkbox" />
+            </label>
+          </th> */}
+                  <th>Customer Id</th>
                   <th>Name</th>
-                  <th>Contact number</th>
-                  <th>Role</th>
-                  <th>Allowance</th>
+                  <th>Email</th>
+                  <th>Contact no</th>
+                  <th>Address</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {customers?.length > 0 ? (
-                  customers?.map((item: any, index: any) => (
+                {Customer?.length > 0 ? (
+                  Customer?.map((item: any, index: any) => (
                     <tr>
                       <td>
                         <div className="d-flex justify-content-start flex-column">
                           <a className="text-white text-hover-primary fs-6">
-                            {item?.emp_ID ?? "-"}
+                            {item?.customer_ID ?? "-"}
                           </a>
                         </div>
                       </td>
@@ -108,33 +130,56 @@ const Customer = () => {
                       <td>
                         <div className="d-flex justify-content-start flex-column">
                           <a className="text-white text-hover-primary fs-6">
-                            {item?.emp_Name ?? "-"}
+                            {item?.name ?? "-"}
+                          </a>
+                        </div>
+                      </td>
+                      <td>
+                        <div className="d-flex justify-content-start flex-column">
+                          <a className="text-white text-hover-primary fs-6">
+                            {item?.email ?? "-"}
                           </a>
                         </div>
                       </td>
                       <td>
                         <div className="d-flex justify-content-start flex-column">
                           <a className="text-white text-hover-primary ">
-                            {item?.emp_contact_no ?? "-"}
+                            {item?.contactno ?? "-"}
                           </a>
                         </div>
                       </td>
                       <td>
                         <div className="d-flex justify-content-start flex-column">
-                          <a className="text-white text-hover-primary fs-6 ">
-                            {item?.emp_Role ?? "-"}
+                          <a className="text-white text-hover-primary fs-6">
+                            {item?.address ?? "-"}
                           </a>
                         </div>
                       </td>
+
                       <td>
-                        <a className="text-white text-hover-primary fs-6 ">
-                          {item?.allowance ?? "-"}
-                        </a>
-                      </td>
-                      <td>
-                        <a className="text-white text-hover-primary fs-6 ">
-                          <button>Edit</button>
-                        </a>
+                        <div className="flex position-relative">
+                          <div className="px-5">
+                            <button
+                              className="bg-slate-200 text-black px-2 py-2  rounded-md"
+                              onClick={() => {
+                                setSelectedCustomer(item);
+                                setmodelopen(true);
+                              }}
+                            >
+                              Edit
+                            </button>
+                          </div>
+                          <div>
+                            <button
+                              className="bg-slate-200 text-black px-2 py-2  rounded-md"
+                              onClick={() => {
+                                handledelete(item?.customer_ID);
+                              }}
+                            >
+                              Delete
+                            </button>
+                          </div>
+                        </div>
                       </td>
                     </tr>
                   ))
@@ -163,48 +208,137 @@ const Customer = () => {
       {ismodelopen && (
         <dialog open className="modal modal-bottom sm:modal-middle">
           <div className="modal-box">
-            <h3 className="font-bold text-lg">Add Employee</h3>
-            <div className="flex position-relative justify-between gap-2 py-5">
-              <input
-                type="text"
-                placeholder="First name"
-                className="input input-bordered w-ful  "
-              />
-              <input
-                type="text"
-                placeholder="Last name"
-                className="input input-bordered w-full "
-              />
-            </div>
-            <input
-              type="text"
-              placeholder="Contact Number (+94760305481)"
-              className="input input-bordered w-full py-5"
-            />
-            <select className="select select-bordered w-full mt-5">
-              <option disabled selected>
-                Select Role
-              </option>
-              <option>Floral Designer</option>
-              <option>Event Stylist</option>
-              <option>Visual Merchandiser</option>
-              <option>Event Coordinator</option>
-              <option>Customer Service Representative</option>
-              <option>Other</option>
-            </select>
-            <input
-              type="number"
-              placeholder="Allowance"
-              className="input input-bordered w-full mt-5"
-            />
-            <div className="modal-action ">
-              <div className="flex positon-relative gap-5">
-                <button className="btn">Submit</button>
-                <button className="btn" onClick={() => setmodelopen(false)}>
-                  Close
-                </button>
-              </div>
-            </div>
+            <h3 className="font-bold text-lg">Add Customer</h3>
+            <Formik
+              initialValues={{
+                firstName: selectedCustomer ? selectedCustomer.name : "",
+
+                email: selectedCustomer?.email || "",
+                Address: selectedCustomer?.address || "",
+                contactno: selectedCustomer?.contactno || "",
+              }}
+              validationSchema={CustomerSchema}
+              onSubmit={async (values, { setSubmitting, resetForm }) => {
+                setSubmitting(true);
+
+                try {
+                  if (selectedCustomer) {
+                    // If editing, send PUT request
+                    await axios.put(
+                      `${API_URL}/Customer/${selectedCustomer.customer_ID}`,
+                      {
+                        name: `${values.firstName} `,
+                        address: values.Address,
+                        email: values.email,
+                        contactno: values.contactno,
+                      }
+                    );
+                  } else {
+                    // If adding a new employee, send POST request
+                    await axios.post(`${API_URL}/Customer`, {
+                      name: `${values.firstName}`,
+                      address: values.Address,
+                      email: values.email,
+                      contactno: values.contactno,
+                    });
+                  }
+                  resetForm();
+                  setmodelopen(false);
+                  fetchcustomers();
+                } catch (e) {
+                  console.error("Error:", e);
+                }
+              }}
+            >
+              {({
+                handleChange,
+                values,
+                setFieldValue,
+                handleSubmit,
+                errors,
+                isSubmitting,
+                resetForm,
+                touched,
+              }) => (
+                <Form onSubmit={handleSubmit}>
+                  <div className="py-5">
+                    <input
+                      type="text"
+                      placeholder="First name"
+                      className="input input-bordered w-full"
+                      onChange={(e) =>
+                        setFieldValue("firstName", e.target.value)
+                      }
+                      value={values.firstName}
+                    />
+                    {touched.firstName && errors.firstName && (
+                      <div className="fv-plugins-message-container">
+                        <div className="fv-help-block">
+                          {/* <span role="alert">{errors.firstName}</span> */}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                  <div className="py-5">
+                    <input
+                      type="email"
+                      name="email"
+                      placeholder="Email address"
+                      className="input input-bordered w-full "
+                      onChange={(e) => setFieldValue("email", e.target.value)}
+                      value={values.email}
+                    />
+                  </div>
+                  <div className="py-5">
+                    <textarea
+                      name="address"
+                      placeholder="Address"
+                      className="textarea textarea-bordered w-full"
+                      onChange={(e) => setFieldValue("Address", e.target.value)}
+                      value={values.Address}
+                    />
+                  </div>
+                  <div className="mt-5">
+                    <input
+                      name="contactno"
+                      type="text"
+                      placeholder="Contact Number (+94760305481)"
+                      className="input input-bordered w-full "
+                      onChange={(e) =>
+                        setFieldValue("contactno", e.target.value)
+                      }
+                      value={values.contactno}
+                    />
+                  </div>
+
+                  <div className="modal-action">
+                    <div className="flex positon-relative gap-5">
+                      <button
+                        type="submit"
+                        className="btn"
+                        data-kt-users-modal-action="submit"
+                      >
+                        Submit
+                      </button>
+
+                      <button
+                        type="button"
+                        className="btn"
+                        onClick={() => {
+                          setmodelopen(false);
+                          resetForm;
+                        }}
+                      >
+                        Close
+                      </button>
+                    </div>
+                  </div>
+                  <pre>Values: {JSON.stringify(values, null, 2)}</pre>
+                  <pre>Errors: {JSON.stringify(errors, null, 2)}</pre>
+                  <pre>Is Submitting: {JSON.stringify(isSubmitting)}</pre>
+                </Form>
+              )}
+            </Formik>
           </div>
         </dialog>
       )}

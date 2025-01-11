@@ -2,8 +2,8 @@ import axios from "axios";
 import { Formik } from "formik";
 import React, { useEffect, useState } from "react";
 import { Form } from "react-router-dom";
-import * as Yup from "yup";
 
+import * as Yup from "yup";
 //   // setIsLoading(true)
 //   try {
 //     // let response = await axios.post(`${API_URL}/Employee`);
@@ -175,7 +175,7 @@ const Employee = () => {
                                 handledelete(item?.emp_ID);
                               }}
                             >
-                              delete
+                              Delete
                             </button>
                           </div>
                         </div>

@@ -128,7 +128,7 @@ const Allowances = () => {
                       </td>
                       <td>
                         <a className="text-white text-hover-primary fs-6 ">
-                          {item?.allowance ?? "-"}
+                          {item?.emp_allowance ?? "-"}
                         </a>
                       </td>
                       <td>

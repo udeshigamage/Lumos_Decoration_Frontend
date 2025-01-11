@@ -1,5 +1,8 @@
 import axios from "axios";
+import { Formik } from "formik";
 import React, { useEffect, useState } from "react";
+import { Form } from "react-router-dom";
+import * as Yup from "yup";
 
 //   // setIsLoading(true)
 //   try {
@@ -13,26 +16,41 @@ import React, { useEffect, useState } from "react";
 //   }
 // };
 const API_URL = import.meta.env.VITE_API_URL;
-const Feedbacks = () => {
-  const [customers, setcustomers] = useState([]);
+const Feedback = () => {
+  const [Feedback, setFeedback] = useState([]);
   const [ismodelopen, setmodelopen] = useState(false);
+  const [selectedFeedback, setSelectedFeedback] = useState<any>(null);
 
+  const FeedbackSchema = Yup.object().shape({
+    firstName: Yup.string().required("First name is required"),
+
+    contactno: Yup.string().matches(
+      /^\+?[1-9]\d{1,14}$/,
+      "Contact number must be valid"
+    ),
+  });
   useEffect(() => {
-    fetchcustomers();
+    fetchfeedback();
   }, []);
 
-  const fetchcustomers = async () => {
+  const fetchfeedback = async () => {
     console.log(API_URL);
     try {
-      let response = await axios.get(`${API_URL}/Employee`);
-      console.log(response);
-      console.log(response.data);
-      setcustomers(response.data);
+      let response = await axios.get(`${API_URL}/Feedback`);
+
+      setFeedback(response.data);
     } catch (error) {
       console.log(error);
     }
   };
-
+  const handledelete = async (id: any) => {
+    try {
+      await axios.delete(`${API_URL}/Feedback/${id}`);
+    } catch (error) {
+      console.log(error);
+    }
+    fetchfeedback();
+  };
   return (
     <div className="flex flex-col">
       <div className="px-5 py-5 rounded-lg ">
@@ -43,106 +61,75 @@ const Feedbacks = () => {
               Feedbacks
             </h1>
           </div>
-          <div className="flex items-center gap-4 px-5">
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="Search"
-                className="input input-bordered w-full p-2 border rounded-lg pl-10"
-              />
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="w-6 h-6 absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-500"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
-                />
-              </svg>
-            </div>
-          </div>
+          <div className="flex items-center gap-4 px-5"></div>
         </div>
       </div>
       <div>
         <div style={{ minHeight: "calc(100vh - 320px)" }}>
           <div className="overflow-x-auto">
-            <table className="table border-white bg-neutral-800">
+            <table className="table border-white bg-slate-700">
               {/* head */}
               <thead>
                 <tr>
                   {/* <th>
-              <label>
-                <input type="checkbox" className="checkbox" />
-              </label>
-            </th> */}
-                  <th>Customer_ID</th>
-                  <th>Customer_Name</th>
-                  <th>ratings</th>
-                  <th>Actions</th>
+            <label>
+              <input type="checkbox" className="checkbox" />
+            </label>
+          </th> */}
+
+                  <th>Customer Name</th>
+                  <th>Category</th>
+                  <th>Feedback date</th>
+                  <th>Rating</th>
+                  <th>Description</th>
                 </tr>
               </thead>
               <tbody>
-                {customers?.length > 0 ? (
-                  customers?.map((item: any, index: any) => (
+                {Feedback?.length > 0 ? (
+                  Feedback?.map((item: any, index: any) => (
                     <tr>
                       <td>
                         <div className="d-flex justify-content-start flex-column">
                           <a className="text-white text-hover-primary fs-6">
-                            {/* {item?.cus_ID ?? "-"} */} 067
+                            {item?.customer_ID ?? "-"}
+                          </a>
+                        </div>
+                      </td>
+
+                      <td>
+                        <div className="d-flex justify-content-start flex-column">
+                          <a className="text-white text-hover-primary fs-6">
+                            {item?.feedbackCategory ?? "-"}
                           </a>
                         </div>
                       </td>
                       <td>
                         <div className="d-flex justify-content-start flex-column">
                           <a className="text-white text-hover-primary fs-6">
-                            {/* {item?.cus_name ?? "-"} */} udeshi
+                            {item?.feedbackDate ?? "-"}
                           </a>
                         </div>
                       </td>
-
                       <td>
-                        <div className="rating">
-                          <input
-                            type="radio"
-                            name="rating-2"
-                            className="mask mask-star-2 bg-orange-400"
-                          />
-                          <input
-                            type="radio"
-                            name="rating-2"
-                            className="mask mask-star-2 bg-orange-400"
-                            defaultChecked
-                          />
-                          <input
-                            type="radio"
-                            name="rating-2"
-                            className="mask mask-star-2 bg-orange-400"
-                          />
-                          <input
-                            type="radio"
-                            name="rating-2"
-                            className="mask mask-star-2 bg-orange-400"
-                          />
-                          <input
-                            type="radio"
-                            name="rating-2"
-                            className="mask mask-star-2 bg-orange-400"
-                          />
+                        <div className="d-flex justify-content-start flex-column">
+                          <a className="text-white text-hover-primary ">
+                            {[1, 2, 3, 4, 5].map((star) => (
+                              <input
+                                key={star}
+                                type="radio"
+                                name={`rating-${item?.id || "default"}`} // Unique name for each item's rating
+                                className="mask mask-star-2 bg-orange-400"
+                                defaultChecked={star === item?.rating} // Highlight the stars based on the rating
+                                disabled // Make it read-only
+                              />
+                            ))}
+                          </a>
                         </div>
                       </td>
-
                       <td>
-                        <div className="flex position-relative gap-5">
-                          <a className="text-white text-hover-primary fs-6 ">
-                            <button>View</button>
-                          </a>
-                          <a className="text-white text-hover-primary fs-6 ">
-                            <button>Delete</button>
+                        <div className="d-flex justify-content-start flex-column">
+                          <a className="text-white text-hover-primary fs-6">
+                            {item?.feedbackDescription ?? "-"}
                           </a>
                         </div>
                       </td>
@@ -170,56 +157,8 @@ const Feedbacks = () => {
           </div>
         </div>
       </div>
-      {ismodelopen && (
-        <dialog open className="modal modal-bottom sm:modal-middle">
-          <div className="modal-box">
-            <h3 className="font-bold text-lg">Add Employee</h3>
-            <div className="flex position-relative justify-between gap-2 py-5">
-              <input
-                type="text"
-                placeholder="First name"
-                className="input input-bordered w-ful  "
-              />
-              <input
-                type="text"
-                placeholder="Last name"
-                className="input input-bordered w-full "
-              />
-            </div>
-            <input
-              type="text"
-              placeholder="Contact Number (+94760305481)"
-              className="input input-bordered w-full py-5"
-            />
-            <select className="select select-bordered w-full mt-5">
-              <option disabled selected>
-                Select Role
-              </option>
-              <option>Floral Designer</option>
-              <option>Event Stylist</option>
-              <option>Visual Merchandiser</option>
-              <option>Event Coordinator</option>
-              <option>Customer Service Representative</option>
-              <option>Other</option>
-            </select>
-            <input
-              type="number"
-              placeholder="Allowance"
-              className="input input-bordered w-full mt-5"
-            />
-            <div className="modal-action ">
-              <div className="flex positon-relative gap-5">
-                <button className="btn">Submit</button>
-                <button className="btn" onClick={() => setmodelopen(false)}>
-                  Close
-                </button>
-              </div>
-            </div>
-          </div>
-        </dialog>
-      )}
     </div>
   );
 };
 
-export default Feedbacks;
+export default Feedback;
