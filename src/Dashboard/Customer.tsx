@@ -20,6 +20,11 @@ const Customer = () => {
   const [Customer, setCustomer] = useState([]);
   const [ismodelopen, setmodelopen] = useState(false);
   const [selectedCustomer, setSelectedCustomer] = useState<any>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalItems, settotalitems] = useState(0);
+
+  const pageSize = 5;
 
   const CustomerSchema = Yup.object().shape({
     firstName: Yup.string().required("First name is required"),
@@ -30,15 +35,20 @@ const Customer = () => {
     ),
   });
   useEffect(() => {
-    fetchcustomers();
+    fetchcustomers(currentPage);
   }, []);
 
-  const fetchcustomers = async () => {
+  const fetchcustomers = async (page: number) => {
     console.log(API_URL);
     try {
-      let response = await axios.get(`${API_URL}/Customer`);
+      let response = await axios.get(
+        `${API_URL}/Customer?page=${page}&pageSize=${pageSize}`
+      );
 
-      setCustomer(response.data);
+      setCustomer(response.data.data);
+      setTotalPages(response.data.totalPages);
+      setCurrentPage(response.data.currentPage);
+      settotalitems(response.data.totalItems);
     } catch (error) {
       console.log(error);
     }
@@ -49,7 +59,16 @@ const Customer = () => {
     } catch (error) {
       console.log(error);
     }
-    fetchcustomers();
+    fetchcustomers(currentPage);
+  };
+  useEffect(() => {
+    fetchcustomers(currentPage);
+  }, [currentPage]);
+
+  const handlePageChange = (page: number) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
   };
   return (
     <div className="flex flex-col">
@@ -202,6 +221,27 @@ const Customer = () => {
               </tbody>
               {/* foot */}
             </table>
+            <div className="flex flex-col items-end">
+              <div className="pagination ">
+                <button
+                  className="btn mt-5 mr-5 bg-white"
+                  disabled={currentPage === 1}
+                  onClick={() => handlePageChange(currentPage - 1)}
+                >
+                  Previous
+                </button>
+                <span>
+                  Page {currentPage} of {totalPages}: {totalItems}
+                </span>
+                <button
+                  className="btn ml-5 bg-white"
+                  disabled={currentPage === totalPages}
+                  onClick={() => handlePageChange(currentPage + 1)}
+                >
+                  Next
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -244,7 +284,7 @@ const Customer = () => {
                   }
                   resetForm();
                   setmodelopen(false);
-                  fetchcustomers();
+                  fetchcustomers(currentPage);
                 } catch (e) {
                   console.error("Error:", e);
                 }

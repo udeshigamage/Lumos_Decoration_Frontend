@@ -1,5 +1,6 @@
+import axios from "axios";
 import { Chart } from "chart.js";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   LineChart,
   Line,
@@ -40,25 +41,45 @@ const data2 = [
   { month: "Apr", sales: 90 },
   { month: "May", sales: 120 },
 ];
+const API_URL = import.meta.env.VITE_API_URL;
+
 const Dashboard = () => {
+  const [pendingordercount, setpendingordercount] = useState(0);
+  const [newordercount, setnewordercount] = useState(0);
+  const [completedordercount, setcompletedordercount] = useState(0);
+  useEffect(() => {
+    fetchordercount();
+  }, []);
+  const fetchordercount = async () => {
+    const response = await axios.get(`${API_URL}/Order/orderscount`);
+    setpendingordercount(response.data.pending);
+    setnewordercount(response.data.new);
+    setcompletedordercount(response.data.completed);
+  };
   return (
     <div>
       <div className=" grid grid-cols-3 gap-8 justify-self-center">
         <div className="bg-slate-400 w-64 h-32  rounded-md">
           <p className="text-black font-serif text-2xl px-5 py-5">New Orders</p>
-          <p className="text-black font-extrabold text-4xl px-5">10</p>
+          <p className="text-black font-extrabold text-4xl px-5">
+            {newordercount}
+          </p>
         </div>
         <div className="bg-slate-400 w-64 h-32  rounded-md">
           <p className="text-black font-serif text-2xl  px-5 py-5">
             Pending Orders
           </p>
-          <p className="text-black font-extrabold text-4xl px-5">14</p>
+          <p className="text-black font-extrabold text-4xl px-5">
+            {pendingordercount}
+          </p>
         </div>
         <div className="bg-slate-400 w-64 h-32  rounded-md">
           <p className="text-black font-serif text-2xl px-5 py-5">
             Completed Orders
           </p>
-          <p className="text-black font-extrabold text-4xl px-5">14</p>
+          <p className="text-black font-extrabold text-4xl px-5">
+            {completedordercount}
+          </p>
         </div>
       </div>
       <div className="mt-20 mb-5  ">
