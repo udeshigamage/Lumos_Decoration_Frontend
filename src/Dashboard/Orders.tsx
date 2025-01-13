@@ -21,7 +21,11 @@ const Order = () => {
   const [Order, setOrder] = useState([]);
   const [ismodelopen, setmodelopen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState<any>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalItems, settotalitems] = useState(0);
 
+  const pageSize = 5;
   const OrderSchema = Yup.object().shape({
     firstName: Yup.string().required("First name is required"),
     lastName: Yup.string().required("Last name is required"),
@@ -33,15 +37,20 @@ const Order = () => {
     Allowance: Yup.number().required("Allowance is required"),
   });
   useEffect(() => {
-    fetchorder();
-  }, []);
+    fetchorder(currentPage);
+  }, [currentPage]);
 
-  const fetchorder = async () => {
+  const fetchorder = async (page: number) => {
     console.log(API_URL);
     try {
-      let response = await axios.get(`${API_URL}/Order`);
+      let response = await axios.get(
+        `${API_URL}/Order?page=${page}&pageSize=${pageSize}`
+      );
 
-      setOrder(response.data);
+      setOrder(response.data.data);
+      setTotalPages(response.data.totalPages);
+      setCurrentPage(response.data.currentPage);
+      settotalitems(response.data.totalItems);
     } catch (error) {
       console.log(error);
     }
@@ -52,7 +61,12 @@ const Order = () => {
     } catch (error) {
       console.log(error);
     }
-    fetchorder();
+    fetchorder(currentPage);
+  };
+  const handlePageChange = (page: number) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
   };
   return (
     <div className="flex flex-col">
@@ -192,6 +206,27 @@ const Order = () => {
               </tbody>
               {/* foot */}
             </table>
+            <div className="flex flex-col items-end">
+              <div className="pagination ">
+                <button
+                  className="btn mt-5 mr-5 bg-white"
+                  disabled={currentPage === 1}
+                  onClick={() => handlePageChange(currentPage - 1)}
+                >
+                  Previous
+                </button>
+                <span>
+                  Page {currentPage} of {totalPages}: {totalItems}
+                </span>
+                <button
+                  className="btn ml-5 bg-white"
+                  disabled={currentPage === totalPages}
+                  onClick={() => handlePageChange(currentPage + 1)}
+                >
+                  Next
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -20,6 +20,11 @@ const Feedback = () => {
   const [Feedback, setFeedback] = useState([]);
   const [ismodelopen, setmodelopen] = useState(false);
   const [selectedFeedback, setSelectedFeedback] = useState<any>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalItems, settotalitems] = useState(0);
+
+  const pageSize = 5;
 
   const FeedbackSchema = Yup.object().shape({
     firstName: Yup.string().required("First name is required"),
@@ -29,16 +34,18 @@ const Feedback = () => {
       "Contact number must be valid"
     ),
   });
-  useEffect(() => {
-    fetchfeedback();
-  }, []);
 
-  const fetchfeedback = async () => {
+  const fetchfeedback = async (page: number) => {
     console.log(API_URL);
     try {
-      let response = await axios.get(`${API_URL}/Feedback`);
+      let response = await axios.get(
+        `${API_URL}/Feedback?page=${page}&pageSize=${pageSize}`
+      );
 
-      setFeedback(response.data);
+      setFeedback(response.data.data);
+      setTotalPages(response.data.totalPages);
+      setCurrentPage(response.data.currentPage);
+      settotalitems(response.data.totalItems);
     } catch (error) {
       console.log(error);
     }
@@ -49,7 +56,15 @@ const Feedback = () => {
     } catch (error) {
       console.log(error);
     }
-    fetchfeedback();
+    fetchfeedback(currentPage);
+  };
+  useEffect(() => {
+    fetchfeedback(currentPage);
+  }, [currentPage]);
+  const handlePageChange = (page: number) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
   };
   return (
     <div className="flex flex-col">
@@ -154,6 +169,27 @@ const Feedback = () => {
               </tbody>
               {/* foot */}
             </table>
+            <div className="flex flex-col items-end">
+              <div className="pagination ">
+                <button
+                  className="btn mt-5 mr-5 bg-white"
+                  disabled={currentPage === 1}
+                  onClick={() => handlePageChange(currentPage - 1)}
+                >
+                  Previous
+                </button>
+                <span>
+                  Page {currentPage} of {totalPages}: {totalItems}
+                </span>
+                <button
+                  className="btn ml-5 bg-white"
+                  disabled={currentPage === totalPages}
+                  onClick={() => handlePageChange(currentPage + 1)}
+                >
+                  Next
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
