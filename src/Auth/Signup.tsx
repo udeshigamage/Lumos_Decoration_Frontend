@@ -1,21 +1,31 @@
 import React from "react";
-import pic0567 from "../assets/pic0567.jpg";
+import { useNavigate } from "react-router-dom";
+
+import pic07 from "../assets/pico9.jpg";
 
 const Signup = () => {
+  const navigate = useNavigate();
   return (
     <div>
       <div className="flex flex-row">
         <div className="basis-1/2 ">
-          <img src={pic0567} className="h-screen" />
+          {" "}
+          <img
+            src={pic07}
+            className="h-full w-full object-cover h-screen animate-pulse"
+          />
         </div>
-        <div
-          className="basis-1/2 flex justify-center items-center"
-          style={{ backgroundImage: `url(${pic0567})` }}
-        >
+        <div className="basis-1/2 flex justify-center items-center bg-white ">
           <div className="flex flex-col items-center">
-            <h1 className="text-6xl font-serif text-black font-bold mb-4">
-              Sign up
-            </h1>
+            <div className="flex flex-row gap-2">
+              <a href="/">
+                <span className="text-6xl text-black animate-pulse ">«</span>
+              </a>
+              <h1 className=" mt-4 text-6xl font-serif text-black font-bold mb-4">
+                <span className="text-red-950">S</span>ign{" "}
+                <span className="text-red-950">U</span>p
+              </h1>
+            </div>
             <div className="px-5 py-5 w-full">
               <input
                 type="text"
