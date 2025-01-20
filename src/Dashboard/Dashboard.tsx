@@ -59,22 +59,24 @@ const Dashboard = () => {
   return (
     <div>
       <div className=" grid grid-cols-3 gap-8 justify-self-center">
-        <div className="bg-slate-400 w-64 h-32  rounded-md">
-          <p className="text-black font-serif text-2xl px-5 py-5">New Orders</p>
+        <div className="bg-white w-64 h-32  rounded-md opacity-75">
+          <p className="text-red-950 font-serif text-2xl px-5 py-5">
+            New Orders
+          </p>
           <p className="text-black font-extrabold text-4xl px-5">
             {newordercount}
           </p>
         </div>
-        <div className="bg-slate-400 w-64 h-32  rounded-md">
-          <p className="text-black font-serif text-2xl  px-5 py-5">
+        <div className="bg-white w-64 h-32  rounded-md opacity-80">
+          <p className="text-red-950 font-serif text-2xl  px-5 py-5">
             Pending Orders
           </p>
           <p className="text-black font-extrabold text-4xl px-5">
             {pendingordercount}
           </p>
         </div>
-        <div className="bg-slate-400 w-64 h-32  rounded-md">
-          <p className="text-black font-serif text-2xl px-5 py-5">
+        <div className="bg-white w-64 h-32  rounded-md opacity-85">
+          <p className="text-red-950 font-serif text-2xl px-5 py-5">
             Completed Orders
           </p>
           <p className="text-black font-extrabold text-4xl px-5">
@@ -82,7 +84,7 @@ const Dashboard = () => {
           </p>
         </div>
       </div>
-      <div className="mt-20 mb-5  ">
+      <div className="mt-20 mb-5 text-black ">
         <LineChart width={600} height={300} data={data2}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="month" />

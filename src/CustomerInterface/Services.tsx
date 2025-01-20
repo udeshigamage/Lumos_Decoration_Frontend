@@ -1,11 +1,6 @@
 import React from "react";
 
-import flower3 from "../assets/flower3.jpg";
-import flower1 from "../assets/flower1.jpg";
-import flower2 from "../assets/flower2.jpg";
-import candle5 from "../assets/candle5.jpg";
-import candle6 from "../assets/candle6.webp";
-import candle9 from "../assets/candle9.png";
+import flower2 from "../assets/flower_1.jpg";
 import Navbarcustomer from "./Navbarcustomer";
 import { Link } from "react-router-dom";
 
@@ -13,58 +8,19 @@ const Services = () => {
   return (
     <div>
       <Navbarcustomer />
-      <div className="grid grid-row-2 gap-10 mx-5 my-5">
-        <div className="grid grid-cols-4 gap-5 ">
-          <Link to="/customer/addtobooking" state={{ image: flower2 }}>
-            <div className="position-relative">
-              <img src={flower2} />
-              <h1 className="justify-self-center">LKR 200</h1>
+      <div>
+        <div className="flex flex-col  m-5 mt-20 ">
+          <div className="bg-slate-300 rounded-lg basis-1/5 border-4  border-b-white p-2">
+            <div className="flex flex-row w-full min-w-full">
+              <div className="basis-1/5 bg-black h-32">
+                <img src={flower2} className="h-full w-full object-cover" />
+              </div>
+              <div className="basis-3/5 bg-slate-400 p-2">
+                <h1 className="text-black font-serif">FlowerBoquet</h1>
+              </div>
+              <div className="basis-1/5 bg-slate-400 flex justify-end"></div>
             </div>
-          </Link>
-          <Link to="/customer/addtobooking" state={{ image: flower2 }}>
-            <div className="position-relative">
-              <img src={flower2} />
-              <h1 className="justify-self-center">LKR 200</h1>
-            </div>
-          </Link>
-          <Link to="/customer/addtobooking" state={{ image: flower2 }}>
-            <div className="position-relative">
-              <img src={flower2} />
-              <h1 className="justify-self-center">LKR 200</h1>
-            </div>
-          </Link>
-          <Link to="/customer/addtobooking" state={{ image: flower2 }}>
-            <div className="position-relative">
-              <img src={flower2} />
-              <h1 className="justify-self-center">LKR 200</h1>
-            </div>
-          </Link>
-        </div>
-        <div className="grid grid-cols-4 gap-5 ">
-          <Link to="/customer/addtobooking" state={{ image: flower2 }}>
-            <div className="position-relative">
-              <img src={flower2} />
-              <h1 className="justify-self-center">LKR 200</h1>
-            </div>
-          </Link>
-          <Link to="/customer/addtobooking" state={{ image: flower2 }}>
-            <div className="position-relative">
-              <img src={flower2} />
-              <h1 className="justify-self-center">LKR 200</h1>
-            </div>
-          </Link>
-          <Link to="/customer/addtobooking" state={{ image: flower2 }}>
-            <div className="position-relative">
-              <img src={flower2} />
-              <h1 className="justify-self-center">LKR 200</h1>
-            </div>
-          </Link>
-          <Link to="/customer/addtobooking" state={{ image: flower2 }}>
-            <div className="position-relative">
-              <img src={flower2} />
-              <h1 className="justify-self-center">LKR 200</h1>
-            </div>
-          </Link>
+          </div>
         </div>
       </div>
     </div>

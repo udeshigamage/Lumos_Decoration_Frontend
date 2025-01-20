@@ -76,7 +76,7 @@ const Customer = () => {
         {" "}
         <div className="flex flex-row items-center justify-between w-full">
           <div className="">
-            <h1 className="text-2xl text-white font-bold font-serif">
+            <h1 className="text-4xl text-black font-bold font-serif">
               Customer
             </h1>
           </div>
@@ -117,9 +117,9 @@ const Customer = () => {
       <div>
         <div style={{ minHeight: "calc(100vh - 320px)" }}>
           <div className="overflow-x-auto">
-            <table className="table border-white bg-slate-700">
+            <table className="table border-white bg-red-100 opacity-90 text-black">
               {/* head */}
-              <thead>
+              <thead className="text-black text-xl">
                 <tr>
                   {/* <th>
             <label>
@@ -140,7 +140,7 @@ const Customer = () => {
                     <tr>
                       <td>
                         <div className="d-flex justify-content-start flex-column">
-                          <a className="text-white text-hover-primary fs-6">
+                          <a className="text-black text-hover-primary fs-6">
                             {item?.customer_ID ?? "-"}
                           </a>
                         </div>
@@ -148,28 +148,28 @@ const Customer = () => {
 
                       <td>
                         <div className="d-flex justify-content-start flex-column">
-                          <a className="text-white text-hover-primary fs-6">
+                          <a className="text-black text-hover-primary fs-6">
                             {item?.name ?? "-"}
                           </a>
                         </div>
                       </td>
                       <td>
                         <div className="d-flex justify-content-start flex-column">
-                          <a className="text-white text-hover-primary fs-6">
+                          <a className="text-black text-hover-primary fs-6">
                             {item?.email ?? "-"}
                           </a>
                         </div>
                       </td>
                       <td>
                         <div className="d-flex justify-content-start flex-column">
-                          <a className="text-white text-hover-primary ">
+                          <a className="text-black text-hover-primary ">
                             {item?.contactno ?? "-"}
                           </a>
                         </div>
                       </td>
                       <td>
                         <div className="d-flex justify-content-start flex-column">
-                          <a className="text-white text-hover-primary fs-6">
+                          <a className="text-black text-hover-primary fs-6">
                             {item?.address ?? "-"}
                           </a>
                         </div>
@@ -179,7 +179,7 @@ const Customer = () => {
                         <div className="flex position-relative">
                           <div className="px-5">
                             <button
-                              className="bg-slate-200 text-black px-2 py-2  rounded-md"
+                              className="bg-black text-white px-2 py-2  rounded-md"
                               onClick={() => {
                                 setSelectedCustomer(item);
                                 setmodelopen(true);
@@ -190,7 +190,7 @@ const Customer = () => {
                           </div>
                           <div>
                             <button
-                              className="bg-slate-200 text-black px-2 py-2  rounded-md"
+                              className="bg-black text-white px-2 py-2  rounded-md"
                               onClick={() => {
                                 handledelete(item?.customer_ID);
                               }}
@@ -224,17 +224,17 @@ const Customer = () => {
             <div className="flex flex-col items-end">
               <div className="pagination ">
                 <button
-                  className="btn mt-5 mr-5 bg-white"
+                  className="btn mt-5 mr-5 bg-black"
                   disabled={currentPage === 1}
                   onClick={() => handlePageChange(currentPage - 1)}
                 >
                   Previous
                 </button>
-                <span>
+                <span className="text-black">
                   Page {currentPage} of {totalPages}: {totalItems}
                 </span>
                 <button
-                  className="btn ml-5 bg-white"
+                  className="btn ml-5 bg-black"
                   disabled={currentPage === totalPages}
                   onClick={() => handlePageChange(currentPage + 1)}
                 >

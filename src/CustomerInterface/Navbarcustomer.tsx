@@ -3,7 +3,7 @@ import React from "react";
 const Navbarcustomer = () => {
   return (
     <div>
-      <div className="navbar bg-base-100 bg-slate-500 fixed">
+      <div className="navbar bg-base-100 bg-slate-500 top-0 left-0 fixed">
         <div className="flex-1">
           <a className="btn btn-ghost text-xl">Lumos Decorations</a>
         </div>
