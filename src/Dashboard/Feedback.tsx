@@ -72,7 +72,7 @@ const Feedback = () => {
         {" "}
         <div className="flex flex-row items-center justify-between w-full">
           <div className="">
-            <h1 className="text-2xl text-white font-bold font-serif">
+            <h1 className="text-4xl text-black font-bold font-serif">
               Feedbacks
             </h1>
           </div>
@@ -82,9 +82,9 @@ const Feedback = () => {
       <div>
         <div style={{ minHeight: "calc(100vh - 320px)" }}>
           <div className="overflow-x-auto">
-            <table className="table border-white bg-slate-700">
+            <table className="table border-white bg-red-100 opacity-90 text-black">
               {/* head */}
-              <thead>
+              <thead className="text-black text-xl">
                 <tr>
                   {/* <th>
             <label>
@@ -105,7 +105,7 @@ const Feedback = () => {
                     <tr>
                       <td>
                         <div className="d-flex justify-content-start flex-column">
-                          <a className="text-white text-hover-primary fs-6">
+                          <a className="text-black text-hover-primary fs-6">
                             {item?.customer_ID ?? "-"}
                           </a>
                         </div>
@@ -113,21 +113,21 @@ const Feedback = () => {
 
                       <td>
                         <div className="d-flex justify-content-start flex-column">
-                          <a className="text-white text-hover-primary fs-6">
+                          <a className="text-black text-hover-primary fs-6">
                             {item?.feedbackCategory ?? "-"}
                           </a>
                         </div>
                       </td>
                       <td>
                         <div className="d-flex justify-content-start flex-column">
-                          <a className="text-white text-hover-primary fs-6">
+                          <a className="text-black text-hover-primary fs-6">
                             {item?.feedbackDate ?? "-"}
                           </a>
                         </div>
                       </td>
                       <td>
                         <div className="d-flex justify-content-start flex-column">
-                          <a className="text-white text-hover-primary ">
+                          <a className="text-black text-hover-primary ">
                             {[1, 2, 3, 4, 5].map((star) => (
                               <input
                                 key={star}
@@ -143,7 +143,7 @@ const Feedback = () => {
                       </td>
                       <td>
                         <div className="d-flex justify-content-start flex-column">
-                          <a className="text-white text-hover-primary fs-6">
+                          <a className="text-black text-hover-primary fs-6">
                             {item?.feedbackDescription ?? "-"}
                           </a>
                         </div>
@@ -172,17 +172,17 @@ const Feedback = () => {
             <div className="flex flex-col items-end">
               <div className="pagination ">
                 <button
-                  className="btn mt-5 mr-5 bg-white"
+                  className="btn mt-5 mr-5 bg-black"
                   disabled={currentPage === 1}
                   onClick={() => handlePageChange(currentPage - 1)}
                 >
                   Previous
                 </button>
-                <span>
+                <span className="text-black">
                   Page {currentPage} of {totalPages}: {totalItems}
                 </span>
                 <button
-                  className="btn ml-5 bg-white"
+                  className="btn ml-5 bg-black"
                   disabled={currentPage === totalPages}
                   onClick={() => handlePageChange(currentPage + 1)}
                 >
