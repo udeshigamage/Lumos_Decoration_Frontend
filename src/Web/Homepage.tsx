@@ -1,5 +1,5 @@
 import React from "react";
-import pic0567 from "../assets/pic0567.jpg";
+import pic0567 from "../assets/pico14.jpg";
 
 const Homepage = () => {
   return (
@@ -13,13 +13,12 @@ const Homepage = () => {
           minHeight: "calc(100vh - 48px)",
         }}
       >
-        <p>hi</p>
-
         {/* Separate Box */}
+
         <div
-          className="bg-yellow-100"
+          className="min-h-screen"
           style={{
-            width: "600px", // Box width
+            width: "900px", // Box width
             height: "200px", // Box height
             // Semi-transparent background
             color: "white", // Text color
@@ -30,22 +29,41 @@ const Homepage = () => {
             top: "50%", // Move to the center vertically
             left: "50%", // Move to the center horizontally
             transform: "translate(-50%, -50%)", // Adjust position to truly center it
-            borderRadius: "8px", // Rounded corners
-            opacity: 0.8,
-            boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-            backgroundColor: "#FFC724",
+            // Rounded corners
+            opacity: 5.0,
           }}
         >
-          <p className="font-sans text-black px-3 text-xl font-semibold">
-            Welcome to Lumos Decorations, your go-to destination for exquisite
-            handcrafted decorations and personalized gifts. Nestled in the heart
-            of Jaffna, we take pride in crafting unique and personalized gifts
-            that reflect your unique style and personality.
-          </p>
+          <div className="flex flex-col">
+            <h1 className="font-serif text-black px-3 text-6xl    ">
+              {" "}
+              <span className="text-red-700">W</span>elcome{" "}
+              <span className="text-red-700">t</span>o{" "}
+              <span className="text-red-700">L</span>umos{" "}
+              <span className="text-red-700">D</span>ecorations
+            </h1>
+
+            <br />
+            <p className="font-sans text-black font-semibold text-xl font-medium mt-4 opacity-80 bg-gradient-to-r from-amber-100 to-red-200 p-10 rounded-lg shadow-2xl text-black ">
+              Your go-to destination for exquisite handcrafted decorations and
+              personalized gifts Nestled in the heart of Jaffna, we take pride
+              in crafting unique and personalized gifts that reflect your unique
+              style and personality.
+              <br />
+            </p>
+            <div className="flex justify-center">
+              <button className="btn btn-primary my-10 w-[200px] bg-red-950 hover:bg-slate-700 animate-pulse">
+                <a href="/login">
+                  <span className="text-white font-serif text-lg">
+                    Book now {">>"}
+                  </span>
+                </a>
+              </button>
+            </div>
+          </div>
 
           {/* <button className="btn btn-primary ">Book now</button> */}
         </div>
-        <div className="flex align-bottom items-end mt-4">
+        {/* <div className="flex align-bottom items-end mt-4">
           <div className="animate-bounce bg-blue-500 p-3 rounded-full">
             <svg
               className="w-6 h-6 text-white"
@@ -62,7 +80,7 @@ const Homepage = () => {
               />
             </svg>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );
