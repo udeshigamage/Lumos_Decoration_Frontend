@@ -3,13 +3,13 @@ import React from "react";
 const Notificationmanagement = () => {
   return (
     <div>
-      <h1 className="text-2xl text-white font-bold font-serif">
+      <h1 className="text-4xl text-black font-bold font-serif">
         Notification Management
       </h1>
 
       <div className="flex position-relative gap-20 my-10">
         <div>
-          <label className="label">Select Notification</label>
+          <label className="label text-black">Select Notification</label>
           <select className="select select-bordered w-full max-w-xs">
             <option disabled selected>
               Select Notification
@@ -19,7 +19,7 @@ const Notificationmanagement = () => {
           </select>
         </div>
         <div>
-          <label className="label">Notification Title</label>
+          <label className="label text-black">Notification Title</label>
           <input
             type="text"
             placeholder="Search"
@@ -28,7 +28,7 @@ const Notificationmanagement = () => {
         </div>
       </div>
       <div className="my-5">
-        <label className="label ">Message</label>
+        <label className="label text-black ">Message</label>
         <textarea
           className="textarea textarea-bordered w-full max-w-xs "
           placeholder="Message"
@@ -37,7 +37,7 @@ const Notificationmanagement = () => {
         ></textarea>
       </div>
       <div className="my-5">
-        <label className="label ">Receipt</label>
+        <label className="label text-black ">Receipt</label>
         <select className="select select-bordered w-full max-w-xs">
           <option disabled selected>
             Select Receipt
