@@ -2,8 +2,8 @@ import React from "react";
 
 const Dashboard = () => {
   return (
-    <div>
-      <div className="flex flex-row gap-10 mx-5 mt-5">
+    <div className="bg-gradient-to-r from-white to-red-200 ">
+      <div className="flex flex-row gap-10 mx-5 mt-5 ">
         <div className="basis-1/3 h-40 bg-slate-600  rounded-md">
           <h1 className="text-white text-2xl px-5 py-3 font-serif">
             Pending works

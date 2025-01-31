@@ -12,6 +12,10 @@ import SideNavigationPanel2 from "../Employeeinterface/SideNavigation";
 import Pendingorder from "../Employeeinterface/Pendingorder";
 import Requestorder from "../Employeeinterface/Requestorder";
 import Revision from "../Web/Revision";
+import Garlends from "../CustomerInterface/Garlends";
+import Candledecorations from "../CustomerInterface/Candledecorations";
+import Flowerboquets from "../CustomerInterface/Flowerboquets";
+import Customdecoratons from "../CustomerInterface/Customdecoratons";
 const router = createBrowserRouter([
   { path: "/", element: <Layout /> },
   { path: "/login", element: <Login /> },
@@ -19,6 +23,16 @@ const router = createBrowserRouter([
   { path: "/customer/services", element: <Services /> },
   { path: "customer/addtobooking", element: <Addtobooking /> },
   { path: "customer/ordersummary", element: <Ordersummary /> },
+  { path: "customer/category/garlands", element: <Garlends /> },
+  {
+    path: "customer/category/candle-decorations",
+    element: <Candledecorations />,
+  },
+  { path: "customer/category/flower-bouquets", element: <Flowerboquets /> },
+  {
+    path: "customer/category/custom-decorations",
+    element: <Customdecoratons />,
+  },
   {
     path: "employee",
     element: <SideNavigationPanel2 />,

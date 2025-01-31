@@ -3,9 +3,11 @@ import React from "react";
 const Navbarcustomer = () => {
   return (
     <div>
-      <div className="navbar bg-base-100 bg-slate-500 top-0 left-0 fixed">
+      <div className="navbar bg-base-100 bg-red-950 top-0 left-0 fixed">
         <div className="flex-1">
-          <a className="btn btn-ghost text-xl">Lumos Decorations</a>
+          <a className="btn btn-ghost text-2xl font-serif text-white">
+            Lumos Decorations
+          </a>
         </div>
         <div className="flex-none gap-2">
           <div className="form-control">

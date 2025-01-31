@@ -3,22 +3,88 @@ import React from "react";
 import flower2 from "../assets/flower_1.jpg";
 import Navbarcustomer from "./Navbarcustomer";
 import { Link } from "react-router-dom";
+import pico5 from "../assets/pic05.jpg";
+import pico3 from "../assets/flower_1.jpg";
+import pico2 from "../assets/pico21.jpg";
+import pico1 from "../assets/pico2.jpg";
+import pico9 from "../assets/pico14.jpg";
+import { useNavigate } from "react-router-dom";
 
 const Services = () => {
+  const navigate = useNavigate();
   return (
     <div>
       <Navbarcustomer />
-      <div>
-        <div className="flex flex-col  m-5 mt-20 ">
-          <div className="bg-slate-300 rounded-lg basis-1/5 border-4  border-b-white p-2">
-            <div className="flex flex-row w-full min-w-full">
-              <div className="basis-1/5 bg-black h-32">
-                <img src={flower2} className="h-full w-full object-cover" />
-              </div>
-              <div className="basis-3/5 bg-slate-400 p-2">
-                <h1 className="text-black font-serif">FlowerBoquet</h1>
-              </div>
-              <div className="basis-1/5 bg-slate-400 flex justify-end"></div>
+      <div
+        className="bg-white min-h-screen  "
+        style={{
+          backgroundImage: `url(${pico9})`,
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+          minHeight: "calc(100vh - 48px)",
+        }}
+      >
+        <div className="flex flex-col w-full min-w-full">
+          <div className="flex  flex-col items-center justify-center min-h-screen">
+            <h1 className="text-4xl font-serif font-bold text-red-950">
+              Our Categories
+            </h1>
+            <div className="flex flex-row items-center gap-5 overflow-x-scroll p-5">
+              {[
+                {
+                  title: "Garlands",
+                  description:
+                    "We are creating different type of garlends using different flowers",
+                  img: pico5,
+                },
+                {
+                  title: "Flower Bouquets",
+                  description:
+                    "we are creating different type of flower bouquets",
+                  img: pico3,
+                },
+                {
+                  title: "Candle Decorations",
+                  description:
+                    "we are creating different type of candle decorations",
+                  img: pico2,
+                },
+                {
+                  title: "Custom Decorations",
+                  description:
+                    " we are creating different type of custom decorations",
+                  img: pico1,
+                },
+              ].map((item, index) => (
+                <div
+                  key={index}
+                  className="card card-compact bg-white text-black w-80 h-[400px] shadow-xl"
+                  onClick={() =>
+                    navigate(
+                      `/customer/category/${item.title
+                        .toLowerCase()
+                        .replace(/\s+/g, "-")}`
+                    )
+                  }
+                >
+                  <figure className="h-[200px] w-full">
+                    <img
+                      src={item.img}
+                      alt={item.title}
+                      className="h-full w-full object-cover"
+                    />
+                  </figure>
+                  <div className="card-body">
+                    <h2 className="card-title">{item.title}</h2>
+                    <p>{item.description}</p>
+                    <div className="card-actions justify-end">
+                      <button className="btn btn-primary bg-black text-white hover:bg-gray-800 animate-pulse">
+                        Read more
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>

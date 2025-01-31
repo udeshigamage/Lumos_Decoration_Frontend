@@ -38,7 +38,10 @@ const SideNavigationPanel = () => {
     <div className="flex h-screen bg bg-gradient-to-r from-amber-100 to-red-200">
       {/* Side Navigation Panel */}
       <div className="w-1/4 bg-black text-white p-4">
-        <h2 className="text-2xl font-bold mb-4">Lumos Decorations</h2>
+        <h2 className="text-2xl font-bold mb-4">
+          <span className="text-red-950">L</span>umos{" "}
+          <span className="text-red-950">D</span>ecorations
+        </h2>
         <ul className="space-y-2 mt-10">
           <div className="flex position-relative gap-2 mt-5">
             <svg
