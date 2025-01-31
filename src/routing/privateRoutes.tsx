@@ -11,6 +11,7 @@ import SideNavigationPanel from "../Dashboard/Drawer";
 import SideNavigationPanel2 from "../Employeeinterface/SideNavigation";
 import Pendingorder from "../Employeeinterface/Pendingorder";
 import Requestorder from "../Employeeinterface/Requestorder";
+import Revision from "../Web/Revision";
 const router = createBrowserRouter([
   { path: "/", element: <Layout /> },
   { path: "/login", element: <Login /> },
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
   {
     path: "employee/requestorder",
     element: <Requestorder />,
+  },
+  {
+    path: "/revision",
+    element: <Revision />,
   },
 
   {

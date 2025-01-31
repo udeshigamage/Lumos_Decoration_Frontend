@@ -19,7 +19,7 @@ const data = [
 const Report = () => {
   return (
     <div>
-      <h1 className="text-2xl text-white font-bold font-serif">Report</h1>
+      <h1 className="text-4xl text-black font-bold font-serif">Report</h1>
       <div className="my-10">
         <select className="select select-bordered w-full max-w-xs">
           <option disabled selected>
