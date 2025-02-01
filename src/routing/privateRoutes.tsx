@@ -16,6 +16,9 @@ import Garlends from "../CustomerInterface/Garlends";
 import Candledecorations from "../CustomerInterface/Candledecorations";
 import Flowerboquets from "../CustomerInterface/Flowerboquets";
 import Customdecoratons from "../CustomerInterface/Customdecoratons";
+import Orderhistory from "../CustomerInterface/Orderhistory";
+import Mycart from "../CustomerInterface/Mycart";
+import Checkout from "../CustomerInterface/checkout";
 const router = createBrowserRouter([
   { path: "/", element: <Layout /> },
   { path: "/login", element: <Login /> },
@@ -24,6 +27,9 @@ const router = createBrowserRouter([
   { path: "customer/addtobooking", element: <Addtobooking /> },
   { path: "customer/ordersummary", element: <Ordersummary /> },
   { path: "customer/category/garlands", element: <Garlends /> },
+  { path: "customer/orderhistory", element: <Orderhistory /> },
+  { path: "customer/mycart", element: <Mycart /> },
+  { path: "customer/mycart/checkout", element: <Checkout /> },
   {
     path: "customer/category/candle-decorations",
     element: <Candledecorations />,

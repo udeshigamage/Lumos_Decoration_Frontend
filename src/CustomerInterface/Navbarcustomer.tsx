@@ -1,22 +1,30 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const Navbarcustomer = () => {
+  const navigate = useNavigate();
   return (
     <div>
       <div className="navbar bg-base-100 bg-red-950 top-0 left-0 fixed">
-        <div className="flex-1">
+        <div className="flex-1 ">
           <a className="btn btn-ghost text-2xl font-serif text-white">
             Lumos Decorations
           </a>
         </div>
         <div className="flex-none gap-2">
-          <div className="form-control">
-            <select className="select select-bordered w-full max-w-xs">
-              <option defaultChecked>Services</option>
-              <option>Orders</option>
-            </select>
-          </div>
-          <button className="btn btn-sm mx-5">Contact us</button>
+          <button
+            className="btn-primary text-black font-serif font-bold bg-white  bg-opacity-40 hover:bg-white rounded-lg p-2 m-2"
+            onClick={() => navigate("/customer/mycart")}
+          >
+            My cart
+          </button>
+          <button
+            className="btn-primary text-black font-serif font-bold bg-white bg-opacity-40 hover:bg-white rounded-lg p-2 m-2"
+            onClick={() => navigate("/customer/orderhistory")}
+          >
+            Order History
+          </button>
+
           <div className="dropdown dropdown-end">
             <div
               tabIndex={0}

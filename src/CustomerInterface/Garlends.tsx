@@ -1,8 +1,10 @@
 import { url } from "inspector";
 import React from "react";
 import pico5 from "../assets/pic05.jpg";
+import { useNavigate } from "react-router-dom";
 
 const Garlends = () => {
+  const navigate = useNavigate();
   const garlands = [
     {
       name: "Rose Garland",
@@ -44,11 +46,31 @@ const Garlends = () => {
 
   return (
     <div className="bg-gradient-to-r from-white to-red-100 min-h-screen">
-      <div className="flex flex-row gap-2  bg-red-950 w-full p-2">
-        <a href="/customer/services">
-          <h1 className="text-4xl font-serif text-white  ">{"<-"}</h1>
-        </a>
-        <h1 className="text-4xl font-serif text-white">Garlands</h1>
+      <div className="flex flex-row justify-between  bg-red-950 w-full p-2">
+        <div>
+          <div className="flex flex-row gap-2 ">
+            <a href="/customer/services">
+              <h1 className="text-4xl font-serif text-black bg-white p-1 rounded-lg hover:bg-red-300">
+                {"<-"}
+              </h1>
+            </a>
+            <h1 className="text-3xl font-serif text-white">Garlends</h1>
+          </div>
+        </div>
+        <div>
+          <button
+            className="btn-primary text-black font-serif font-bold bg-white hover:bg-red-400 rounded-lg p-2 m-2"
+            onClick={() => navigate("/customer/mycart")}
+          >
+            My cart
+          </button>
+          <button
+            className="btn-primary text-black font-serif font-bold bg-white hover:bg-red-400 rounded-lg p-2"
+            onClick={() => navigate("/customer/orderhistory")}
+          >
+            Order History
+          </button>
+        </div>
       </div>
 
       <div className="grid grid-cols-3 grid-rows-3 gap-5 p-5">
