@@ -1,6 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Trackorder from "./Trackorder";
 
 const Orderhistory = () => {
+  const navigate = useNavigate();
+  const [ismodelopen, setmodelopen] = useState<boolean>(false);
   const mycart = [
     {
       Orderid: "01",
@@ -69,6 +73,14 @@ const Orderhistory = () => {
       AllowanceStatus: "not paid",
     },
   ];
+  const handleOpenModal = () => {
+    console.log("clicked");
+    setmodelopen(true);
+  };
+
+  const handleCloseModal = () => {
+    setmodelopen(false);
+  };
   return (
     <div className="bg-gradient-to-r from-white to-red-200 min-h-screen">
       <div>
@@ -76,7 +88,14 @@ const Orderhistory = () => {
           <h1 className="font-serif text-lg font-bold text-white ">
             Order History
           </h1>
-          <button className="btn btn-sm btn-primary text-white">Home</button>
+          <button
+            className="btn btn-sm btn-primary text-white"
+            onClick={() => {
+              navigate("/customer/services");
+            }}
+          >
+            Home
+          </button>
         </div>
 
         <table className="table border-white bg-red-100 opacity-90 text-black  font-serif w-3/4 m-5 ">
@@ -160,7 +179,10 @@ const Orderhistory = () => {
                     </a>
                   </td>
                   <td>
-                    <button className="btn btn-md btn-primary text-black p-2">
+                    <button
+                      className="btn btn-md btn-primary text-black p-2"
+                      onClick={() => handleOpenModal()}
+                    >
                       track order
                     </button>
                   </td>
@@ -186,6 +208,7 @@ const Orderhistory = () => {
           {/* foot */}
         </table>
       </div>
+      <Trackorder isopen={ismodelopen} isclose={handleCloseModal} />
     </div>
   );
 };

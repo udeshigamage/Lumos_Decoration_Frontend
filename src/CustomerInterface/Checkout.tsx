@@ -82,16 +82,37 @@ const Checkout = () => {
         }}
       >
         <div className="flex flex-row justify justify-between bg-red-950 w-full mb-5">
-          <h1 className="font-serif text-2xl font-bold text-white p-2 mb-5  ">
-            Order Summary{" "}
-          </h1>
+          <div className="flex flex-row position-relative">
+            <a href="/customer/mycart">
+              <h1 className="text-4xl font-serif text-white bg-gray-500 bg-opacity-50  animate-pulse mt-2 hover:bg-white hover:text-black  p-1 rounded-lg hover:bg-red-300">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="size-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M21 16.811c0 .864-.933 1.406-1.683.977l-7.108-4.061a1.125 1.125 0 0 1 0-1.954l7.108-4.061A1.125 1.125 0 0 1 21 8.689v8.122ZM11.25 16.811c0 .864-.933 1.406-1.683.977l-7.108-4.061a1.125 1.125 0 0 1 0-1.954l7.108-4.061a1.125 1.125 0 0 1 1.683.977v8.122Z"
+                  />
+                </svg>
+              </h1>
+            </a>
+            <h1 className="font-serif text-2xl font-bold text-white p-2 mb-5  ">
+              Order Summary{" "}
+            </h1>
+          </div>
+
           <button
             className="btn btn-danger text-lg bg-green-500 p-2 m-2 text-black font-serif hover:bg-green-900"
             onClick={() => {
-              navigate(-1);
+              navigate("/customer/orderhistory");
             }}
           >
-            Back
+            Order History
           </button>
         </div>
 
