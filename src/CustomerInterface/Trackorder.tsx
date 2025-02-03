@@ -19,7 +19,7 @@ const Trackorder: React.FC<Props> = ({ isopen, isclose }) => {
 
         <div className="flex flex-col gap-2 mt-2 ">
           <div className="flex flex-row position-relative justify-center  gap-2 mt-4 font-serif">
-            <h1 className="w-50 m-2 pl-4">Employee</h1>
+            <h1 className="w-50 m-2 pl-4 text-black">Employee</h1>
             <input
               type="text"
               placeholder="Assigned Employee"
@@ -27,10 +27,10 @@ const Trackorder: React.FC<Props> = ({ isopen, isclose }) => {
             />
           </div>
           <div className="flex flex-row position-relative justify-center  gap-2 mt-4 font-serif">
-            <h1 className="w-50 m-2 pl-4">Allowances</h1>
+            <h1 className="w-50 m-2 pl-4 text-black">Allowances</h1>
             <input
               type="text"
-              placeholder="Assigned Employee"
+              placeholder="Status"
               className="input input-bordered w-50 max-w-xs text-white"
             />
           </div>

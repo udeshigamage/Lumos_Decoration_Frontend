@@ -1,9 +1,24 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import mycartp from "../assets/pic22.jpg";
 import { useNavigate } from "react-router-dom";
 
 const Mycart = () => {
   const navigate = useNavigate();
+  const [cartitems, setcartitems] = useState([]);
+  const getCartItems = () => {
+    const cart = localStorage.getItem("cart");
+    return cart ? JSON.parse(cart) : [];
+  };
+  const handledelete = (id: any) => {
+    const cart = localStorage.getItem("cart");
+    let parsedCart = cart ? JSON.parse(cart) : [];
+    const updatedCart = parsedCart.filter((item: any) => item.id !== id);
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
+    setcartitems(updatedCart);
+  };
+  useEffect(() => {
+    setcartitems(getCartItems());
+  }, []);
   const mycart = [
     {
       product_id: "01",
@@ -116,13 +131,13 @@ const Mycart = () => {
             </tr>
           </thead>
           <tbody>
-            {mycart?.length > 0 ? (
-              mycart?.map((item: any, index: any) => (
+            {cartitems?.length > 0 ? (
+              cartitems?.map((item: any, index: any) => (
                 <tr>
                   <td>
                     <div className="d-flex justify-content-start flex-column">
                       <a className="text-black text-hover-primary fs-6">
-                        {item?.product_id ?? "-"}
+                        {item?.id ?? "-"}
                       </a>
                     </div>
                   </td>
@@ -137,7 +152,7 @@ const Mycart = () => {
                   <td>
                     <div className="d-flex justify-content-start flex-column">
                       <a className="text-black text-hover-primary ">
-                        {item?.item_name ?? "-"}
+                        {item?.name ?? "-"}
                       </a>
                     </div>
                   </td>
@@ -155,11 +170,18 @@ const Mycart = () => {
                   </td>
                   <td>
                     <a className=" text-hover-primary fs-6 px-5 py-5 rounded-md ">
-                      {item?.total ?? "-"}
+                      {item.price * item.quantity}
                     </a>
                   </td>
                   <td className="flex flex-row position-relative gap-2">
-                    <button className="btn btn-danger">Delete</button>
+                    <button
+                      className="btn btn-danger"
+                      onClick={() => {
+                        handledelete(item.id);
+                      }}
+                    >
+                      Delete
+                    </button>
                     <button className="btn btn-danger">Edit</button>
                   </td>
                 </tr>
