@@ -9,12 +9,13 @@ const Garlends = () => {
   const navigate = useNavigate();
   const [cartitems, setcartitems] = useState([]);
   const [addedItems, setAddedItems] = useState<{ [key: string]: boolean }>({});
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   const [quantities, setQuantities] = useState<{ [key: string]: number }>({});
   const [ismodelopen, setmodelopen] = useState<boolean>(false);
   const garlands = [
     {
-      id: "1",
+      id: 1,
       name: "Rose Garland",
       price: 1000,
       url: { pico5 },
@@ -22,7 +23,7 @@ const Garlends = () => {
       category: "Flower Garland",
     },
     {
-      id: "3",
+      id: 3,
       name: "Lotus Garland",
       price: 1200,
       url: { pico5 },
@@ -30,7 +31,7 @@ const Garlends = () => {
       category: "Flower Garland",
     },
     {
-      id: "2",
+      id: 2,
       name: "Jasmine Garland",
       price: 800,
       url: { pico5 },
@@ -38,7 +39,7 @@ const Garlends = () => {
       category: "Flower Garland",
     },
     {
-      id: "4",
+      id: 4,
       name: "Araliya Garland",
       price: 900,
       url: { pico5 },
@@ -46,7 +47,7 @@ const Garlends = () => {
       category: "Flower Garland",
     },
     {
-      id: "5",
+      id: 5,
       name: "Blossom Garland",
       price: 700,
       url: { pico5 },
@@ -54,7 +55,7 @@ const Garlends = () => {
       category: "Flower Garland",
     },
     {
-      id: "6",
+      id: 6,
       name: "Dahaspetiya Garland",
       price: 450,
       url: { pico5 },
@@ -62,7 +63,7 @@ const Garlends = () => {
       category: "Flower Garland",
     },
     {
-      id: "7",
+      id: 7,
       name: "hibiscus Garland",
       price: 900,
       url: { pico5 },
@@ -70,7 +71,7 @@ const Garlends = () => {
       category: "Flower Garland",
     },
     {
-      id: "8",
+      id: 8,
       name: "wildjasmine Garland",
       price: 700,
       url: { pico5 },
@@ -78,7 +79,7 @@ const Garlends = () => {
       category: "Flower Garland",
     },
     {
-      id: "9",
+      id: 9,
       name: "bluelotus Garland",
       price: 450,
       url: { pico5 },
@@ -86,12 +87,16 @@ const Garlends = () => {
       category: "Flower Garland",
     },
   ];
-  const handleOpenModal = () => {
+  const handleOpenModal = (product: any) => {
+    console.log("products:", product);
+    setSelectedProduct(product);
     console.log("clicked");
+    console.log(product);
     setmodelopen(true);
   };
 
   const handleCloseModal = () => {
+    setSelectedProduct(null);
     setmodelopen(false);
   };
   const Additem = (item: any) => {
@@ -242,7 +247,7 @@ const Garlends = () => {
                   className="btn btn-sm w-15 bg-black text-white hover:bg-gray-600 font-serif"
                   onClick={() => {
                     //Additem(item);
-                    handleOpenModal();
+                    handleOpenModal(item);
                   }}
                 >
                   <svg
@@ -264,8 +269,14 @@ const Garlends = () => {
             </div>
           </div>
         ))}
+        {ismodelopen && selectedProduct && (
+          <Cartmodel
+            isopen={ismodelopen}
+            isclose={handleCloseModal}
+            products={selectedProduct}
+          />
+        )}
       </div>
-      <Cartmodel isopen={ismodelopen} isclose={handleCloseModal} />
     </div>
   );
 };
