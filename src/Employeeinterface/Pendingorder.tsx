@@ -1,5 +1,3 @@
-import React from "react";
-import SideNavigationPanel2 from "./SideNavigation";
 import pico5 from "../assets/pic05.jpg";
 
 const Pendingorder = () => {

@@ -1,4 +1,3 @@
-import React from "react";
 import SideNavigationPanel from "./SideNavigation";
 
 const Employeeinterface = () => {

@@ -1,5 +1,3 @@
-import { url } from "inspector";
-import React from "react";
 import pico5 from "../assets/flower_1.jpg";
 import { useNavigate } from "react-router-dom";
 

@@ -1,4 +1,3 @@
-import React from "react";
 import about_us from "../assets/pico14.jpg";
 
 const About_us = () => {

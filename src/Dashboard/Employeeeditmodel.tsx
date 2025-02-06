@@ -1,5 +1,3 @@
-import React from "react";
-
 const Employeeeditmodel = () => {
   return (
     <div className="modal_employee">

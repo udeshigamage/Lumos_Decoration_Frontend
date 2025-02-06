@@ -1,8 +1,7 @@
-import { url } from "inspector";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import pico5 from "../assets/pic05.jpg";
 import { useNavigate } from "react-router-dom";
-import { number } from "yup";
+
 import Cartmodel from "./Cartmodel";
 
 const Garlends = () => {

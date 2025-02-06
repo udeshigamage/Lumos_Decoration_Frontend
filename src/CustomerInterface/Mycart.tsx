@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import mycartp from "../assets/pic22.jpg";
 import { useNavigate } from "react-router-dom";
 

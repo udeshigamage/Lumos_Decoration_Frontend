@@ -1,6 +1,3 @@
-import React from "react";
-import pic08 from "../assets/pic08.jpg";
-
 const Contact_us = () => {
   return (
     <div id="contact_us" className="bg-white">

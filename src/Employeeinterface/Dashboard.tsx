@@ -1,5 +1,3 @@
-import React from "react";
-
 const Dashboard = () => {
   return (
     <div className="bg-gradient-to-r from-white to-red-200 ">

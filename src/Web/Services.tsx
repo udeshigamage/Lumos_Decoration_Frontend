@@ -1,10 +1,4 @@
-import React from "react";
-import pic01 from "../assets/pico10.jpg";
-import pic02 from "../assets/pico11.jpg";
-import pic03 from "../assets/pico6.jpg";
-import pic04 from "../assets/pico18.jpg";
 import pic08 from "../assets/pico20.jpg";
-import pic05 from "../assets/pico9.jpg";
 
 const Services = () => {
   return (

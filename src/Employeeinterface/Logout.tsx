@@ -1,4 +1,3 @@
-import React from "react";
 import SideNavigationPanel2 from "./SideNavigation";
 
 const Logout = () => {

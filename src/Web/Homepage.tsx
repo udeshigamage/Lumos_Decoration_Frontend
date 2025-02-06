@@ -1,4 +1,3 @@
-import React from "react";
 import pic0567 from "../assets/pico14.jpg";
 
 const Homepage = () => {

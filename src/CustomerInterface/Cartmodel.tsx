@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import pic05 from "../assets/pic05.jpg";
-import Garlends from "./Garlends";
+
 type Props = {
   isopen: boolean;
   isclose: () => void;
@@ -152,11 +152,9 @@ const Cartmodel: React.FC<Props> = ({ isopen, isclose, products }) => {
         <div className="flex flex-row justify-between align-middle">
           <div className="bg-red-600 text-white p-1 font-serif text-lg rounded-lg justify-centers h-12">
             Total Amount{" "}
-            <span>
-              {quantities[products.id] === null
-                ? products.price
-                : products.price * quantities[products.id]}
-            </span>
+            {quantities[products.id] !== undefined && (
+              <span>{products.price * quantities[products.id]}</span>
+            )}
           </div>
           <div className="flex flex-row position-relative gap-2">
             <button

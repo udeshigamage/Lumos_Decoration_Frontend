@@ -1,5 +1,5 @@
 import { useFormik } from "formik";
-import React from "react";
+
 import { useNavigate } from "react-router-dom";
 import pic07 from "../assets/pic22.jpg";
 
@@ -15,62 +15,7 @@ const Checkout = () => {
       alert(JSON.stringify(values, null, 2));
     },
   });
-  const mycart = [
-    {
-      product_id: "01",
-      category: "flowers boquets",
-      item_name: "rose",
-      quantity: 1,
-      price: 1000,
-      total: 1000,
-      discount: "10",
-    },
-    {
-      product_id: "01",
-      category: "flowers boquets",
-      item_name: "rose",
-      quantity: 1,
-      price: 1000,
-      total: 1000,
-      discount: "10",
-    },
-    {
-      product_id: "01",
-      category: "flowers boquets",
-      item_name: "rose",
-      quantity: 3,
-      price: 1000,
-      total: 1000,
-      discount: "40",
-    },
-    {
-      product_id: "01",
-      category: "flowers boquets",
-      item_name: "rose",
-      quantity: 6,
-      price: 1000,
-      total: 1000,
-      discount: "20",
-    },
-    {
-      product_id: "01",
-      category: "flowers boquets",
-      item_name: "rose",
-      quantity: 2,
-      price: 1000,
-      total: 1000,
-      discount: "5",
-    },
-    {
-      product_id: "01",
-      category: "flowers boquets",
-      item_name: "rose",
-      quantity: 32,
-      price: 1000,
-      total: 1000,
-      discount: "10",
-    },
-  ];
+
   return (
     <div>
       <div
