@@ -9,6 +9,7 @@ import * as Yup from "yup";
 import pic045 from "../../assets/pic56.jpg";
 import pico23 from "../../assets/pico36.jpg";
 import { FaPlus } from "react-icons/fa";
+import Select from "react-select";
 import {
   TbPlayerTrackNextFilled,
   TbPlayerTrackPrevFilled,
@@ -17,30 +18,13 @@ import Deleteconfirmation from "../../Util/Deleteconfirmation";
 import Card from "../../Util/Logo";
 const API_URL = import.meta.env.VITE_API_URL;
 const Subcategory = () => {
-  const subcategory = [
-    {
-      id: 1,
-      subcategory_name: "subcategory 1",
-    },
-    {
-      id: 2,
-      name: "subcategory 2",
-    },
-    {
-      id: 3,
-      name: "subcategory 3",
-    },
-    {
-      id: 4,
-      name: "subcategory 4",
-    },
-  ];
   const [isloading, setisloading] = useState(false);
   const [Categories, setcategories] = useState<any>([]);
   const [totalItems, settotalitems] = useState(0);
   const [totalpages, settotalpages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [ismodelopen, setmodelopen] = useState(false);
+  const [CategoryList, setCategoryList] = useState([]);
   const [selectedsubcategory, setSelectedsubcategory] = useState<any>(null);
   const [categotyid, setsubcategoryid] = useState("");
   const [isconfirmationopen, setisconfirmationopen] = useState(false);
@@ -61,7 +45,24 @@ const Subcategory = () => {
       reader.readAsDataURL(file);
     }
   };
-  const fetchcategories = async (page: number) => {
+  const fetchcategories = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/category/categorylist`);
+
+      console.log(response);
+      setCategoryList(response?.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    fetchcategories();
+  }, []);
+  const options = CategoryList?.map((item: any) => ({
+    value: item.Category_Id,
+    label: item.Category_name,
+  }));
+  const fetchsubcategories = async (page: number) => {
     setisloading(true);
     try {
       const categories = await axios.get(
@@ -81,7 +82,7 @@ const Subcategory = () => {
   };
 
   useEffect(() => {
-    fetchcategories(currentPage);
+    fetchsubcategories(currentPage);
   }, [currentPage]);
 
   const handlePageChange = (page: number) => {
@@ -103,7 +104,7 @@ const Subcategory = () => {
       await axios.delete(`${API_URL}/subcategory/delete/${categotyid}`);
 
       toast.success("deleted succcessfully");
-      fetchcategories(currentPage);
+      fetchsubcategories(currentPage);
     } catch (error) {
       toast.error("error");
     } finally {
@@ -145,8 +146,8 @@ const Subcategory = () => {
           </tr>
         </thead>
         <tbody>
-          {subcategory?.length > 0 ? (
-            subcategory?.map((item: any, index: any) => (
+          {Categories?.length > 0 ? (
+            Categories?.map((item: any, index: any) => (
               <tr key={item?.Subcategory_Id}>
                 <td>
                   <div className="d-flex justify-content-start flex-column">
@@ -272,6 +273,7 @@ const Subcategory = () => {
               </div>
               <Formik
                 initialValues={{
+                  category_Id: selectedsubcategory?.category_Id || "",
                   subcategory_Id: selectedsubcategory?.subcategory_Id || "",
                   subcategory_name: selectedsubcategory?.subcategory_name || "",
                   subcategory_description:
@@ -313,7 +315,7 @@ const Subcategory = () => {
 
                       console.log(Object.fromEntries(formdata.entries()));
                       toast.success("added successfully");
-                      fetchcategories(currentPage);
+                      fetchsubcategories(currentPage);
                     }
                   } catch (error) {
                     toast.error("error");
@@ -328,7 +330,7 @@ const Subcategory = () => {
                 }}
                 validationSchema={subcategorySchema}
               >
-                {({ values, getFieldProps, resetForm }) => (
+                {({ values, getFieldProps, resetForm, setFieldValue }) => (
                   <form>
                     <div className="flex flex-row m-5 gap-2">
                       <div className="basis-1/2 ">
@@ -369,6 +371,13 @@ const Subcategory = () => {
                             />
                           </div> */}
                         </div>
+                        <Select
+                          options={options}
+                          value={values.category_Id}
+                          onChange={(option) =>
+                            setFieldValue("Category_Id", option)
+                          }
+                        />
 
                         <div>
                           <label className="text-black mr-2 ">

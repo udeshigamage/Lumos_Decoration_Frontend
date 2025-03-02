@@ -14,32 +14,17 @@ import {
   TbPlayerTrackPrevFilled,
 } from "react-icons/tb";
 import Deleteconfirmation from "../../Util/Deleteconfirmation";
-import Card from "../../Util/Logo";
+import Select from "react-select";
+import Category from "./Category";
 const API_URL = import.meta.env.VITE_API_URL;
 const Product = () => {
-  const product = [
-    {
-      id: 1,
-      product_name: "product 1",
-    },
-    {
-      id: 2,
-      name: "product 2",
-    },
-    {
-      id: 3,
-      name: "product 3",
-    },
-    {
-      id: 4,
-      name: "product 4",
-    },
-  ];
   const [isloading, setisloading] = useState(false);
   const [Categories, setcategories] = useState<any>([]);
   const [totalItems, settotalitems] = useState(0);
   const [totalpages, settotalpages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
+  const [CategoryList, setCategoryList] = useState([]);
+  const [SubCategoryList, setSubCategoryList] = useState([]);
   const [ismodelopen, setmodelopen] = useState(false);
   const [selectedproduct, setSelectedproduct] = useState<any>(null);
   const [categotyid, setproductid] = useState("");
@@ -61,7 +46,41 @@ const Product = () => {
       reader.readAsDataURL(file);
     }
   };
-  const fetchcategories = async (page: number) => {
+  const fetchcategories = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/category/categorylist`);
+
+      console.log(response);
+      setCategoryList(response?.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const fetchsubcategories = async () => {
+    try {
+      const response = await axios.get(
+        `${API_URL}/Subcategory/Subcategorylist`
+      );
+
+      console.log(response);
+      setSubCategoryList(response?.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    fetchcategories();
+    fetchsubcategories();
+  }, []);
+  const options = CategoryList?.map((item: any) => ({
+    value: item.Category_Id,
+    label: item.Category_name,
+  }));
+  const options_1 = SubCategoryList?.map((item: any) => ({
+    value: item.Subcategory_Id,
+    label: item.Subcategory_name,
+  }));
+  const fetchproduct = async (page: number) => {
     setisloading(true);
     try {
       const categories = await axios.get(
@@ -81,7 +100,7 @@ const Product = () => {
   };
 
   useEffect(() => {
-    fetchcategories(currentPage);
+    fetchproduct(currentPage);
   }, [currentPage]);
 
   const handlePageChange = (page: number) => {
@@ -103,7 +122,7 @@ const Product = () => {
       await axios.delete(`${API_URL}/product/delete/${categotyid}`);
 
       toast.success("deleted succcessfully");
-      fetchcategories(currentPage);
+      fetchproduct(currentPage);
     } catch (error) {
       toast.error("error");
     } finally {
@@ -146,9 +165,9 @@ const Product = () => {
           </tr>
         </thead>
         <tbody>
-          {product?.length > 0 ? (
-            product?.map((item: any, index: any) => (
-              <tr key={item?.product_Id}>
+          {Categories?.length > 0 ? (
+            Categories?.map((item: any, index: any) => (
+              <tr key={item?.product_Id} className="">
                 <td>
                   <div className="d-flex justify-content-start flex-column">
                     <a className="text-black text-hover-primary fs-6">
@@ -158,7 +177,7 @@ const Product = () => {
                 </td>
                 <td>
                   <div className="d-flex justify-content-start flex-column">
-                    <a className="text-black text-hover-primary fs-6">
+                    <a className="text-black text-lg text-hover-primary fs-6">
                       {item?.Product_name ?? "-"}
                     </a>
                   </div>
@@ -270,6 +289,8 @@ const Product = () => {
               </div>
               <Formik
                 initialValues={{
+                  Category_Id: selectedproduct?.Category_Id || "",
+                  Subcategory_Id: selectedproduct?.Subcategory_Id || "",
                   Product_Id: selectedproduct?.Product_Id || "",
                   Product_name: selectedproduct?.Product_name || "",
                   Product_price: selectedproduct?.Product_price || "",
@@ -308,7 +329,7 @@ const Product = () => {
 
                       console.log(Object.fromEntries(formdata.entries()));
                       toast.success("added successfully");
-                      fetchcategories(currentPage);
+                      fetchproduct(currentPage);
                     }
                   } catch (error) {
                     toast.error("error");
@@ -323,7 +344,7 @@ const Product = () => {
                 }}
                 validationSchema={productSchema}
               >
-                {({ values, getFieldProps, resetForm }) => (
+                {({ values, getFieldProps, resetForm, setFieldValue }) => (
                   <form>
                     <div className="flex flex-row m-5 gap-2">
                       <div className="basis-1/2 ">
@@ -366,10 +387,22 @@ const Product = () => {
                         </div>
                         <div className="flex flex-row position-reltive gap-2">
                           <div>
-                            <select></select>
+                            <Select
+                              options={options}
+                              value={values.Category_Id}
+                              onChange={(option) =>
+                                setFieldValue("Category_Id", option)
+                              }
+                            />
                           </div>
                           <div>
-                            <select></select>
+                            <Select
+                              options={options_1}
+                              value={values.Subcategory_Id}
+                              onChange={(option) =>
+                                setFieldValue("Subcategory_Id", option)
+                              }
+                            />
                           </div>
                         </div>
                         <div>

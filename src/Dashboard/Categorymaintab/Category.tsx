@@ -4,37 +4,21 @@ import CommonLoading from "../../Util/Commonloading";
 import { IoMdCloseCircle } from "react-icons/io";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { Formik } from "formik";
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import pic045 from "../../assets/pic56.jpg";
 import pico23 from "../../assets/pico36.jpg";
 import { FaPlus } from "react-icons/fa";
+import { MdEdit } from "react-icons/md";
+import { MdDelete } from "react-icons/md";
 import {
   TbPlayerTrackNextFilled,
   TbPlayerTrackPrevFilled,
 } from "react-icons/tb";
 import Deleteconfirmation from "../../Util/Deleteconfirmation";
-import Card from "../../Util/Logo";
+
 const API_URL = import.meta.env.VITE_API_URL;
 const Category = () => {
-  const Category = [
-    {
-      id: 1,
-      Category_name: "Category 1",
-    },
-    {
-      id: 2,
-      name: "Category 2",
-    },
-    {
-      id: 3,
-      name: "Category 3",
-    },
-    {
-      id: 4,
-      name: "Category 4",
-    },
-  ];
   const [isloading, setisloading] = useState(false);
   const [Categories, setcategories] = useState<any>([]);
   const [totalItems, settotalitems] = useState(0);
@@ -47,7 +31,7 @@ const Category = () => {
   const pageSize = 5;
   const CategorySchema = Yup.object().shape({
     Category_name: Yup.string().required("Category name is required"),
-    description: Yup.string().required("Description is required"),
+    Category_description: Yup.string().required("Description is required"),
   });
   const [image, setImage] = useState<string | null>(null);
 
@@ -61,6 +45,7 @@ const Category = () => {
       reader.readAsDataURL(file);
     }
   };
+
   const fetchcategories = async (page: number) => {
     setisloading(true);
     try {
@@ -100,7 +85,7 @@ const Category = () => {
   const categorydelete = async () => {
     setisloading(true);
     try {
-      await axios.delete(`${API_URL}/category/delete/${categotyid}`);
+      await axios.delete(`${API_URL}/Category/${categotyid}`);
 
       toast.success("deleted succcessfully");
       fetchcategories(currentPage);
@@ -110,8 +95,17 @@ const Category = () => {
       setTimeout(() => {
         setisloading(false);
       }, 1000);
+      setisconfirmationopen(false);
     }
   };
+
+  const resetFormAndClose = (resetForm: any) => {
+    resetForm();
+    setImage(null);
+    setSelectedCategory(null);
+    setmodelopen(false);
+  };
+
   return (
     <div className="flex flex-col">
       <div className="flex flex-row justify-between items-center">
@@ -122,7 +116,10 @@ const Category = () => {
           color="black"
           size={40}
           className="mt-2 bg-white p-1 rounded-full"
-          onClick={() => setmodelopen(true)}
+          onClick={() => {
+            setSelectedCategory(null);
+            setmodelopen(true);
+          }}
         />
       </div>
 
@@ -132,7 +129,6 @@ const Category = () => {
           backgroundImage: `url(${pic045})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
-          // height: "500px",
         }}
       >
         <thead className="text-black text-xl">
@@ -144,19 +140,27 @@ const Category = () => {
           </tr>
         </thead>
         <tbody>
-          {Category?.length > 0 ? (
-            Category?.map((item: any, index: any) => (
+          {Categories?.length > 0 ? (
+            Categories?.map((item: any, index: any) => (
               <tr key={item?.Category_Id}>
                 <td>
                   <div className="d-flex justify-content-start flex-column">
-                    <a className="text-black text-hover-primary fs-6">
-                      {item?.Category_image ?? "-"}
+                    <a className="text-black text-hover-primary fs-6 ">
+                      {item?.Category_image ? (
+                        <img
+                          src={item.Category_image}
+                          alt="Category"
+                          className="w-16 h-16 object-cover rounded-full"
+                        />
+                      ) : (
+                        "-"
+                      )}
                     </a>
                   </div>
                 </td>
                 <td>
                   <div className="d-flex justify-content-start flex-column">
-                    <a className="text-black text-hover-primary fs-6">
+                    <a className="text-black text-hover-primary fs-6 text-lg font-semibold">
                       {item?.Category_name ?? "-"}
                     </a>
                   </div>
@@ -164,7 +168,7 @@ const Category = () => {
 
                 <td>
                   <div className="d-flex justify-content-start flex-column">
-                    <a className="text-black text-hover-primary fs-6">
+                    <a className="text-black text-hover-primary fs-6 text-lg font-semibold">
                       {item?.Category_description ?? "-"}
                     </a>
                   </div>
@@ -180,7 +184,7 @@ const Category = () => {
                           setmodelopen(true);
                         }}
                       >
-                        Edit
+                        <MdEdit />
                       </button>
                     </div>
                     <div>
@@ -190,7 +194,7 @@ const Category = () => {
                           handledelete(item?.Category_Id);
                         }}
                       >
-                        Delete
+                        <MdDelete />
                       </button>
                     </div>
                   </div>
@@ -201,9 +205,6 @@ const Category = () => {
             <tr>
               <td colSpan={4}>
                 <div className="py-5 d-flex flex-column align-content-center justify-content-center">
-                  <div className="text-center">
-                    <Loader />
-                  </div>
                   <div className="d-flex text-center w-100 align-content-center justify-content-center fw-semibold fs-3 text-black mt-5">
                     No matching records found
                   </div>
@@ -272,51 +273,47 @@ const Category = () => {
                 onSubmit={async (values, { resetForm }) => {
                   setisloading(true);
                   try {
-                    const formdata = new FormData();
-                    formdata.append("Category_name", values.Category_name);
-                    formdata.append(
-                      "Category_description",
-                      values.Category_description
-                    );
-                    if (image) {
-                      formdata.append("Category_image", image);
-                    }
+                    const categoryData = {
+                      Category_name: values.Category_name,
+                      Category_description: values.Category_description,
+                      Category_image: image || values.Category_image, // Use the base64 string directly
+                    };
+
+                    // If editing, include Category_Id
                     if (selectedCategory?.Category_Id) {
-                      await axios.put(`${API_URL}/Category`, formdata, {
-                        headers: { "Content-Type": "multipart/form-data" },
-                      });
-                      console.log(Object.fromEntries(formdata.entries()));
-
-                      toast.success("updated succcessfully");
-                    } else {
-                      await axios.post(
-                        `${API_URL}/Category`,
-                        //Category_image:values.Category_image,
-                        formdata,
-                        {
-                          headers: { "Content-Type": "multipart/form-data" },
-                        }
+                      // Update category
+                      await axios.put(
+                        `${API_URL}/Category/${selectedCategory.Category_Id}`,
+                        categoryData
                       );
-
-                      console.log(Object.fromEntries(formdata.entries()));
-                      toast.success("added successfully");
-                      fetchcategories(currentPage);
+                      toast.success("Updated successfully");
+                    } else {
+                      // Add new category
+                      await axios.post(`${API_URL}/Category`, categoryData);
+                      toast.success("Added successfully");
                     }
+
+                    // Refresh the category list
+                    fetchcategories(currentPage);
+                    resetFormAndClose(resetForm);
                   } catch (error) {
-                    toast.error("error");
+                    console.error("Error submitting form:", error);
+                    toast.error("Error saving category");
                   } finally {
-                    setTimeout(() => {
-                      setisloading(false);
-                    }, 1000);
-                    resetForm();
-                    setImage(null);
-                    setmodelopen(false);
+                    setisloading(false);
                   }
                 }}
                 validationSchema={CategorySchema}
               >
-                {({ values, getFieldProps, resetForm }) => (
-                  <form>
+                {({
+                  values,
+                  getFieldProps,
+                  errors,
+                  touched,
+                  handleSubmit,
+                  resetForm,
+                }) => (
+                  <Form onSubmit={handleSubmit}>
                     <div className="flex flex-row m-5 gap-2">
                       <div className="basis-1/2 ">
                         <div className="flex flex-col items-center space-y-4">
@@ -328,6 +325,12 @@ const Category = () => {
                               <img
                                 src={image}
                                 alt="Uploaded"
+                                className="w-full h-full object-cover rounded-full"
+                              />
+                            ) : selectedCategory?.Category_image ? (
+                              <img
+                                src={selectedCategory.Category_image}
+                                alt="Current"
                                 className="w-full h-full object-cover rounded-full"
                               />
                             ) : (
@@ -345,18 +348,6 @@ const Category = () => {
                         </div>
                       </div>
                       <div className="basis-1/2 flex flex-col  ">
-                        <div>
-                          {/* <div className="flex flex-col  align-middle">
-                            <input
-                              type="text"
-                              className="w-[100px] h-[40px] rounded-xl bg-white p-2 text-black text-xl font-bold "
-                              placeholder="Category Id"
-                              {...getFieldProps("Category_Id")}
-                              disabled
-                            />
-                          </div> */}
-                        </div>
-
                         <div>
                           <label className="text-black mr-2 ">
                             Category Name
@@ -388,18 +379,16 @@ const Category = () => {
                             Submit
                           </button>
                           <button
-                            className="text-white bg-black px-3  py-2 rounded-xl w-[75px]"
-                            onClick={() => {
-                              setmodelopen(false);
-                            }}
+                            className="text-white bg-black px-3 py-2 rounded-xl w-[75px]"
+                            type="button"
+                            onClick={() => resetFormAndClose(resetForm)}
                           >
-                            {" "}
-                            close
+                            Close
                           </button>
                         </div>
                       </div>
                     </div>
-                  </form>
+                  </Form>
                 )}
               </Formik>
             </div>
