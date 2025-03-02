@@ -6,6 +6,8 @@ import Order from "./Orders";
 import Feedbacks from "./Feedback";
 import Notificationmanagement from "./Notificationmanagement";
 import Report from "./Report";
+import Category from "./Category";
+import Categorymaintab from "./Categorymaintab/Categorymaintab";
 
 const SideNavigationPanel = () => {
   const [activeComponent, setActiveComponent] = React.useState("Dashboard");
@@ -19,6 +21,8 @@ const SideNavigationPanel = () => {
 
       case "Employee":
         return <Employee />;
+      case "Category":
+        return <Categorymaintab />;
       case "Feedbacks":
         return <Feedbacks />;
       case "Notifications":
@@ -37,11 +41,8 @@ const SideNavigationPanel = () => {
   return (
     <div className="flex h-screen bg bg-gradient-to-r from-amber-100 to-red-200">
       {/* Side Navigation Panel */}
-      <div className="w-1/4 bg-black text-white p-4">
-        <h2 className="text-2xl font-bold mb-4">
-          <span className="text-red-950">L</span>umos{" "}
-          <span className="text-red-950">D</span>ecorations
-        </h2>
+      <div className="w-1/5 bg-black text-white p-4">
+        <h2 className="text-2xl font-bold mb-4">Lumos Decorations</h2>
         <ul className="space-y-2 mt-10">
           <div className="flex position-relative gap-2 mt-5">
             <svg
@@ -66,6 +67,31 @@ const SideNavigationPanel = () => {
               onClick={() => setActiveComponent("Dashboard")}
             >
               Dashboard
+            </li>
+          </div>
+          <div className="flex position-relative gap-2 mt-5">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="size-6 mt-2"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
+              />
+            </svg>
+
+            <li
+              className={`p-2 cursor-pointer rounded-lg hover:bg-gray-700 ${
+                activeComponent === "Category" ? "bg-gray-700" : ""
+              }`}
+              onClick={() => setActiveComponent("Category")}
+            >
+              Category management
             </li>
           </div>
           <div className="flex position-relative gap-2 mt-5">

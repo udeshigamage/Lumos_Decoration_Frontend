@@ -118,6 +118,7 @@ const Garlends = () => {
 
     localStorage.setItem("cart", JSON.stringify(parsedCart));
     console.log("Cart updated:", parsedCart);
+    console.log("addedItems:", addedItems);
 
     // Update addedItems for the specific item
     setAddedItems((prev) => ({
