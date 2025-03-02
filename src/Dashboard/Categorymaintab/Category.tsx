@@ -6,11 +6,15 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import pic045 from "../../assets/pic56.jpg";
+import pico23 from "../../assets/pico36.jpg";
+import { FaPlus } from "react-icons/fa";
 import {
   TbPlayerTrackNextFilled,
   TbPlayerTrackPrevFilled,
 } from "react-icons/tb";
 import Deleteconfirmation from "../../Util/Deleteconfirmation";
+import Card from "../../Util/Logo";
 const API_URL = import.meta.env.VITE_API_URL;
 const Category = () => {
   const Category = [
@@ -110,10 +114,27 @@ const Category = () => {
   };
   return (
     <div className="flex flex-col">
-      <h1 className="text-3xl text-black m-5 font-bold rounded-md">
-        Category Management
-      </h1>
-      <table className="table border-white bg-red-100 opacity-90 text-black">
+      <div className="flex flex-row justify-between items-center">
+        <h1 className="text-3xl text-black m-5 font-bold rounded-md">
+          Category Management
+        </h1>
+        <FaPlus
+          color="black"
+          size={40}
+          className="mt-2 bg-white p-1 rounded-full"
+          onClick={() => setmodelopen(true)}
+        />
+      </div>
+
+      <table
+        className="table border-white  opacity-90 text-black"
+        style={{
+          backgroundImage: `url(${pic045})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          // height: "500px",
+        }}
+      >
         <thead className="text-black text-xl">
           <tr>
             <th>Image </th>
@@ -215,7 +236,15 @@ const Category = () => {
       </div>
       {ismodelopen && (
         <div className="fixed inset-0 flex justify-center items-center z-50">
-          <div className="w-[700px] h-[500px] bg-red-200 rounded-lg">
+          <div
+            className="w-[700px] h-[500px] bg-red-200 rounded-lg  shadow-2xl shadow-zinc-500"
+            style={{
+              backgroundImage: `url(${pico23})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              height: "500px",
+            }}
+          >
             <div className="flex flex-col">
               <div className="flex flex-row justify-end items-center ">
                 <IoMdCloseCircle
@@ -228,7 +257,7 @@ const Category = () => {
                 />
               </div>
               <div className="flex flex-row justify-center items-center m-2 ">
-                <h1 className="text-black text-3xl font-bold">
+                <h1 className="text-slate-900 text-3xl font-bold font-serif ">
                   {selectedCategory?.Category_Id ? "Edit" : "Add"} Category
                 </h1>
               </div>
@@ -243,16 +272,35 @@ const Category = () => {
                 onSubmit={async (values, { resetForm }) => {
                   setisloading(true);
                   try {
+                    const formdata = new FormData();
+                    formdata.append("Category_name", values.Category_name);
+                    formdata.append(
+                      "Category_description",
+                      values.Category_description
+                    );
+                    if (image) {
+                      formdata.append("Category_image", image);
+                    }
                     if (selectedCategory?.Category_Id) {
-                      await axios.put(`${API_URL}/Category`, values);
+                      await axios.put(`${API_URL}/Category`, formdata, {
+                        headers: { "Content-Type": "multipart/form-data" },
+                      });
+                      console.log(Object.fromEntries(formdata.entries()));
+
                       toast.success("updated succcessfully");
                     } else {
                       await axios.post(
                         `${API_URL}/Category`,
                         //Category_image:values.Category_image,
-                        values
+                        formdata,
+                        {
+                          headers: { "Content-Type": "multipart/form-data" },
+                        }
                       );
+
+                      console.log(Object.fromEntries(formdata.entries()));
                       toast.success("added successfully");
+                      fetchcategories(currentPage);
                     }
                   } catch (error) {
                     toast.error("error");
@@ -261,18 +309,20 @@ const Category = () => {
                       setisloading(false);
                     }, 1000);
                     resetForm();
+                    setImage(null);
+                    setmodelopen(false);
                   }
                 }}
                 validationSchema={CategorySchema}
               >
-                {({ values, getFieldProps }) => (
+                {({ values, getFieldProps, resetForm }) => (
                   <form>
                     <div className="flex flex-row m-5 gap-2">
                       <div className="basis-1/2 ">
                         <div className="flex flex-col items-center space-y-4">
                           <label
                             htmlFor="file-upload"
-                            className="relative w-48 h-48 rounded-full border-2 border-gray-300 flex items-center justify-center cursor-pointer overflow-hidden"
+                            className="relative w-48 h-48 rounded-full border-2 border-black flex items-center justify-center cursor-pointer overflow-hidden"
                           >
                             {image ? (
                               <img
@@ -281,9 +331,7 @@ const Category = () => {
                                 className="w-full h-full object-cover rounded-full"
                               />
                             ) : (
-                              <span className="text-gray-500">
-                                Upload Image
-                              </span>
+                              <span className="text-black">Upload Image</span>
                             )}
                           </label>
 
@@ -298,19 +346,15 @@ const Category = () => {
                       </div>
                       <div className="basis-1/2 flex flex-col  ">
                         <div>
-                          <label className="text-black mr-2 ">
-                            Category Id
-                          </label>
-                        </div>
-                        <div>
-                          <div className="flex flex-col  align-middle">
+                          {/* <div className="flex flex-col  align-middle">
                             <input
                               type="text"
-                              className="w-[200px] h-[50px] rounded-xl text-white p-2 "
+                              className="w-[100px] h-[40px] rounded-xl bg-white p-2 text-black text-xl font-bold "
                               placeholder="Category Id"
                               {...getFieldProps("Category_Id")}
+                              disabled
                             />
-                          </div>
+                          </div> */}
                         </div>
 
                         <div>

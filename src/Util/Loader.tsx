@@ -4,272 +4,222 @@ import styled from "styled-components";
 const Loader = () => {
   return (
     <StyledWrapper>
-      <svg viewBox="0 0 240 240" height={240} width={240} className="pl">
-        <circle
-          strokeLinecap="round"
-          strokeDashoffset={-330}
-          strokeDasharray="0 660"
-          strokeWidth={20}
-          stroke="#000"
-          fill="none"
-          r={105}
-          cy={120}
-          cx={120}
-          className="pl__ring pl__ring--a"
-        />
-        <circle
-          strokeLinecap="round"
-          strokeDashoffset={-110}
-          strokeDasharray="0 220"
-          strokeWidth={20}
-          stroke="#000"
-          fill="none"
-          r={35}
-          cy={120}
-          cx={120}
-          className="pl__ring pl__ring--b"
-        />
-        <circle
-          strokeLinecap="round"
-          strokeDasharray="0 440"
-          strokeWidth={20}
-          stroke="#000"
-          fill="none"
-          r={70}
-          cy={120}
-          cx={85}
-          className="pl__ring pl__ring--c"
-        />
-        <circle
-          strokeLinecap="round"
-          strokeDasharray="0 440"
-          strokeWidth={20}
-          stroke="#000"
-          fill="none"
-          r={70}
-          cy={120}
-          cx={155}
-          className="pl__ring pl__ring--d"
-        />
-      </svg>
+      <div id="wifi-loader">
+        <svg viewBox="0 0 86 86" className="circle-outer">
+          <circle r={40} cy={43} cx={43} className="back" />
+          <circle r={40} cy={43} cx={43} className="front" />
+          <circle r={40} cy={43} cx={43} className="new" />
+        </svg>
+        <svg viewBox="0 0 60 60" className="circle-middle">
+          <circle r={27} cy={30} cx={30} className="back" />
+          <circle r={27} cy={30} cx={30} className="front" />
+        </svg>
+        <svg viewBox="0 0 34 34" className="circle-inner">
+          <circle r={14} cy={17} cx={17} className="back" />
+          <circle r={14} cy={17} cx={17} className="front" />
+        </svg>
+        <div data-text="Loading" className="text" />
+      </div>
     </StyledWrapper>
   );
 };
 
 const StyledWrapper = styled.div`
-  .pl {
-    width: 6em;
-    height: 6em;
+  #wifi-loader {
+    --background: #62abff;
+    --front-color: #000;
+    --back-color: #c3c8de;
+    --text-color: #414856;
+    width: 64px;
+    height: 64px;
+    border-radius: 50px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
-  .pl__ring {
-    animation: ringA 2s linear infinite;
+  #wifi-loader svg {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
-  .pl__ring--a {
-    stroke: #f42f25;
+  #wifi-loader svg circle {
+    position: absolute;
+    fill: none;
+    stroke-width: 6px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transform: rotate(-100deg);
+    transform-origin: center;
   }
 
-  .pl__ring--b {
-    animation-name: ringB;
-    stroke: #ffdd00;
+  #wifi-loader svg circle.back {
+    stroke: var(--back-color);
   }
 
-  .pl__ring--c {
-    animation-name: ringC;
-    stroke: #255ff4;
+  #wifi-loader svg circle.front {
+    stroke: var(--front-color);
   }
 
-  .pl__ring--d {
-    animation-name: ringD;
-    stroke: #2cf425;
+  #wifi-loader svg.circle-outer {
+    height: 86px;
+    width: 86px;
   }
 
-  /* Animations */
-  @keyframes ringA {
-    from,
-    4% {
-      stroke-dasharray: 0 660;
-      stroke-width: 20;
-      stroke-dashoffset: -330;
-    }
-
-    12% {
-      stroke-dasharray: 60 600;
-      stroke-width: 30;
-      stroke-dashoffset: -335;
-    }
-
-    32% {
-      stroke-dasharray: 60 600;
-      stroke-width: 30;
-      stroke-dashoffset: -595;
-    }
-
-    40%,
-    54% {
-      stroke-dasharray: 0 660;
-      stroke-width: 20;
-      stroke-dashoffset: -660;
-    }
-
-    62% {
-      stroke-dasharray: 60 600;
-      stroke-width: 30;
-      stroke-dashoffset: -665;
-    }
-
-    82% {
-      stroke-dasharray: 60 600;
-      stroke-width: 30;
-      stroke-dashoffset: -925;
-    }
-
-    90%,
-    to {
-      stroke-dasharray: 0 660;
-      stroke-width: 20;
-      stroke-dashoffset: -990;
-    }
+  #wifi-loader svg.circle-outer circle {
+    stroke-dasharray: 62.75 188.25;
   }
 
-  @keyframes ringB {
-    from,
-    12% {
-      stroke-dasharray: 0 220;
-      stroke-width: 20;
-      stroke-dashoffset: -110;
-    }
-
-    20% {
-      stroke-dasharray: 20 200;
-      stroke-width: 30;
-      stroke-dashoffset: -115;
-    }
-
-    40% {
-      stroke-dasharray: 20 200;
-      stroke-width: 30;
-      stroke-dashoffset: -195;
-    }
-
-    48%,
-    62% {
-      stroke-dasharray: 0 220;
-      stroke-width: 20;
-      stroke-dashoffset: -220;
-    }
-
-    70% {
-      stroke-dasharray: 20 200;
-      stroke-width: 30;
-      stroke-dashoffset: -225;
-    }
-
-    90% {
-      stroke-dasharray: 20 200;
-      stroke-width: 30;
-      stroke-dashoffset: -305;
-    }
-
-    98%,
-    to {
-      stroke-dasharray: 0 220;
-      stroke-width: 20;
-      stroke-dashoffset: -330;
-    }
+  #wifi-loader svg.circle-outer circle.back {
+    animation: circle-outer135 1.8s ease infinite 0.3s;
   }
 
-  @keyframes ringC {
-    from {
-      stroke-dasharray: 0 440;
-      stroke-width: 20;
+  #wifi-loader svg.circle-outer circle.front {
+    animation: circle-outer135 1.8s ease infinite 0.15s;
+  }
+
+  #wifi-loader svg.circle-middle {
+    height: 60px;
+    width: 60px;
+  }
+
+  #wifi-loader svg.circle-middle circle {
+    stroke-dasharray: 42.5 127.5;
+  }
+
+  #wifi-loader svg.circle-middle circle.back {
+    animation: circle-middle6123 1.8s ease infinite 0.25s;
+  }
+
+  #wifi-loader svg.circle-middle circle.front {
+    animation: circle-middle6123 1.8s ease infinite 0.1s;
+  }
+
+  #wifi-loader svg.circle-inner {
+    height: 34px;
+    width: 34px;
+  }
+
+  #wifi-loader svg.circle-inner circle {
+    stroke-dasharray: 22 66;
+  }
+
+  #wifi-loader svg.circle-inner circle.back {
+    animation: circle-inner162 1.8s ease infinite 0.2s;
+  }
+
+  #wifi-loader svg.circle-inner circle.front {
+    animation: circle-inner162 1.8s ease infinite 0.05s;
+  }
+
+  #wifi-loader .text {
+    position: absolute;
+    bottom: -40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-transform: lowercase;
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: 0.2px;
+  }
+
+  #wifi-loader .text::before,
+  #wifi-loader .text::after {
+    content: attr(data-text);
+  }
+
+  #wifi-loader .text::before {
+    color: var(--text-color);
+  }
+
+  #wifi-loader .text::after {
+    color: var(--front-color);
+    animation: text-animation76 3.6s ease infinite;
+    position: absolute;
+    left: 0;
+  }
+
+  @keyframes circle-outer135 {
+    0% {
+      stroke-dashoffset: 25;
+    }
+
+    25% {
       stroke-dashoffset: 0;
     }
 
-    8% {
-      stroke-dasharray: 40 400;
-      stroke-width: 30;
-      stroke-dashoffset: -5;
+    65% {
+      stroke-dashoffset: 301;
     }
 
-    28% {
-      stroke-dasharray: 40 400;
-      stroke-width: 30;
-      stroke-dashoffset: -175;
+    80% {
+      stroke-dashoffset: 276;
     }
 
-    36%,
-    58% {
-      stroke-dasharray: 0 440;
-      stroke-width: 20;
-      stroke-dashoffset: -220;
-    }
-
-    66% {
-      stroke-dasharray: 40 400;
-      stroke-width: 30;
-      stroke-dashoffset: -225;
-    }
-
-    86% {
-      stroke-dasharray: 40 400;
-      stroke-width: 30;
-      stroke-dashoffset: -395;
-    }
-
-    94%,
-    to {
-      stroke-dasharray: 0 440;
-      stroke-width: 20;
-      stroke-dashoffset: -440;
+    100% {
+      stroke-dashoffset: 276;
     }
   }
 
-  @keyframes ringD {
-    from,
-    8% {
-      stroke-dasharray: 0 440;
-      stroke-width: 20;
+  @keyframes circle-middle6123 {
+    0% {
+      stroke-dashoffset: 17;
+    }
+
+    25% {
       stroke-dashoffset: 0;
     }
 
-    16% {
-      stroke-dasharray: 40 400;
-      stroke-width: 30;
-      stroke-dashoffset: -5;
+    65% {
+      stroke-dashoffset: 204;
     }
 
-    36% {
-      stroke-dasharray: 40 400;
-      stroke-width: 30;
-      stroke-dashoffset: -175;
+    80% {
+      stroke-dashoffset: 187;
     }
 
-    44%,
+    100% {
+      stroke-dashoffset: 187;
+    }
+  }
+
+  @keyframes circle-inner162 {
+    0% {
+      stroke-dashoffset: 9;
+    }
+
+    25% {
+      stroke-dashoffset: 0;
+    }
+
+    65% {
+      stroke-dashoffset: 106;
+    }
+
+    80% {
+      stroke-dashoffset: 97;
+    }
+
+    100% {
+      stroke-dashoffset: 97;
+    }
+  }
+
+  @keyframes text-animation76 {
+    0% {
+      clip-path: inset(0 100% 0 0);
+    }
+
     50% {
-      stroke-dasharray: 0 440;
-      stroke-width: 20;
-      stroke-dashoffset: -220;
+      clip-path: inset(0);
     }
 
-    58% {
-      stroke-dasharray: 40 400;
-      stroke-width: 30;
-      stroke-dashoffset: -225;
-    }
-
-    78% {
-      stroke-dasharray: 40 400;
-      stroke-width: 30;
-      stroke-dashoffset: -395;
-    }
-
-    86%,
-    to {
-      stroke-dasharray: 0 440;
-      stroke-width: 20;
-      stroke-dashoffset: -440;
+    100% {
+      clip-path: inset(0 0 0 100%);
     }
   }
 `;

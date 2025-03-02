@@ -6,8 +6,10 @@ import Order from "./Orders";
 import Feedbacks from "./Feedback";
 import Notificationmanagement from "./Notificationmanagement";
 import Report from "./Report";
-import Category from "./Category";
+
 import Categorymaintab from "./Categorymaintab/Categorymaintab";
+import pic045 from "../assets/pic56.jpg";
+import Logo from "../Util/Logo";
 
 const SideNavigationPanel = () => {
   const [activeComponent, setActiveComponent] = React.useState("Dashboard");
@@ -39,10 +41,28 @@ const SideNavigationPanel = () => {
   };
 
   return (
-    <div className="flex h-screen bg bg-gradient-to-r from-amber-100 to-red-200">
+    <div
+      className="flex h-screen  "
+      style={{
+        backgroundImage: `url(${pic045})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        height: "100vh",
+      }}
+    >
       {/* Side Navigation Panel */}
-      <div className="w-1/5 bg-black text-white p-4">
-        <h2 className="text-2xl font-bold mb-4">Lumos Decorations</h2>
+      <div className="w-1/4 bg-black text-white p-4">
+        <div className="flex flex-row position-relative gap-3">
+          <div className="bg-white rounded-full p-4">
+            {" "}
+            <Logo />
+          </div>
+          <h2 className="text-2xl font-bold mb-4 mt-4">
+            <span className="text-red-600">L</span>umos{" "}
+            <span className="text-red-600">D</span>ecorations
+          </h2>
+        </div>
+
         <ul className="space-y-2 mt-10">
           <div className="flex position-relative gap-2 mt-5">
             <svg

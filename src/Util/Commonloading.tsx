@@ -8,7 +8,6 @@ const CommonLoading = () => {
           <div className="flex items-center justify-center mb-2">
             <Loader />
           </div>
-          <p className="text-white font-bold">Loading....</p>
         </div>
       </div>
     </>
