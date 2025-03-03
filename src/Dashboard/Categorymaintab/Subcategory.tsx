@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Loader from "../../Util/Loader";
+
 import CommonLoading from "../../Util/Commonloading";
 import { IoMdCloseCircle } from "react-icons/io";
 import axios from "axios";
@@ -15,7 +15,8 @@ import {
   TbPlayerTrackPrevFilled,
 } from "react-icons/tb";
 import Deleteconfirmation from "../../Util/Deleteconfirmation";
-import Card from "../../Util/Logo";
+import { Form } from "react-router-dom";
+
 const API_URL = import.meta.env.VITE_API_URL;
 const Subcategory = () => {
   const [isloading, setisloading] = useState(false);
@@ -23,6 +24,7 @@ const Subcategory = () => {
   const [totalItems, settotalitems] = useState(0);
   const [totalpages, settotalpages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
+
   const [ismodelopen, setmodelopen] = useState(false);
   const [CategoryList, setCategoryList] = useState([]);
   const [selectedsubcategory, setSelectedsubcategory] = useState<any>(null);
@@ -30,8 +32,8 @@ const Subcategory = () => {
   const [isconfirmationopen, setisconfirmationopen] = useState(false);
   const pageSize = 5;
   const subcategorySchema = Yup.object().shape({
-    subcategory_name: Yup.string().required("subcategory name is required"),
-    description: Yup.string().required("Description is required"),
+    Subcategory_name: Yup.string().required("subcategory name is required"),
+    Subcategory_description: Yup.string().required("Description is required"),
   });
   const [image, setImage] = useState<string | null>(null);
 
@@ -101,7 +103,7 @@ const Subcategory = () => {
   const subcategorydelete = async () => {
     setisloading(true);
     try {
-      await axios.delete(`${API_URL}/subcategory/delete/${categotyid}`);
+      await axios.delete(`${API_URL}/subcategory/${categotyid}`);
 
       toast.success("deleted succcessfully");
       fetchsubcategories(currentPage);
@@ -111,7 +113,14 @@ const Subcategory = () => {
       setTimeout(() => {
         setisloading(false);
       }, 1000);
+      setisconfirmationopen(false);
     }
+  };
+  const resetFormAndClose = (resetForm: any) => {
+    resetForm();
+    setImage(null);
+    setSelectedsubcategory(null);
+    setmodelopen(false);
   };
   return (
     <div className="flex flex-col">
@@ -133,7 +142,6 @@ const Subcategory = () => {
           backgroundImage: `url(${pic045})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
-          // height: "500px",
         }}
       >
         <thead className="text-black text-xl">
@@ -151,21 +159,29 @@ const Subcategory = () => {
               <tr key={item?.Subcategory_Id}>
                 <td>
                   <div className="d-flex justify-content-start flex-column">
-                    <a className="text-black text-hover-primary fs-6">
-                      {item?.Subcategory_image ?? "-"}
+                    <a className="text-black text-hover-primary fs-6 ">
+                      {item?.Subcategory_image ? (
+                        <img
+                          src={item?.Subcategory_image}
+                          alt="Category"
+                          className="w-16 h-16 object-cover rounded-full"
+                        />
+                      ) : (
+                        "-"
+                      )}
                     </a>
                   </div>
                 </td>
                 <td>
                   <div className="d-flex justify-content-start flex-column">
-                    <a className="text-black text-hover-primary fs-6">
-                      {item?.Category_name ?? "-"}
+                    <a className="text-black text-lg font-semibold text-hover-primary fs-6">
+                      {item?.Category?.Category_name ?? "-"}
                     </a>
                   </div>
                 </td>
                 <td>
                   <div className="d-flex justify-content-start flex-column">
-                    <a className="text-black text-hover-primary fs-6">
+                    <a className="text-black text-lg font-semibold text-hover-primary fs-6">
                       {item?.Subcategory_name ?? "-"}
                     </a>
                   </div>
@@ -173,7 +189,7 @@ const Subcategory = () => {
 
                 <td>
                   <div className="d-flex justify-content-start flex-column">
-                    <a className="text-black text-hover-primary fs-6">
+                    <a className="text-black text-lg font-semibold  text-hover-primary fs-6">
                       {item?.Subcategory_description ?? "-"}
                     </a>
                   </div>
@@ -196,7 +212,7 @@ const Subcategory = () => {
                       <button
                         className="bg-black  text-white px-2 py-2  rounded-md"
                         onClick={() => {
-                          handledelete(item?.subcategory_Id);
+                          handledelete(item?.Subcategory_Id);
                         }}
                       >
                         Delete
@@ -210,9 +226,6 @@ const Subcategory = () => {
             <tr>
               <td colSpan={4}>
                 <div className="py-5 d-flex flex-column align-content-center justify-content-center">
-                  <div className="text-center">
-                    <Loader />
-                  </div>
                   <div className="d-flex text-center w-100 align-content-center justify-content-center fw-semibold fs-3 text-black mt-5">
                     No matching records found
                   </div>
@@ -273,65 +286,55 @@ const Subcategory = () => {
               </div>
               <Formik
                 initialValues={{
-                  category_Id: selectedsubcategory?.category_Id || "",
-                  subcategory_Id: selectedsubcategory?.subcategory_Id || "",
-                  subcategory_name: selectedsubcategory?.subcategory_name || "",
-                  subcategory_description:
-                    selectedsubcategory?.subcategory_description || "",
-                  subcategory_image:
-                    selectedsubcategory?.subcategory_image || "",
+                  Category_Id: selectedsubcategory?.Category_Id || "",
+                  Subcategory_Id: selectedsubcategory?.Subcategory_Id || "",
+                  Subcategory_name: selectedsubcategory?.Subcategory_name || "",
+                  Subcategory_description:
+                    selectedsubcategory?.Subcategory_description || "",
+                  Subcategory_image:
+                    selectedsubcategory?.Subcategory_image || "",
                 }}
                 onSubmit={async (values, { resetForm }) => {
+                  console.log("clicked", values);
                   setisloading(true);
                   try {
-                    const formdata = new FormData();
-                    formdata.append(
-                      "subcategory_name",
-                      values.subcategory_name
-                    );
-                    formdata.append(
-                      "subcategory_description",
-                      values.subcategory_description
-                    );
-                    if (image) {
-                      formdata.append("subcategory_image", image);
-                    }
-                    if (selectedsubcategory?.subcategory_Id) {
-                      await axios.put(`${API_URL}/subcategory`, formdata, {
-                        headers: { "Content-Type": "multipart/form-data" },
-                      });
-                      console.log(Object.fromEntries(formdata.entries()));
+                    const categoryData = {
+                      Category_Id: values.Category_Id,
+                      Subcategory_name: values.Subcategory_name,
+                      Subcategory_description: values.Subcategory_description,
+                      Subcategory_image: image || values.Subcategory_image, // Use the base64 string directly
+                    };
 
-                      toast.success("updated succcessfully");
-                    } else {
-                      await axios.post(
-                        `${API_URL}/subcategory`,
-                        //subcategory_image:values.subcategory_image,
-                        formdata,
-                        {
-                          headers: { "Content-Type": "multipart/form-data" },
-                        }
+                    if (selectedsubcategory?.Subcategory_Id) {
+                      await axios.put(
+                        `${API_URL}/subcategory/${selectedsubcategory?.Subcategory_Id}`,
+                        categoryData
                       );
-
-                      console.log(Object.fromEntries(formdata.entries()));
-                      toast.success("added successfully");
-                      fetchsubcategories(currentPage);
+                      toast.success("Updated successfully");
+                    } else {
+                      await axios.post(`${API_URL}/subcategory`, categoryData);
+                      toast.success("Added successfully");
                     }
+
+                    fetchsubcategories(currentPage);
+                    resetFormAndClose(resetForm);
                   } catch (error) {
-                    toast.error("error");
+                    console.error("Error submitting form:", error);
+                    toast.error("Error saving category");
                   } finally {
-                    setTimeout(() => {
-                      setisloading(false);
-                    }, 1000);
-                    resetForm();
-                    setImage(null);
-                    setmodelopen(false);
+                    setisloading(false);
                   }
                 }}
                 validationSchema={subcategorySchema}
               >
-                {({ values, getFieldProps, resetForm, setFieldValue }) => (
-                  <form>
+                {({
+                  values,
+                  getFieldProps,
+
+                  handleSubmit,
+                  setFieldValue,
+                }) => (
+                  <Form onSubmit={handleSubmit}>
                     <div className="flex flex-row m-5 gap-2">
                       <div className="basis-1/2 ">
                         <div className="flex flex-col items-center space-y-4">
@@ -343,6 +346,12 @@ const Subcategory = () => {
                               <img
                                 src={image}
                                 alt="Uploaded"
+                                className="w-full h-full object-cover rounded-full"
+                              />
+                            ) : selectedsubcategory?.Subcategory_image ? (
+                              <img
+                                src={selectedsubcategory?.Subcategory_image}
+                                alt="Current"
                                 className="w-full h-full object-cover rounded-full"
                               />
                             ) : (
@@ -360,23 +369,42 @@ const Subcategory = () => {
                         </div>
                       </div>
                       <div className="basis-1/2 flex flex-col  ">
-                        <div>
-                          {/* <div className="flex flex-col  align-middle">
-                            <input
-                              type="text"
-                              className="w-[100px] h-[40px] rounded-xl bg-white p-2 text-black text-xl font-bold "
-                              placeholder="subcategory Id"
-                              {...getFieldProps("subcategory_Id")}
-                              disabled
-                            />
-                          </div> */}
-                        </div>
+                        <label className="text-black"> Category</label>
                         <Select
                           options={options}
-                          value={values.category_Id}
+                          value={options.find(
+                            (option) => option.value === values.Category_Id
+                          )} // Ensure the correct value is selected
                           onChange={(option) =>
-                            setFieldValue("Category_Id", option)
-                          }
+                            setFieldValue("Category_Id", option?.value)
+                          } // Pass only the value
+                          styles={{
+                            control: (baseStyles) => ({
+                              ...baseStyles,
+                              backgroundColor: "black",
+                              color: "white",
+                              width: "300px",
+                              borderColor: "gray",
+                            }),
+                            singleValue: (base) => ({
+                              ...base,
+                              color: "white",
+                            }),
+                            menu: (base) => ({
+                              ...base,
+                              backgroundColor: "black",
+                            }),
+                            option: (base, state) => ({
+                              ...base,
+                              backgroundColor: state.isSelected
+                                ? "gray"
+                                : "black",
+                              color: "white",
+                              ":hover": {
+                                backgroundColor: "gray",
+                              },
+                            }),
+                          }}
                         />
 
                         <div>
@@ -387,8 +415,8 @@ const Subcategory = () => {
                         <div>
                           <input
                             type="text"
-                            className="w-[300px] h-[40px] rounded-xl p-2 mt-2"
-                            {...getFieldProps("subcategory_name")}
+                            className="w-[300px] h-[40px]  p-2 mt-2"
+                            {...getFieldProps("Subcategory_name")}
                           />
                         </div>
                         <div>
@@ -398,8 +426,8 @@ const Subcategory = () => {
                           <textarea
                             rows={3}
                             cols={50}
-                            className="rounded-xl p-2 mt-2"
-                            {...getFieldProps("subcategory_description")}
+                            className=" p-2 mt-2"
+                            {...getFieldProps("Subcategory_description")}
                           />
                         </div>
                         <div className=" flex flex-row position-relative justify-end gap-2 m-2">
@@ -421,7 +449,7 @@ const Subcategory = () => {
                         </div>
                       </div>
                     </div>
-                  </form>
+                  </Form>
                 )}
               </Formik>
             </div>

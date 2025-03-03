@@ -1,6 +1,6 @@
 import React from "react";
 import Customer from "./Customer";
-import Employee from "./Employee";
+
 import Dashboard from "./Dashboard";
 import Order from "./Orders";
 import Feedbacks from "./Feedback";
@@ -10,6 +10,7 @@ import Report from "./Report";
 import Categorymaintab from "./Categorymaintab/Categorymaintab";
 import pic045 from "../assets/pic56.jpg";
 import Logo from "../Util/Logo";
+import Employeemain from "./Employeemaintab/Employeemain";
 
 const SideNavigationPanel = () => {
   const [activeComponent, setActiveComponent] = React.useState("Dashboard");
@@ -22,7 +23,7 @@ const SideNavigationPanel = () => {
         return <Order />;
 
       case "Employee":
-        return <Employee />;
+        return <Employeemain />;
       case "Category":
         return <Categorymaintab />;
       case "Feedbacks":

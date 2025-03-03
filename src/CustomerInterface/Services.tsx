@@ -1,13 +1,10 @@
-import React from "react";
-
-import flower2 from "../assets/flower_1.jpg";
 import Navbarcustomer from "./Navbarcustomer";
-import { Link } from "react-router-dom";
+
 import pico5 from "../assets/pic05.jpg";
 import pico3 from "../assets/flower_1.jpg";
 import pico2 from "../assets/pico21.jpg";
 import pico1 from "../assets/pico2.jpg";
-import pico9 from "../assets/pico14.jpg";
+import pico9 from "../assets/pic56.jpg";
 import { useNavigate } from "react-router-dom";
 
 const Services = () => {

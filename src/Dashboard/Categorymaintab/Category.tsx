@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Loader from "../../Util/Loader";
+
 import CommonLoading from "../../Util/Commonloading";
 import { IoMdCloseCircle } from "react-icons/io";
 import axios from "axios";

@@ -4,7 +4,7 @@ import CommonLoading from "../../Util/Commonloading";
 import { IoMdCloseCircle } from "react-icons/io";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { Formik } from "formik";
+import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import pic045 from "../../assets/pic56.jpg";
 import pico23 from "../../assets/pico36.jpg";
@@ -15,7 +15,7 @@ import {
 } from "react-icons/tb";
 import Deleteconfirmation from "../../Util/Deleteconfirmation";
 import Select from "react-select";
-import Category from "./Category";
+
 const API_URL = import.meta.env.VITE_API_URL;
 const Product = () => {
   const [isloading, setisloading] = useState(false);
@@ -31,8 +31,7 @@ const Product = () => {
   const [isconfirmationopen, setisconfirmationopen] = useState(false);
   const pageSize = 5;
   const productSchema = Yup.object().shape({
-    product_name: Yup.string().required("product name is required"),
-    description: Yup.string().required("Description is required"),
+    Product_name: Yup.string().required("product name is required"),
   });
   const [image, setImage] = useState<string | null>(null);
 
@@ -46,6 +45,11 @@ const Product = () => {
       reader.readAsDataURL(file);
     }
   };
+  useEffect(() => {
+    if (selectedproduct?.Category?.Category_Id) {
+      fetchsubcategories(selectedproduct?.Category?.Category_Id);
+    }
+  }, [selectedproduct?.Category?.Category_Id]);
   const fetchcategories = async () => {
     try {
       const response = await axios.get(`${API_URL}/category/categorylist`);
@@ -56,10 +60,10 @@ const Product = () => {
       console.log(error);
     }
   };
-  const fetchsubcategories = async () => {
+  const fetchsubcategories = async (category_id: any) => {
     try {
       const response = await axios.get(
-        `${API_URL}/Subcategory/Subcategorylist`
+        `${API_URL}/Subcategory/subcategory/category/${category_id}`
       );
 
       console.log(response);
@@ -70,7 +74,6 @@ const Product = () => {
   };
   useEffect(() => {
     fetchcategories();
-    fetchsubcategories();
   }, []);
   const options = CategoryList?.map((item: any) => ({
     value: item.Category_Id,
@@ -119,7 +122,7 @@ const Product = () => {
   const productdelete = async () => {
     setisloading(true);
     try {
-      await axios.delete(`${API_URL}/product/delete/${categotyid}`);
+      await axios.delete(`${API_URL}/product/${categotyid}`);
 
       toast.success("deleted succcessfully");
       fetchproduct(currentPage);
@@ -129,7 +132,14 @@ const Product = () => {
       setTimeout(() => {
         setisloading(false);
       }, 1000);
+      setisconfirmationopen(false);
     }
+  };
+  const resetFormAndClose = (resetForm: any) => {
+    resetForm();
+    setImage(null);
+    setSelectedproduct(null);
+    setmodelopen(false);
   };
   return (
     <div className="flex flex-col">
@@ -151,15 +161,14 @@ const Product = () => {
           backgroundImage: `url(${pic045})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
-          // height: "500px",
         }}
       >
         <thead className="text-black text-xl">
           <tr>
             <th>Image </th>
             <th> Name</th>
-            <th> Price </th>
-            <th>Discount</th>
+            <th> Price (LKR)</th>
+            <th>Discount(LKR) per unit</th>
 
             <th>Action</th>
           </tr>
@@ -170,28 +179,36 @@ const Product = () => {
               <tr key={item?.product_Id} className="">
                 <td>
                   <div className="d-flex justify-content-start flex-column">
-                    <a className="text-black text-hover-primary fs-6">
-                      {item?.Product_image ?? "-"}
+                    <a className="text-black text-hover-primary fs-6 ">
+                      {item?.Product_image ? (
+                        <img
+                          src={item.Product_image}
+                          alt="Product"
+                          className="w-16 h-16 object-cover rounded-full"
+                        />
+                      ) : (
+                        "-"
+                      )}
                     </a>
                   </div>
                 </td>
                 <td>
                   <div className="d-flex justify-content-start flex-column">
-                    <a className="text-black text-lg text-hover-primary fs-6">
+                    <a className="text-black text-lg font-semibold text-hover-primary fs-6">
                       {item?.Product_name ?? "-"}
                     </a>
                   </div>
                 </td>
                 <td>
                   <div className="d-flex justify-content-start flex-column">
-                    <a className="text-black text-hover-primary fs-6">
+                    <a className="text-black text-lg font-semibold text-hover-primary fs-6">
                       {item?.Product_price ?? "-"}
                     </a>
                   </div>
                 </td>
                 <td>
                   <div className="d-flex justify-content-start flex-column">
-                    <a className="text-black text-hover-primary fs-6">
+                    <a className="text-black text-lg font-semibold text-hover-primary fs-6">
                       {item?.Product_discount ?? "-"}
                     </a>
                   </div>
@@ -213,7 +230,7 @@ const Product = () => {
                       <button
                         className="bg-black  text-white px-2 py-2  rounded-md"
                         onClick={() => {
-                          handledelete(item?.product_Id);
+                          handledelete(item?.Product_Id);
                         }}
                       >
                         Delete
@@ -227,9 +244,6 @@ const Product = () => {
             <tr>
               <td colSpan={4}>
                 <div className="py-5 d-flex flex-column align-content-center justify-content-center">
-                  <div className="text-center">
-                    <Loader />
-                  </div>
                   <div className="d-flex text-center w-100 align-content-center justify-content-center fw-semibold fs-3 text-black mt-5">
                     No matching records found
                   </div>
@@ -261,9 +275,9 @@ const Product = () => {
         </div>
       </div>
       {ismodelopen && (
-        <div className="fixed inset-0 flex justify-center items-center z-50">
+        <div className="fixed inset-0 flex justify-center items-center z-50 ">
           <div
-            className="w-[700px] h-[500px] bg-red-200 rounded-lg  shadow-2xl shadow-zinc-500"
+            className="w-[900px] h-[700px] bg-red-200 rounded-lg p-5 shadow-2xl shadow-zinc-500"
             style={{
               backgroundImage: `url(${pico23})`,
               backgroundSize: "cover",
@@ -289,149 +303,200 @@ const Product = () => {
               </div>
               <Formik
                 initialValues={{
-                  Category_Id: selectedproduct?.Category_Id || "",
-                  Subcategory_Id: selectedproduct?.Subcategory_Id || "",
-                  Product_Id: selectedproduct?.Product_Id || "",
+                  Category_Id: selectedproduct?.Category.Category_Id || "",
+                  Subcategory_Id:
+                    selectedproduct?.Subcategory.Subcategory_Id || "",
+
                   Product_name: selectedproduct?.Product_name || "",
                   Product_price: selectedproduct?.Product_price || "",
                   Product_discount: selectedproduct?.Product_discount || "",
                   Product_image: selectedproduct?.Product_image || "",
                 }}
                 onSubmit={async (values, { resetForm }) => {
+                  console.log("clicked", values);
                   setisloading(true);
                   try {
-                    const formdata = new FormData();
-                    formdata.append("Product_name", values.Product_name);
-                    formdata.append("Product_price", values.Product_price);
-                    formdata.append(
-                      "Product_discount",
-                      values.Product_discount
-                    );
-                    if (image) {
-                      formdata.append("Product_image", image);
-                    }
+                    const ProductData = {
+                      Category_Id: values.Category_Id,
+                      Subcategory_Id: values.Subcategory_Id,
+                      Product_name: values.Product_name,
+                      Product_discount: values.Product_discount,
+                      Product_price: values.Product_price,
+                      Product_image: image || values.Product_image, // Use the base64 string directly
+                    };
+
                     if (selectedproduct?.Product_Id) {
-                      await axios.put(`${API_URL}/product`, formdata, {
-                        headers: { "Content-Type": "multipart/form-data" },
-                      });
-                      console.log(Object.fromEntries(formdata.entries()));
-
-                      toast.success("updated succcessfully");
-                    } else {
-                      await axios.post(
-                        `${API_URL}/product`,
-                        //product_image:values.product_image,
-                        formdata,
-                        {
-                          headers: { "Content-Type": "multipart/form-data" },
-                        }
+                      await axios.put(
+                        `${API_URL}/product/${selectedproduct?.Product_Id}`,
+                        ProductData
                       );
-
-                      console.log(Object.fromEntries(formdata.entries()));
-                      toast.success("added successfully");
-                      fetchproduct(currentPage);
+                      toast.success("Updated successfully");
+                    } else {
+                      await axios.post(`${API_URL}/product`, ProductData);
+                      toast.success("Added successfully");
                     }
+                    fetchproduct(currentPage);
+
+                    resetFormAndClose(resetForm);
                   } catch (error) {
-                    toast.error("error");
+                    console.error("Error submitting form:", error);
+                    toast.error("Error saving category");
                   } finally {
-                    setTimeout(() => {
-                      setisloading(false);
-                    }, 1000);
-                    resetForm();
-                    setImage(null);
-                    setmodelopen(false);
+                    setisloading(false);
                   }
                 }}
                 validationSchema={productSchema}
               >
-                {({ values, getFieldProps, resetForm, setFieldValue }) => (
-                  <form>
+                {({ values, getFieldProps, handleSubmit, setFieldValue }) => (
+                  <Form onSubmit={handleSubmit}>
                     <div className="flex flex-row m-5 gap-2">
                       <div className="basis-1/2 ">
-                        <div className="flex flex-col items-center space-y-4">
-                          <label
-                            htmlFor="file-upload"
-                            className="relative w-48 h-48 rounded-full border-2 border-black flex items-center justify-center cursor-pointer overflow-hidden"
-                          >
-                            {image ? (
-                              <img
-                                src={image}
-                                alt="Uploaded"
-                                className="w-full h-full object-cover rounded-full"
-                              />
-                            ) : (
-                              <span className="text-black">Upload Image</span>
-                            )}
-                          </label>
+                        <div className="flex flex-col">
+                          <div className="flex flex-row justify-center items-center">
+                            <label
+                              htmlFor="file-upload"
+                              className="relative w-48 h-48 rounded-full border-2 border-black flex items-center justify-center cursor-pointer overflow-hidden"
+                            >
+                              {image ? (
+                                <img
+                                  src={image}
+                                  alt="Uploaded"
+                                  className="w-full h-full object-cover rounded-full"
+                                />
+                              ) : selectedproduct?.Product_image ? (
+                                <img
+                                  src={selectedproduct?.Product_image}
+                                  alt="Current"
+                                  className="w-full h-full object-cover rounded-full"
+                                />
+                              ) : (
+                                <span className="text-black">Upload Image</span>
+                              )}
+                            </label>
 
-                          <input
-                            id="file-upload"
-                            type="file"
-                            accept="image/*"
-                            onChange={handleImageChange}
-                            className="hidden"
-                          />
+                            <input
+                              id="file-upload"
+                              type="file"
+                              accept="image/*"
+                              onChange={handleImageChange}
+                              className="hidden"
+                            />
+                          </div>
+                          <div className="flex flex-col justify-center items-center">
+                            <label className="text-black mb-4">Category</label>
+                            <div>
+                              <Select
+                                options={options}
+                                value={options.find(
+                                  (option) =>
+                                    option.value === values.Category_Id
+                                )} // Ensure the correct value is selected
+                                onChange={(option) => {
+                                  setFieldValue("Category_Id", option?.value);
+                                  fetchsubcategories(option?.value);
+                                }} // Pass only the value
+                                styles={{
+                                  control: (baseStyles) => ({
+                                    ...baseStyles,
+                                    backgroundColor: "black",
+                                    color: "white",
+                                    width: "200px",
+                                    borderColor: "gray",
+                                  }),
+                                  singleValue: (base) => ({
+                                    ...base,
+                                    color: "white",
+                                  }),
+                                  menu: (base) => ({
+                                    ...base,
+                                    backgroundColor: "black",
+                                  }),
+                                  option: (base, state) => ({
+                                    ...base,
+                                    backgroundColor: state.isSelected
+                                      ? "gray"
+                                      : "black",
+                                    color: "white",
+                                    ":hover": {
+                                      backgroundColor: "gray",
+                                    },
+                                  }),
+                                }}
+                              />
+                            </div>
+                            <label className="text-black mb-4">
+                              Subcategory
+                            </label>
+                            <div className="mb-10">
+                              <Select
+                                options={options_1}
+                                value={options_1.find(
+                                  (option) =>
+                                    option.value === values.Subcategory_Id
+                                )}
+                                onChange={(option) =>
+                                  setFieldValue("Subcategory_Id", option?.value)
+                                }
+                                styles={{
+                                  control: (baseStyles) => ({
+                                    ...baseStyles,
+                                    backgroundColor: "black",
+                                    color: "white",
+                                    width: "200px",
+
+                                    borderColor: "gray",
+                                  }),
+                                  singleValue: (base) => ({
+                                    ...base,
+                                    color: "white",
+                                  }),
+                                  menu: (base) => ({
+                                    ...base,
+                                    backgroundColor: "black",
+                                  }),
+                                  option: (base, state) => ({
+                                    ...base,
+                                    backgroundColor: state.isSelected
+                                      ? "gray"
+                                      : "black",
+                                    color: "white",
+                                    ":hover": {
+                                      backgroundColor: "gray",
+                                    },
+                                  }),
+                                }}
+                              />
+                            </div>
+                          </div>
                         </div>
                       </div>
                       <div className="basis-1/2 flex flex-col  ">
-                        <div>
-                          {/* <div className="flex flex-col  align-middle">
-                            <input
-                              type="text"
-                              className="w-[100px] h-[40px] rounded-xl bg-white p-2 text-black text-xl font-bold "
-                              placeholder="product Id"
-                              {...getFieldProps("product_Id")}
-                              disabled
-                            />
-                          </div> */}
-                        </div>
-                        <div className="flex flex-row position-reltive gap-2">
-                          <div>
-                            <Select
-                              options={options}
-                              value={values.Category_Id}
-                              onChange={(option) =>
-                                setFieldValue("Category_Id", option)
-                              }
-                            />
-                          </div>
-                          <div>
-                            <Select
-                              options={options_1}
-                              value={values.Subcategory_Id}
-                              onChange={(option) =>
-                                setFieldValue("Subcategory_Id", option)
-                              }
-                            />
-                          </div>
-                        </div>
                         <div>
                           <label className="text-black mr-2 ">Name</label>
                         </div>
                         <div>
                           <input
                             type="text"
-                            className="w-[300px] h-[40px] rounded-xl p-2 mt-2"
+                            className="w-[300px] h-[40px]  p-2 mt-2"
                             {...getFieldProps("Product_name")}
                           />
                         </div>
-                        <div>
-                          <label className="text-black mb-4">Price</label>
-                          <input
-                            type="number"
-                            className="rounded-xl p-2 mt-2"
-                            {...getFieldProps("Product_price")}
-                          />
-                        </div>
-                        <div>
-                          <label className="text-black mb-4">Discount</label>
-                          <input
-                            type="number"
-                            className="rounded-xl p-2 mt-2"
-                            {...getFieldProps("Product_discount")}
-                          />
-                        </div>
-                        <div className=" flex flex-row position-relative justify-end gap-2 m-2">
+
+                        <label className="text-black my-2">Price</label>
+                        <input
+                          type="number"
+                          className=" p-2 w-[300px] "
+                          {...getFieldProps("Product_price")}
+                        />
+
+                        <label className="text-black my-2">Discount</label>
+                        <input
+                          type="number"
+                          className=" p-2  w-[300px]"
+                          {...getFieldProps("Product_discount")}
+                        />
+
+                        <div className=" flex flex-row position-relative justify-end gap-2 m-2 mt-10">
                           <button
                             className="text-white bg-black px-3 py-2 rounded-xl"
                             type="submit"
@@ -450,7 +515,7 @@ const Product = () => {
                         </div>
                       </div>
                     </div>
-                  </form>
+                  </Form>
                 )}
               </Formik>
             </div>
