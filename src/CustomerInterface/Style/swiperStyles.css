@@ -1,0 +1,39 @@
+/* Style the navigation arrows */
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: black;
+  /* Change arrow color */
+  background: rgba(255, 255, 255, 0.8);
+  /* Light background */
+  width: 100px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Move arrows outside the images */
+
+.swiper-button-prev {
+  left: -50px;
+  /* Adjust left arrow position */
+}
+
+.swiper-button-next {
+  right: -50px;
+  /* Adjust right arrow position */
+}
+
+/* Ensure arrows stay visible */
+
+@media (max-width: 768px) {
+  .swiper-button-prev {
+    left: -30px;
+  }
+  .swiper-button-next {
+    right: -30px;
+  }
+}

@@ -7,7 +7,7 @@ import Employee from "../Dashboard/Employee";
 import Services from "../CustomerInterface/Services";
 import Addtobooking from "../CustomerInterface/Addtobooking";
 import Ordersummary from "../CustomerInterface/Ordersummary";
-import SideNavigationPanel from "../Dashboard/Drawer";
+
 import SideNavigationPanel2 from "../Employeeinterface/SideNavigation";
 import Pendingorder from "../Employeeinterface/Pendingorder";
 import Requestorder from "../Employeeinterface/Requestorder";
@@ -18,7 +18,10 @@ import Flowerboquets from "../CustomerInterface/Flowerboquets";
 import Customdecoratons from "../CustomerInterface/Customdecoratons";
 import Orderhistory from "../CustomerInterface/Orderhistory";
 import Mycart from "../CustomerInterface/Mycart";
-import Checkout from "../CustomerInterface/checkout";
+
+import Categorylist from "../CustomerInterface/Categorylist";
+import Checkout from "../CustomerInterface/Checkout";
+import Productlist from "../CustomerInterface/Productlist";
 const router = createBrowserRouter([
   { path: "/", element: <Layout /> },
   { path: "/login", element: <Login /> },
@@ -30,6 +33,11 @@ const router = createBrowserRouter([
   { path: "customer/orderhistory", element: <Orderhistory /> },
   { path: "customer/mycart", element: <Mycart /> },
   { path: "customer/mycart/checkout", element: <Checkout /> },
+  { path: "customer/services/categorylist/:id", element: <Categorylist /> },
+  {
+    path: "customer/services/categorylist/:id/productlist/:id",
+    element: <Productlist />,
+  },
   {
     path: "customer/category/candle-decorations",
     element: <Candledecorations />,

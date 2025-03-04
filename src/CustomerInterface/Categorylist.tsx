@@ -1,6 +1,6 @@
 import Navbarcustomer from "./Navbarcustomer";
 import pico9 from "../assets/pic56.jpg";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -17,15 +17,17 @@ import CommonLoading from "../Util/Commonloading";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-const Services = () => {
+const Categorylist = () => {
+  const params = useParams();
   const navigate = useNavigate();
   const [categories, setCategories] = useState<any[]>([]);
   const [isloading, setisloading] = useState(false);
+
   const fetchCategoryList = async () => {
     setisloading(true);
     try {
       const response = await axios.get(
-        `${API_URL}/Category/category/categorylist`
+        `${API_URL}/Subcategory/subcategory/category/list/${params.id}`
       );
       setCategories(response.data.data);
     } catch (error) {
@@ -40,9 +42,6 @@ const Services = () => {
   useEffect(() => {
     fetchCategoryList();
   }, []);
-  const handleclick = (id: any) => {
-    navigate(`categorylist/${id}`);
-  };
 
   return (
     <div>
@@ -59,7 +58,7 @@ const Services = () => {
         <div className="flex flex-col w-full min-w-full">
           <div className="flex flex-col items-center justify-center min-h-screen">
             <h1 className="text-4xl font-serif font-bold text-red-950">
-              Our Categories
+              Our SubCategories
             </h1>
 
             <Swiper
@@ -81,19 +80,19 @@ const Services = () => {
                   <div
                     className="card card-compact bg-white text-black w-70 h-[400px] shadow-xl "
                     onClick={() =>
-                      navigate(`categorylist/${item?.Category_Id}`)
+                      navigate(`productlist/${item?.Subcategory_Id}`)
                     }
                   >
                     <figure className="h-[200px] w-full">
                       <img
-                        src={item?.Category_image}
-                        alt={item.Category_name}
+                        src={item?.Subcategory_image}
+                        alt={item.Subcategory_name}
                         className="h-full w-full object-cover"
                       />
                     </figure>
                     <div className="card-body">
-                      <h2 className="card-title">{item.Category_name}</h2>
-                      <p>{item.Category_description}</p>
+                      <h2 className="card-title">{item.Subcategory_name}</h2>
+                      <p>{item.Subcategory_description}</p>
                       <div className="card-actions justify-end">
                         <button className="btn btn-primary bg-black text-white hover:bg-gray-800">
                           Read more
@@ -112,4 +111,4 @@ const Services = () => {
   );
 };
 
-export default Services;
+export default Categorylist;

@@ -129,7 +129,7 @@ const Role = () => {
                   <td>
                     <div className="d-flex justify-content-start flex-column">
                       <a className="text-black text-hover-primary fs-6 text-lg font-semibold">
-                        {item?.Roll_ID ?? "-"}
+                        {item?.Role_ID ?? "-"}
                       </a>
                     </div>
                   </td>
@@ -137,7 +137,7 @@ const Role = () => {
                   <td>
                     <div className="d-flex justify-content-start flex-column">
                       <a className="text-black text-hover-primary fs-6 text-lg font-semibold">
-                        {item?.Roll_Name ?? "-"}
+                        {item?.Role_Name ?? "-"}
                       </a>
                     </div>
                   </td>
@@ -234,18 +234,18 @@ const Role = () => {
               </div>
               <Formik
                 initialValues={{
-                  roles_name: selectedroles?.Roll_Name || "",
+                  roles_name: selectedroles?.Role_Name || "",
                 }}
                 onSubmit={async (values, { resetForm }) => {
                   setisloading(true);
                   try {
                     const rolesData = {
-                      Roll_Name: values.roles_name,
+                      Role_Name: values.roles_name,
                     };
 
-                    if (selectedroles?.Roll_ID) {
+                    if (selectedroles?.Role_ID) {
                       await axios.put(
-                        `${API_URL}/Role/${selectedroles.Roll_ID}`,
+                        `${API_URL}/Role/${selectedroles.Role_ID}`,
                         rolesData
                       );
                       toast.success("Updated successfully");

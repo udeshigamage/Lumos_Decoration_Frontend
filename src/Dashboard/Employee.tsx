@@ -72,8 +72,8 @@ const Employee = () => {
     fetchroles();
   }, []);
   const options = RoleList?.map((item: any) => ({
-    value: item.Roll_ID,
-    label: item.Roll_Name,
+    value: item.Role_ID,
+    label: item.Role_Name,
   }));
   const handlePageChange = (page: number) => {
     if (page >= 1 && page <= totalPages) {
@@ -161,7 +161,7 @@ const Employee = () => {
               {/* head */}
               <thead className="text-black text-xl">
                 <tr>
-                  <th>Id</th>
+                  <th>Image</th>
                   <th>Name</th>
                   <th>Contact number</th>
                   <th>Role</th>
@@ -191,27 +191,27 @@ const Employee = () => {
 
                       <td>
                         <div className="d-flex justify-content-start flex-column">
-                          <a className="text-black text-hover-primary fs-6">
+                          <a className="text-black font-semibold text-lg text-hover-primary fs-6">
                             {item?.emp_Name ?? "-"}
                           </a>
                         </div>
                       </td>
                       <td>
                         <div className="d-flex justify-content-start flex-column">
-                          <a className="text-black text-hover-primary ">
+                          <a className="text-black font-semibold text-lg text-hover-primary ">
                             {item?.emp_contact_no ?? "-"}
                           </a>
                         </div>
                       </td>
                       <td>
                         <div className="d-flex justify-content-start flex-column">
-                          <a className="text-black text-hover-primary fs-6 ">
-                            {item?.Roll_Name ?? "-"}
+                          <a className="text-black font-semibold text-lg text-hover-primary fs-6 ">
+                            {item?.Role_Name ?? "-"}
                           </a>
                         </div>
                       </td>
                       <td>
-                        <a className=" text-hover-primary fs-6 px-5 py-5 rounded-md ">
+                        <a className=" text-hover-primary font-semibold text-lg fs-6 px-5 py-5 rounded-md ">
                           {item?.emp_allowance ?? "-"}
                         </a>
                       </td>
@@ -328,7 +328,7 @@ const Employee = () => {
                         emp_Name: `${values.firstName} ${values.lastName}`,
                         emp_address: values.Address,
                         email: values.email,
-                        Roll_ID: values.Role_ID,
+                        Role_ID: values.Role_ID,
                         emp_contact_no: values.contactno,
                         emp_allowance: values.Allowance,
                         emp_image: values.emp_image,

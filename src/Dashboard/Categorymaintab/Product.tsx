@@ -168,7 +168,7 @@ const Product = () => {
             <th>Image </th>
             <th> Name</th>
             <th> Price (LKR)</th>
-            <th>Discount(LKR) per unit</th>
+            <th>Discount(%) per unit</th>
 
             <th>Action</th>
           </tr>
@@ -482,14 +482,18 @@ const Product = () => {
                           />
                         </div>
 
-                        <label className="text-black my-2">Price</label>
+                        <label className="text-black my-2">
+                          Price {"(LKR)"}
+                        </label>
                         <input
                           type="number"
                           className=" p-2 w-[300px] "
                           {...getFieldProps("Product_price")}
                         />
 
-                        <label className="text-black my-2">Discount</label>
+                        <label className="text-black my-2">
+                          Discount {"(%)"}
+                        </label>
                         <input
                           type="number"
                           className=" p-2  w-[300px]"
