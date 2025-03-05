@@ -6,7 +6,6 @@ import Layoutdash from "../Dashboard/Layoutdash";
 import Employee from "../Dashboard/Employee";
 import Services from "../CustomerInterface/Services";
 import Addtobooking from "../CustomerInterface/Addtobooking";
-import Ordersummary from "../CustomerInterface/Ordersummary";
 
 import SideNavigationPanel2 from "../Employeeinterface/SideNavigation";
 import Pendingorder from "../Employeeinterface/Pendingorder";
@@ -20,24 +19,26 @@ import Orderhistory from "../CustomerInterface/Orderhistory";
 import Mycart from "../CustomerInterface/Mycart";
 
 import Categorylist from "../CustomerInterface/Categorylist";
-import Checkout from "../CustomerInterface/Checkout";
+
 import Productlist from "../CustomerInterface/Productlist";
+import Checkout from "../CustomerInterface/Checkout";
 const router = createBrowserRouter([
   { path: "/", element: <Layout /> },
   { path: "/login", element: <Login /> },
   { path: "/signup", element: <Signup /> },
   { path: "/customer/services", element: <Services /> },
   { path: "customer/addtobooking", element: <Addtobooking /> },
-  { path: "customer/ordersummary", element: <Ordersummary /> },
+
   { path: "customer/category/garlands", element: <Garlends /> },
   { path: "customer/orderhistory", element: <Orderhistory /> },
   { path: "customer/mycart", element: <Mycart /> },
-  { path: "customer/mycart/checkout", element: <Checkout /> },
+
   { path: "customer/services/categorylist/:id", element: <Categorylist /> },
   {
     path: "customer/services/categorylist/:id/productlist/:id",
     element: <Productlist />,
   },
+  { path: "customer/services/checkout", element: <Checkout /> },
   {
     path: "customer/category/candle-decorations",
     element: <Candledecorations />,

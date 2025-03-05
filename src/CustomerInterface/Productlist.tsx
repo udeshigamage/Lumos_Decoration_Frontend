@@ -20,8 +20,54 @@ import pic045 from "../assets/pic56.jpg";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
+// Utility function to safely manage localStorage
+const useLocalStorage = () => {
+  const getCartItems = () => {
+    try {
+      const items = localStorage.getItem("cartItems");
+      return items ? JSON.parse(items) : [];
+    } catch (error) {
+      console.error("Error reading cart items:", error);
+      return [];
+    }
+  };
+
+  const setCartItems = (items: any[]) => {
+    try {
+      // Limit the number of items or reduce item size if needed
+      const limitedItems = items.slice(0, 50); // Limit to 50 items
+
+      // Optional: Remove large image data if cart is getting too big
+      const compressedItems = limitedItems.map((item) => ({
+        ...item,
+        product_image: "", // Remove image data to save space
+      }));
+
+      localStorage.setItem("cartItems", JSON.stringify(compressedItems));
+      return true;
+    } catch (error) {
+      if (
+        error instanceof DOMException &&
+        error.name === "QuotaExceededError"
+      ) {
+        // Handle quota exceeded error
+        toast.error("Cart storage is full. Please clear some items.");
+
+        // Optional: Clear existing cart
+        localStorage.removeItem("cartItems");
+      } else {
+        console.error("Error setting cart items:", error);
+      }
+      return false;
+    }
+  };
+
+  return { getCartItems, setCartItems };
+};
+
 const Productlist = () => {
   const params = useParams();
+  const { getCartItems, setCartItems } = useLocalStorage();
 
   const [categories, setCategories] = useState<any[]>([]);
   const [isloading, setisloading] = useState(false);
@@ -37,7 +83,7 @@ const Productlist = () => {
       );
       setCategories(response.data.data);
     } catch (error) {
-      toast.error("error");
+      toast.error("Error fetching products");
     } finally {
       setTimeout(() => {
         setisloading(false);
@@ -48,33 +94,62 @@ const Productlist = () => {
   useEffect(() => {
     fetchCategoryList();
   }, []);
+
   const handlemodelopen = (item: any) => {
     setismodelopen(true);
     setselectedproduct(item);
   };
-  const handleaddtocart = async () => {
-    const cartitem = {
+
+  const handleaddtocart = () => {
+    // Retrieve existing cart items
+    const existingCartItems = getCartItems();
+
+    // Calculate discounted price
+    const discountedPrice =
+      selectedproduct?.Product_price -
+      (selectedproduct?.Product_price * selectedproduct?.Product_discount) /
+        100;
+
+    // Create new cart item
+    const newCartItem = {
       product_id: selectedproduct?.Product_Id,
       quantity: quantity,
       product_name: selectedproduct?.Product_name,
-      price:
-        selectedproduct?.Product_price -
-        (selectedproduct?.Product_price * selectedproduct?.Product_discount) /
-          100,
+      original_price: selectedproduct?.Product_price,
+      price: discountedPrice,
       discount: selectedproduct?.Product_discount,
-
-      total_price:
-        quantity *
-        (selectedproduct?.Product_price -
-          (selectedproduct?.Product_price * selectedproduct?.Product_discount) /
-            100),
+      total_price: quantity * discountedPrice,
+      // Optionally reduce image size or remove to save space
     };
-    console.log(cartitem);
-    localStorage.setItem("Cartitem", JSON.stringify(cartitem));
+
+    // Check if product already exists in cart
+    const existingProductIndex = existingCartItems.findIndex(
+      (item: any) => item.product_id === newCartItem.product_id
+    );
+
+    if (existingProductIndex > -1) {
+      // Update quantity if product exists
+      existingCartItems[existingProductIndex].quantity += quantity;
+      existingCartItems[existingProductIndex].total_price =
+        existingCartItems[existingProductIndex].quantity * discountedPrice;
+    } else {
+      // Add new product to cart
+      existingCartItems.push(newCartItem);
+    }
+
+    // Attempt to save to localStorage with error handling
+    if (setCartItems(existingCartItems)) {
+      toast.success(`${newCartItem.product_name} added to cart!`);
+      handlemodelclose();
+    } else {
+      toast.error("Failed to add item to cart. Storage is full.");
+    }
   };
+
   const handlemodelclose = () => {
     setismodelopen(false);
     setselectedproduct(null);
+    setquantity(1);
   };
   return (
     <div>

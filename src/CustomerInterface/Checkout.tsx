@@ -1,263 +1,283 @@
-import { useFormik } from "formik";
-
+import { useEffect, useState } from "react";
+import mycartp from "../assets/pic22.jpg";
 import { useNavigate } from "react-router-dom";
-import pic07 from "../assets/pic22.jpg";
+import pic09 from "../assets/pic56.jpg";
+import { MdDelete } from "react-icons/md";
+import CommonLoading from "../Util/Commonloading";
+import Deleteconfirmation from "../Util/Deleteconfirmation";
+import { toast } from "react-toastify";
+
+interface CartItem {
+  product_id: string;
+  product_name: string;
+  quantity: number;
+  price: number;
+  discount: number;
+  total_price: number;
+  product_image?: string;
+}
 
 const Checkout = () => {
   const navigate = useNavigate();
-  const formik = useFormik({
-    initialValues: {
-      firstName: "",
-      lastName: "",
-      email: "",
-    },
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
-    },
-  });
+  const [cartitems, setcartitems] = useState<CartItem[]>([]);
+  const [isloading, setisloading] = useState(false);
+  const [isconfirmationopen, setisconfirmationopen] = useState(false);
+  const [productid, setproductid] = useState("");
+  const handleclose = async () => {
+    setisconfirmationopen(false);
+  };
+  const handledelete_ = async (item: any) => {
+    setisconfirmationopen(true);
+    setproductid(item);
+  };
+  const getCartItems = () => {
+    setisloading(true);
+    try {
+      const cart = localStorage.getItem("cartItems");
+      console.log("Retrieved cart:", cart);
+      return cart ? JSON.parse(cart) : [];
+    } catch (error) {
+      console.error("Error retrieving cart items:", error);
+      return [];
+    } finally {
+      setTimeout(() => {
+        setisloading(false);
+      }, 1000);
+    }
+  };
+
+  const handledelete = async () => {
+    setisloading(true);
+    try {
+      const cart = await localStorage.getItem("cartItems");
+      let parsedCart: CartItem[] = cart ? JSON.parse(cart) : [];
+
+      // Filter out the item with the matching product_id
+      const updatedCart = parsedCart.filter(
+        (item) => item.product_id !== productid
+      );
+      toast.success("deleted succcessfully");
+      // Save the updated cart back to localStorage
+      localStorage.setItem("cartItems", JSON.stringify(updatedCart));
+
+      // Update the state to re-render the component
+      setcartitems(updatedCart);
+    } catch (error) {
+      toast.error("Error deleting cart item:");
+    } finally {
+      setTimeout(() => {
+        setisloading(false);
+      }, 1000);
+      setisconfirmationopen(false);
+    }
+  };
+
+  useEffect(() => {
+    // Retrieve cart items when component mounts
+    setcartitems(getCartItems());
+  }, []);
+
+  // Calculate total cart value
+  const calculateTotal = () => {
+    return cartitems
+      .reduce((total, item) => total + item.total_price, 0)
+      .toFixed(2);
+  };
+  const calculateAllowance = () => {
+    let Total = Number(calculateTotal());
+    return Total * 0.2;
+  };
 
   return (
-    <div>
-      <div
-        className="min-h-screen "
-        style={{
-          backgroundImage: `url(${pic07})`,
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
-        }}
-      >
-        <div className="flex flex-row justify justify-between bg-red-950 w-full mb-5">
-          <div className="flex flex-row position-relative">
-            <a href="/customer/mycart">
-              <h1 className="text-4xl font-serif text-white bg-gray-500 bg-opacity-50  animate-pulse mt-2 hover:bg-white hover:text-black  p-1 rounded-lg hover:bg-red-300">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="size-6"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M21 16.811c0 .864-.933 1.406-1.683.977l-7.108-4.061a1.125 1.125 0 0 1 0-1.954l7.108-4.061A1.125 1.125 0 0 1 21 8.689v8.122ZM11.25 16.811c0 .864-.933 1.406-1.683.977l-7.108-4.061a1.125 1.125 0 0 1 0-1.954l7.108-4.061a1.125 1.125 0 0 1 1.683.977v8.122Z"
-                  />
-                </svg>
-              </h1>
-            </a>
-            <h1 className="font-serif text-2xl font-bold text-white p-2 mb-5  ">
-              Order Summary{" "}
-            </h1>
-          </div>
-
-          <button
-            className="btn btn-danger text-lg bg-green-500 p-2 m-2 text-black font-serif hover:bg-green-900"
-            onClick={() => {
-              navigate("/customer/orderhistory");
-            }}
-          >
-            Order History
-          </button>
+    <div
+      className="h-screen"
+      style={{
+        backgroundImage: `url(${pic09})`,
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+        minHeight: "calc(100vh - 48px)",
+      }}
+    >
+      <div className="flex flex-row justify justify-between bg-red-950 w-full mb-5">
+        <div className="flex flex-row position-relative">
+          <h1 className="text-4xl font-serif text-white bg-gray-500 bg-opacity-50 animate-pulse m-3 hover:bg-white hover:text-black p-1 rounded-lg hover:bg-red-300">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="size-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M21 16.811c0 .864-.933 1.406-1.683.977l-7.108-4.061a1.125 1.125 0 0 1 0-1.954l7.108-4.061A1.125 1.125 0 0 1 21 8.689v8.122ZM11.25 16.811c0 .864-.933 1.406-1.683.977l-7.108-4.061a1.125 1.125 0 0 1 0-1.954l7.108-4.061a1.125 1.125 0 0 1 1.683.977v8.122Z"
+              />
+            </svg>
+          </h1>
+          <h1 className="font-serif text-2xl font-bold text-white p-2 mt-2">
+            My Cart
+          </h1>
         </div>
+        <button
+          className="btn btn-danger text-lg bg-white bg-opacity-25 p-2 m-2 text-black font-serif hover:bg-white hover:text-black rounded-lg animate-pulse"
+          onClick={() => {
+            navigate("/customer/mycart/checkout");
+          }}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="size-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M3 8.689c0-.864.933-1.406 1.683-.977l7.108 4.061a1.125 1.125 0 0 1 0 1.954l-7.108 4.061A1.125 1.125 0 0 1 3 16.811V8.69ZM12.75 8.689c0-.864.933-1.406 1.683-.977l7.108 4.061a1.125 1.125 0 0 1 0 1.954l-7.108 4.061a1.125 1.125 0 0 1-1.683-.977V8.69Z"
+            />
+          </svg>
+        </button>
+      </div>
 
-        <div className="flex flex-col justify-center items-center ">
-          <div className="bg-white text-black p-20 m-5 opacity-90 rounded-lg">
-            <h1 className="text-black font-serif font-black text-2xl">
-              Order Summary
-            </h1>
-            <form onSubmit={formik.handleSubmit}>
-              <div className="flex flex-col gap-2">
-                <div className="flex flex-row position-relative gap-2">
-                  {" "}
-                  <div>
-                    <label htmlFor="firstName " className="font-serif">
-                      Customer name
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="Full name"
-                      className="input input-bordered w-full max-w-md"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="email " className="font-serif">
-                      Email Address
-                    </label>
-                    <input
-                      type="email"
-                      placeholder="Full name"
-                      className="input input-bordered w-full max-w-md"
-                    />
-                  </div>
-                </div>
-                <div className="flex flex-row position-relative gap-2">
-                  {" "}
-                  <div>
-                    <label htmlFor="email " className="font-serif">
-                      Phone
-                    </label>
-                    <input
-                      type="tel"
-                      placeholder="Full name"
-                      className="input input-bordered w-full max-w-md"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="email " className="font-serif">
-                      Deadline date
-                    </label>
-                    <input
-                      type="date"
-                      placeholder="Full name"
-                      className="input input-bordered w-full max-w-md"
-                    />
-                  </div>
-                </div>
+      <div className="flex flex-col ">
+        <div className="flex flex-row m-5 gap-2">
+          <div className="basis-1/2">
+            <h1 className="text-black font-bold text-3xl mb-2">Cart items</h1>
+            <table
+              className="table border-white bg-red-100 opacity-90 text-black font-sans font-bold w-3/4 border-black border-2"
+              style={{
+                backgroundImage: `url(${pic09})`,
+                backgroundRepeat: "no-repeat",
+                backgroundSize: "cover",
+              }}
+            >
+              <thead className="text-black text-2xl">
+                <tr>
+                  {/* <th>Product ID</th> */}
+                  <th>Product Name</th>
+                  <th>Price</th>
+                  <th>Quantity</th>
+                  <th>Discount</th>
+                  <th>Total Price</th>
+                  {/* <th>Action</th> */}
+                </tr>
+              </thead>
+              <tbody className="text-xl">
+                {cartitems.length > 0 ? (
+                  cartitems.map((item) => (
+                    <tr key={item.product_id}>
+                      {/* <td>{item.product_id ?? "-"}</td> */}
+                      <td>{item.product_name ?? "-"}</td>
+                      <td>{item.price.toFixed(2)} LKR</td>
+                      <td>{item.quantity ?? "-"}</td>
+                      <td>{item.discount}%</td>
+                      <td>{item.total_price.toFixed(2)} LKR</td>
+                      {/* <td className="flex flex-row gap-2">
+                        <button
+                          className="btn btn-danger bg-red-950"
+                          onClick={() => handledelete_(item.product_id)}
+                        >
+                          <MdDelete size={20} color="white" />
+                        </button>
+                      </td> */}
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={7}>
+                      <div className="py-5 text-center">
+                        <div className="fw-semibold fs-3 text-gray-400">
+                          No items in cart
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
 
-                <div className="flex flex-col">
-                  <label htmlFor="email" className="font-serif">
-                    Your Total cost
-                  </label>
+            {cartitems.length > 0 && (
+              <div className=" flex flex-col justify-center items-center mt-10  p-4 rounded-lg">
+                <h2 className="text-2xl bg-red-400 p-2 w-1/2 rounded-lg font-bold text-black">
+                  Total Cart Value: {calculateTotal()} LKR Allowance:{" "}
+                  {calculateAllowance()} LKR
+                </h2>
+                <p className="text-red-700 mt-5">
+                  Allowance need to pay after confirming the order
+                  <span className="text-red-700">!</span>
+                </p>
+              </div>
+            )}
+          </div>
+          <div className="basis-1/2 bg-white bg-opacity-40 rounded-xl p-5">
+            <div className="flex flex-col">
+              <div className="flex flex-row justify-start items-center">
+                <h1 className="text-black font-bold text-3xl mb-2">
+                  Order Details
+                </h1>
+              </div>
+
+              <div className="flex flex-row ">
+                <div className="basis-1/2 flex flex-col">
+                  <label className="text-black text-xl">Added Date</label>
                   <input
-                    type="phone"
-                    placeholder="Full name"
-                    className="input input-bordered w-full max-w-md"
+                    type="date"
+                    placeholder="Added date"
+                    className="input input-bordered w-full max-w-xs "
+                    defaultValue={new Date().toISOString().split("T")[0]}
                   />
                 </div>
-                <div className="flex flex-col">
-                  <label htmlFor="email" className="font-serif">
-                    Address
-                  </label>
-                  <textarea
-                    placeholder="Message"
-                    className="textarea textarea-bordered textarea-lg w-full max-w-md"
-                  ></textarea>
-                </div>
-
-                <div>
-                  <button className="btn btn-secondary bg-green-500">
-                    check your ordersummary
-                  </button>
+                <div className="basis-1/2 flex flex-col">
+                  <label className="text-black text-xl">Delivery Date</label>
+                  <input
+                    type="date"
+                    placeholder="Delivery date"
+                    className="input input-bordered w-full max-w-xs"
+                  />
                 </div>
               </div>
-              <button type="submit" className="bg-red-400 p-2 rounded-lg m-5">
-                Place Order
-              </button>
-            </form>
+
+              <textarea
+                placeholder="Delivery Address"
+                rows={3}
+                cols={25}
+                className="w-[600px] my-5 p-2 border-2 border-black rounded-lg"
+              />
+              <textarea
+                placeholder="Note"
+                rows={3}
+                cols={25}
+                className="w-[600px] my-5 p-2 border-2 border-black rounded-lg"
+              />
+              <label className="text-black text-xl">
+                Upload any documents related to order
+              </label>
+              <input
+                type="file"
+                className="w-[300px] my-5 p-2 border-2 bg-black border-black rounded-lg"
+              />
+              <div className="flex flex-row justify-center">
+                <button className="bg-red-950 text-white font-bold py-4 px-8 mr-5 rounded-lg border-white border-4">
+                  Place order
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
+      {isconfirmationopen && (
+        <Deleteconfirmation
+          handledelete={handledelete}
+          setmodelclose={handleclose}
+        />
+      )}
+      {isloading && <CommonLoading />}
     </div>
   );
 };
 
 export default Checkout;
-
-{
-  /* <table className="table border-white bg-red-100 opacity-90 text-black  font-serif w-3/4 "> */
-}
-{
-  /* head */
-}
-{
-  /* <thead className="text-black text-xl">
-  <tr>
-    {/* <th>
-<label>
-  <input type="checkbox" className="checkbox" />
-</label>
-</th> */
-}
-
-//     <th>Product Id</th>
-//     <th> Category</th>
-//     <th>Item name</th>
-//     <th>Quantity</th>
-//     <th>Price</th>
-//     <th>Total</th>
-//     <th> Discount</th>
-//     <th>Final Amount</th>
-//   </tr>
-// </thead> */}
-{
-  /* <tbody>
-  {mycart?.length > 0 ? (
-    mycart?.map((item: any, index: any) => (
-      <tr>
-        <td>
-          <div className="d-flex justify-content-start flex-column">
-            <a className="text-black text-hover-primary fs-6">
-              {item?.product_id ?? "-"}
-            </a>
-          </div>
-        </td>
-
-        <td>
-          <div className="d-flex justify-content-start flex-column">
-            <a className="text-black text-hover-primary fs-6">
-              {item?.category ?? "-"}
-            </a>
-          </div>
-        </td>
-        <td>
-          <div className="d-flex justify-content-start flex-column">
-            <a className="text-black text-hover-primary ">
-              {item?.item_name ?? "-"}
-            </a>
-          </div>
-        </td>
-        <td>
-          <div className="d-flex justify-content-start flex-column">
-            <a className="text-black text-hover-primary fs-6 ">
-              {item?.quantity ?? "-"}
-            </a>
-          </div>
-        </td>
-        <td>
-          <a className=" text-hover-primary fs-6 px-5 py-5 rounded-md ">
-            {item?.price ?? "-"}
-          </a>
-        </td>
-        <td>
-          <a className=" text-hover-primary fs-6 px-5 py-5 rounded-md ">
-            {item.price * item.quantity}
-          </a>
-        </td>
-        <td>
-          <a className=" text-hover-primary fs-6 px-5 py-5 rounded-md text-red-600 ">
-            {item?.discount + "%"}
-          </a>
-        </td>
-        <td>
-          <a className=" text-hover-primary fs-6 px-5 py-5 rounded-md ">
-            {item.price * item.quantity -
-              (item.price * item.quantity * item.discount) / 100}
-          </a>
-        </td>
-      </tr>
-    ))
-  ) : (
-    <tr>
-      <td colSpan={7}>
-        <div className="py-5 d-flex flex-column align-content-center justify-content-center">
-          <div className="text-center">
-            <div className="symbol symbol-200px ">
-              <img src="/media/other/nodata.png" alt="" />
-            </div>
-          </div>
-          <div className="d-flex text-center w-100 align-content-center justify-content-center fw-semibold fs-3 text-gray-400">
-            No matching records found
-          </div>
-        </div>
-      </td>
-    </tr>
-  )}
-</tbody> */
-}
-{
-  /* foot */
-}
-{
-  /* </table> */
-}
