@@ -1,8 +1,22 @@
-import { useNavigate } from "react-router-dom";
+import { Form, useNavigate } from "react-router-dom";
 
 import pic07 from "../assets/pico9.jpg";
+import { Formik } from "formik";
+import { error } from "console";
+import { useState } from "react";
+import CommonLoading from "../Util/Commonloading";
+import axios from "axios";
+import { toast } from "react-toastify";
+import * as Yup from "yup";
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 const Login = () => {
+  const [isloading, setisloading] = useState(false);
+  const Loginvalidationschema = Yup.object({
+    Username: Yup.string().required("Username is required"),
+    Password: Yup.string().required("Password is required"),
+  });
   return (
     <div>
       <div className="flex flex-row">
@@ -14,32 +28,75 @@ const Login = () => {
         </div>
         <div className="basis-1/2 flex justify-center items-center bg-white ">
           <div className="flex flex-col items-center">
-            <div className="flex flex-row gap-2">
-              <a href="/" className="flex align-center">
+            <div className="flex flex-row position-relative gap-2">
+              <a href="/" className="mt-3">
                 <span className="text-6xl text-black animate-pulse ">«</span>
               </a>
               <h1 className="mt-4 text-6xl font-serif text-black font-bold mb-4">
                 <span className="text-red-950">L</span>ogin
               </h1>
             </div>
+            <Formik
+              initialValues={{
+                Username: "",
+                Password: "",
+              }}
+              validationSchema={Loginvalidationschema}
+              onSubmit={async (values, { resetForm }) => {
+                setisloading(true);
 
-            <div className="px-5 py-5 w-full">
-              <input
-                type="text"
-                placeholder="Username"
-                className="input input-bordered w-full min-w-96"
-              />
-            </div>
-            <div className="px-5 py-5 w-full">
-              <input
-                type="password"
-                placeholder="Password"
-                className="input input-bordered w-full min-w-96"
-              />
-            </div>
-            <div className="px-5 py-5">
-              <button className="btn btn-wide">Login</button>
-            </div>
+                try {
+                  await axios.post(`${API_URL}/customer/login`, values);
+                  toast.success("Login successfully");
+                } catch (error) {
+                  toast.error("error");
+                } finally {
+                  setTimeout(() => {
+                    setisloading(false);
+                  }, 1000);
+                  resetForm();
+                }
+              }}
+            >
+              {({ getFieldProps, errors, touched, values, handleSubmit }) => (
+                <Form onSubmit={handleSubmit}>
+                  <div className="flex flex-col">
+                    <div className="px-5 py-5 w-full">
+                      <input
+                        type="text"
+                        placeholder="Username"
+                        className="input input-bordered w-full min-w-96"
+                        id="Username"
+                        {...getFieldProps("Username")}
+                      />
+                      {errors.Username && touched.Username && (
+                        <p className="text-red-600">{errors.Username}</p>
+                      )}
+                    </div>
+                    <div className="px-5 py-5 w-full">
+                      <input
+                        type="password"
+                        placeholder="Password"
+                        className="input input-bordered w-full min-w-96"
+                        id="Password"
+                        {...getFieldProps("Password")}
+                      />
+                      {errors.Password && touched.Password && (
+                        <p className="text-red-600">{errors.Password}</p>
+                      )}
+                    </div>
+                    <div className="flex flex-row justify-center">
+                      <div className="px-5 py-5">
+                        <button className="btn btn-wide" type="submit">
+                          Login
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </Form>
+              )}
+            </Formik>
+
             <div>
               <p className="text-gray-500">
                 Don&apos;t have an account?{" "}
@@ -54,6 +111,7 @@ const Login = () => {
           </div>
         </div>
       </div>
+      {isloading && <CommonLoading />}
     </div>
   );
 };
