@@ -76,7 +76,7 @@ const Signup = () => {
                 };
                 console.log(customers);
                 try {
-                  await axios.post(`${API_URL}/customer`, customers);
+                  await axios.post(`${API_URL}/Customer`, customers);
                   toast.success("Customer Created Successfully");
                   resetForm();
                 } catch (error) {

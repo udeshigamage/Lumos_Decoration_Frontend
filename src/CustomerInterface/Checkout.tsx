@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
-import mycartp from "../assets/pic22.jpg";
-import { useNavigate } from "react-router-dom";
+
+import { Form, useNavigate } from "react-router-dom";
 import pic09 from "../assets/pic56.jpg";
-import { MdDelete } from "react-icons/md";
+
 import CommonLoading from "../Util/Commonloading";
 import Deleteconfirmation from "../Util/Deleteconfirmation";
 import { toast } from "react-toastify";
-
+import { Formik } from "formik";
+import axios from "axios";
+const API_URL = import.meta.env.VITE_API_URL;
 interface CartItem {
   product_id: string;
   product_name: string;
@@ -214,58 +216,107 @@ const Checkout = () => {
             )}
           </div>
           <div className="basis-1/2 bg-white bg-opacity-40 rounded-xl p-5">
-            <div className="flex flex-col">
-              <div className="flex flex-row justify-start items-center">
-                <h1 className="text-black font-bold text-3xl mb-2">
-                  Order Details
-                </h1>
-              </div>
+            <Formik
+              initialValues={{
+                description: "",
+                delivery_date: "",
+                added_date: "",
+              }}
+              onSubmit={(values, resetForm) => {
+                setisloading(true);
+                try {
+                  axios.post(`${API_URL}/Order`, {
+                    Customer_ID: 1,
+                    orderitems: cartitems.map((item) => ({
+                      Product_ID: item.product_id,
+                      quantity: item.quantity,
+                    })),
+                    order: {
+                      Order_ID: 0, // Backend might generate this
+                      Order_description: values.description || "No description",
+                      Order_deadlinedate: values.delivery_date,
+                      Order_allowance: 0, // Adjust as needed
+                      Order_payment_status: false, // Assuming unpaid initially
+                      Order_allowance_status: false, // Adjust as needed
+                      Order_status: "Pending",
+                      TotalCost: 0, // Adjust if needed
+                    },
+                  });
+                } catch (error) {
+                } finally {
+                  setTimeout(() => {
+                    setisloading(false);
+                  }, 1000);
+                }
+              }}
+            >
+              {({ values, getFieldProps, handleSubmit }) => (
+                <Form onSubmit={handleSubmit}>
+                  <div className="flex flex-col">
+                    <div className="flex flex-row justify-start items-center">
+                      <h1 className="text-black font-bold text-3xl mb-2">
+                        Order Details
+                      </h1>
+                    </div>
 
-              <div className="flex flex-row ">
-                <div className="basis-1/2 flex flex-col">
-                  <label className="text-black text-xl">Added Date</label>
-                  <input
-                    type="date"
-                    placeholder="Added date"
-                    className="input input-bordered w-full max-w-xs "
-                    defaultValue={new Date().toISOString().split("T")[0]}
-                  />
-                </div>
-                <div className="basis-1/2 flex flex-col">
-                  <label className="text-black text-xl">Delivery Date</label>
-                  <input
-                    type="date"
-                    placeholder="Delivery date"
-                    className="input input-bordered w-full max-w-xs"
-                  />
-                </div>
-              </div>
+                    <div className="flex flex-row ">
+                      <div className="basis-1/2 flex flex-col">
+                        <label className="text-black text-xl">Added Date</label>
+                        <input
+                          type="date"
+                          placeholder="Added date"
+                          className="input input-bordered w-full max-w-xs "
+                          defaultValue={new Date().toISOString().split("T")[0]}
+                          disabled
+                        />
+                      </div>
+                      <div className="basis-1/2 flex flex-col">
+                        <label className="text-black text-xl">
+                          Delivery Date
+                        </label>
+                        <input
+                          type="date"
+                          placeholder="Delivery date"
+                          className="input input-bordered w-full max-w-xs"
+                          {...getFieldProps("delivery_date")}
+                        />
+                      </div>
+                    </div>
 
-              <textarea
-                placeholder="Delivery Address"
-                rows={3}
-                cols={25}
-                className="w-[600px] my-5 p-2 border-2 border-black rounded-lg"
-              />
-              <textarea
-                placeholder="Note"
-                rows={3}
-                cols={25}
-                className="w-[600px] my-5 p-2 border-2 border-black rounded-lg"
-              />
-              <label className="text-black text-xl">
-                Upload any documents related to order
-              </label>
-              <input
-                type="file"
-                className="w-[300px] my-5 p-2 border-2 bg-black border-black rounded-lg"
-              />
-              <div className="flex flex-row justify-center">
-                <button className="bg-red-950 text-white font-bold py-4 px-8 mr-5 rounded-lg border-white border-4">
-                  Place order
-                </button>
-              </div>
-            </div>
+                    <textarea
+                      placeholder="Description"
+                      rows={3}
+                      cols={25}
+                      className="w-[600px] my-5 p-2 border-2 border-black rounded-lg"
+                      {...getFieldProps("description")}
+                    />
+                    {/* <textarea
+                   placeholder="Note"
+                   rows={3}
+                   cols={25}
+                   className="w-[600px] my-5 p-2 border-2 border-black rounded-lg"
+                   {...getFieldProps("note")}
+                 /> */}
+                    {/* <label className="text-black text-xl">
+                   Upload any documents related to order
+                 </label>
+                 <input
+                   type="file"
+                   className="w-[300px] my-5 p-2 border-2 bg-black border-black rounded-lg"
+                   {...getFieldProps("file")}
+                 /> */}
+                    <div className="flex flex-row justify-center">
+                      <button
+                        className="bg-red-950 text-white font-bold py-4 px-8 mr-5 rounded-lg border-white border-4"
+                        type="submit"
+                      >
+                        Place order
+                      </button>
+                    </div>
+                  </div>
+                </Form>
+              )}
+            </Formik>
           </div>
         </div>
       </div>

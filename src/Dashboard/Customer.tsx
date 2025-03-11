@@ -3,6 +3,7 @@ import { Formik } from "formik";
 import React, { useEffect, useState } from "react";
 import { Form } from "react-router-dom";
 import * as Yup from "yup";
+import pic045 from "../assets/pic56.jpg";
 
 //   // setIsLoading(true)
 //   try {
@@ -117,7 +118,14 @@ const Customer = () => {
       <div>
         <div style={{ minHeight: "calc(100vh - 320px)" }}>
           <div className="overflow-x-auto">
-            <table className="table border-white bg-red-100 opacity-90 text-black">
+            <table
+              className="table border-white bg-red-100 opacity-90 text-black"
+              style={{
+                backgroundImage: `url(${pic045})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+              }}
+            >
               {/* head */}
               <thead className="text-black text-xl">
                 <tr>
@@ -126,7 +134,7 @@ const Customer = () => {
               <input type="checkbox" className="checkbox" />
             </label>
           </th> */}
-                  <th>Customer Id</th>
+
                   <th>Name</th>
                   <th>Email</th>
                   <th>Contact no</th>
@@ -138,39 +146,39 @@ const Customer = () => {
                 {Customer?.length > 0 ? (
                   Customer?.map((item: any, index: any) => (
                     <tr>
-                      <td>
+                      {/* <td>
                         <div className="d-flex justify-content-start flex-column">
                           <a className="text-black text-hover-primary fs-6">
-                            {item?.customer_ID ?? "-"}
+                            {item?.Customer_ID ?? "-"}
                           </a>
                         </div>
-                      </td>
+                      </td> */}
 
                       <td>
                         <div className="d-flex justify-content-start flex-column">
-                          <a className="text-black text-hover-primary fs-6">
-                            {item?.name ?? "-"}
+                          <a className="text-black font-semibold text-lg text-hover-primary fs-6">
+                            {item?.Customer_name ?? "-"}
                           </a>
                         </div>
                       </td>
                       <td>
                         <div className="d-flex justify-content-start flex-column">
-                          <a className="text-black text-hover-primary fs-6">
-                            {item?.email ?? "-"}
+                          <a className="text-black font-semibold text-lg text-hover-primary fs-6">
+                            {item?.Customer_email ?? "-"}
                           </a>
                         </div>
                       </td>
                       <td>
                         <div className="d-flex justify-content-start flex-column">
-                          <a className="text-black text-hover-primary ">
-                            {item?.contactno ?? "-"}
+                          <a className="text-black font-semibold text-lg text-hover-primary fs-6">
+                            {item?.Customer_contact_no ?? "-"}
                           </a>
                         </div>
                       </td>
                       <td>
                         <div className="d-flex justify-content-start flex-column">
-                          <a className="text-black text-hover-primary fs-6">
-                            {item?.address ?? "-"}
+                          <a className="text-black font-semibold text-lg text-hover-primary fs-6">
+                            {item?.Customer_address ?? "-"}
                           </a>
                         </div>
                       </td>
@@ -192,7 +200,7 @@ const Customer = () => {
                             <button
                               className="bg-black text-white px-2 py-2  rounded-md"
                               onClick={() => {
-                                handledelete(item?.customer_ID);
+                                handledelete(item?.Customer_ID);
                               }}
                             >
                               Delete

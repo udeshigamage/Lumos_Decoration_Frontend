@@ -16,6 +16,7 @@ import * as Yup from "yup";
 //     //setIsLoading(false)
 //   }
 // };
+import pic045 from "../assets/pic56.jpg";
 const API_URL = import.meta.env.VITE_API_URL;
 const Order = () => {
   const [Order, setOrder] = useState([]);
@@ -113,7 +114,14 @@ const Order = () => {
       <div>
         <div style={{ minHeight: "calc(100vh - 320px)" }}>
           <div className="overflow-x-auto">
-            <table className="table border-white bg-red-100 opacity-90 text-black">
+            <table
+              className="table border-white bg-red-100 opacity-90 text-black"
+              style={{
+                backgroundImage: `url(${pic045})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+              }}
+            >
               {/* head */}
               <thead className="text-black text-xl">
                 <tr>
@@ -123,12 +131,12 @@ const Order = () => {
             </label>
           </th> */}
 
-                  <th>Customer Name</th>
-                  <th>Order type</th>
+                  <th>Customer</th>
                   <th>Order date</th>
                   <th>Deadline date</th>
-
                   <th>Status</th>
+                  <th>Order Allowance status</th>
+                  <th>Order description</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -139,35 +147,41 @@ const Order = () => {
                       <td>
                         <div className="d-flex justify-content-start flex-column">
                           <a className="text-black text-hover-primary fs-6">
-                            {item?.customer_ID ?? "-"}
-                          </a>
-                        </div>
-                      </td>
-
-                      <td>
-                        <div className="d-flex justify-content-start flex-column">
-                          <a className="text-black text-hover-primary fs-6">
-                            {item?.eventType ?? "-"}
+                            {item?.Customer.Customer_name ?? "-"}
                           </a>
                         </div>
                       </td>
                       <td>
                         <div className="d-flex justify-content-start flex-column">
                           <a className="text-black text-hover-primary ">
-                            {item?.order_date ?? "-"}
+                            {item?.Order_date ?? "-"}
                           </a>
                         </div>
                       </td>
                       <td>
                         <div className="d-flex justify-content-start flex-column">
                           <a className="text-black text-hover-primary fs-6 ">
-                            {item?.deadlinedate ?? "-"}
+                            {item?.Order_deadlinedate ?? "-"}
                           </a>
                         </div>
                       </td>
                       <td>
-                        <a className=" text-hover-primary fs-6 px-5 py-5 rounded-md ">
-                          {item?.status ?? "-"}
+                        <a className="text-black font-semibold text-lg text-hover-primary fs-6">
+                          {item?.Order_status ?? "-"}
+                        </a>
+                      </td>
+                      <td>
+                        <div className="d-flex justify-center flex-column">
+                          <a className="text-black font-semibold text-lg text-hover-primary fs-6">
+                            {item?.Order_allowance_status === true
+                              ? "paid"
+                              : "not paid"}
+                          </a>
+                        </div>
+                      </td>
+                      <td>
+                        <a className="text-black font-semibold text-lg text-hover-primary fs-6">
+                          {item?.Order_description ?? "-"}
                         </a>
                       </td>
                       <td>
