@@ -22,6 +22,8 @@ import Categorylist from "../CustomerInterface/Categorylist";
 
 import Productlist from "../CustomerInterface/Productlist";
 import Checkout from "../CustomerInterface/Checkout";
+import Store from "../reduxstore/Store";
+import Logindetails from "../CustomerInterface/Logindetails";
 const router = createBrowserRouter([
   { path: "/", element: <Layout /> },
   { path: "/login", element: <Login /> },
@@ -63,6 +65,14 @@ const router = createBrowserRouter([
   {
     path: "/revision",
     element: <Revision />,
+  },
+  {
+    path: "/employeeefficiency",
+    element: <Store />,
+  },
+  {
+    path: "/logindetails",
+    element: <Logindetails />,
   },
 
   {

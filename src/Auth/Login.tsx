@@ -8,11 +8,14 @@ import CommonLoading from "../Util/Commonloading";
 import axios from "axios";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
+import { useDispatch } from "react-redux";
+import { LOGIN_ERROR, LOGIN_SUCCESS } from "../reduxstore/Action";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 const Login = () => {
   const [isloading, setisloading] = useState(false);
+  const dispatch = useDispatch();
   const Loginvalidationschema = Yup.object({
     Username: Yup.string().required("Username is required"),
     Password: Yup.string().required("Password is required"),
@@ -45,11 +48,24 @@ const Login = () => {
               onSubmit={async (values, { resetForm }) => {
                 setisloading(true);
 
+                const logindetails = {
+                  Email: values.Username,
+                  PasswordHash: values.Password,
+                };
+
                 try {
-                  await axios.post(`${API_URL}/customer/login`, values);
+                  const response = await axios.post(
+                    `${API_URL}/Auth/login`,
+                    logindetails
+                  );
+                  localStorage.setItem("token", response.data.token);
+                  console.log(response.data.token);
+                  console.log(response.data.data.Result);
+                  dispatch(LOGIN_SUCCESS(response.data.data.Result));
                   toast.success("Login successfully");
                 } catch (error) {
                   toast.error("error");
+                  dispatch(LOGIN_ERROR());
                 } finally {
                   setTimeout(() => {
                     setisloading(false);

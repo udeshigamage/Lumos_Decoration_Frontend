@@ -68,16 +68,22 @@ const Signup = () => {
 
                 console.log(values);
                 const customers = {
-                  Customer_name: values.First_name + " " + values.Last_name,
-                  Customer_address: values.Customer_address,
-                  Customer_contact_no: values.Customer_contact_no,
-                  Customer_email: values.Customer_email,
-                  Password: values.Password,
+                  Name: values.First_name + " " + values.Last_name,
+                  Address: values.Customer_address,
+                  Contact_no: values.Customer_contact_no,
+                  Email: values.Customer_email,
+                  PasswordHash: values.Password,
+                  usertype: 1,
                 };
                 console.log(customers);
                 try {
-                  await axios.post(`${API_URL}/Customer`, customers);
-                  toast.success("Customer Created Successfully");
+                  const message = await axios.post(
+                    `${API_URL}/User`,
+                    customers
+                  );
+                  toast.success(
+                    message?.data?.Text ?? "User created successfully!"
+                  );
                   resetForm();
                 } catch (error) {
                   toast.error("Error Creating Customer");
