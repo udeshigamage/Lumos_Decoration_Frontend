@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import * as Yup from "yup";
 import { useDispatch } from "react-redux";
 import { LOGIN_ERROR, LOGIN_SUCCESS } from "../reduxstore/Action";
+import { login } from "../reduxstore/Userslice";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -61,7 +62,7 @@ const Login = () => {
                   localStorage.setItem("token", response.data.token);
                   console.log(response.data.token);
                   console.log(response.data.data.Result);
-                  dispatch(LOGIN_SUCCESS(response.data.data.Result));
+                  dispatch(login(response.data.data.Result));
                   toast.success("Login successfully");
                 } catch (error) {
                   toast.error("error");

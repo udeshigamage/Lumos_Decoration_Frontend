@@ -1,7 +1,12 @@
-import { applyMiddleware, createStore } from "redux";
-import Authreducer from "./AuthReducer";
-import thunk from "redux-thunk";
+import { configureStore } from "@reduxjs/toolkit";
+import userReducer from "./Userslice";
 
-const Store_ = createStore(Authreducer);
+export const store = configureStore({
+  reducer: {
+    user: userReducer,
+  },
+});
 
-export default Store_;
+// Define RootState type for TypeScript
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;

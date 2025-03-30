@@ -22,8 +22,10 @@ import Categorylist from "../CustomerInterface/Categorylist";
 
 import Productlist from "../CustomerInterface/Productlist";
 import Checkout from "../CustomerInterface/Checkout";
-import Store from "../reduxstore/Store";
-import Logindetails from "../CustomerInterface/Logindetails";
+import Store from "../reduxstore/Userslice";
+
+import { lazy } from "react";
+const Logindetails = lazy(() => import("../CustomerInterface/Logindetails"));
 const router = createBrowserRouter([
   { path: "/", element: <Layout /> },
   { path: "/login", element: <Login /> },

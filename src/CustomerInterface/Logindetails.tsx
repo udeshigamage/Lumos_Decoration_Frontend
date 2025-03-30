@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import RootState from "../reduxstore/Store";
+import RootState from "../reduxstore/Userslice";
 
 const Logindetails = () => {
   const user = useSelector((state: any) => state.user);

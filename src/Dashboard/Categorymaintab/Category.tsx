@@ -16,6 +16,8 @@ import {
   TbPlayerTrackPrevFilled,
 } from "react-icons/tb";
 import Deleteconfirmation from "../../Util/Deleteconfirmation";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../reduxstore/Store_";
 
 const API_URL = import.meta.env.VITE_API_URL;
 const Category = () => {
@@ -105,12 +107,13 @@ const Category = () => {
     setSelectedCategory(null);
     setmodelopen(false);
   };
-
+  const user = useSelector((state: RootState) => state.user.userData); // Get user data from Redux
+  const dispatch = useDispatch();
   return (
     <div className="flex flex-col">
       <div className="flex flex-row justify-between items-center">
         <h1 className="text-3xl text-black m-5 font-bold rounded-md">
-          Category Management
+          {user?.User_ID}
         </h1>
         <FaPlus
           color="black"
