@@ -17,6 +17,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 const Login = () => {
   const [isloading, setisloading] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const Loginvalidationschema = Yup.object({
     Username: Yup.string().required("Username is required"),
     Password: Yup.string().required("Password is required"),
@@ -61,8 +62,15 @@ const Login = () => {
                   );
                   localStorage.setItem("token", response.data.token);
                   console.log(response.data.token);
-                  console.log(response.data.data.Result);
-                  dispatch(login(response.data.data.Result));
+                  console.log(response.data.data.Result[0].Role);
+                  dispatch(login(response.data.data.Result[0]));
+
+                  if (response.data.data.Result[0].Role === "Admin") {
+                    navigate("/app");
+                  }
+                  if (response.data.data.Result[0].Role === "Customer") {
+                    navigate("/customer/service");
+                  }
                   toast.success("Login successfully");
                 } catch (error) {
                   toast.error("error");
