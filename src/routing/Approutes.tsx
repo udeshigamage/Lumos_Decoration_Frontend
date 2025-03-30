@@ -1,139 +1,87 @@
-import { Form, Formik } from 'formik'
-import React, { FC, memo, useCallback, useEffect, useMemo, useReducer, useRef, useState } from 'react'
-import { createContext } from 'vm'
-import Deleteconfirmation from '../Util/Deleteconfirmation'
-import axios from 'axios'
-import { toast } from 'react-toastify'
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Route,
+  createRoutesFromElements,
+} from "react-router-dom";
+import Layout from "../layout";
+import Login from "../Auth/Login";
+import Signup from "../Auth/Signup";
+import Layoutdash from "../Dashboard/Layoutdash";
+import Employee from "../Dashboard/Employee";
+import Services from "../CustomerInterface/Services";
+import Addtobooking from "../CustomerInterface/Addtobooking";
+import SideNavigationPanel2 from "../Employeeinterface/SideNavigation";
+import Pendingorder from "../Employeeinterface/Pendingorder";
+import Requestorder from "../Employeeinterface/Requestorder";
+import Revision from "../Web/Revision";
+import Garlends from "../CustomerInterface/Garlends";
+import Candledecorations from "../CustomerInterface/Candledecorations";
+import Flowerboquets from "../CustomerInterface/Flowerboquets";
+import Customdecoratons from "../CustomerInterface/Customdecoratons";
+import Orderhistory from "../CustomerInterface/Orderhistory";
+import Mycart from "../CustomerInterface/Mycart";
+import Categorylist from "../CustomerInterface/Categorylist";
+import Productlist from "../CustomerInterface/Productlist";
+import Checkout from "../CustomerInterface/Checkout";
+import { lazy } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../reduxstore/Store_";
+import PrivateRoutes from "./privateRoutes";
 
-type props = {
-    yer: string
-}
-const Approutes:FC<props> =  ({yer="rey"}) => {
-    const employee = [{
-        id:1,
-        name:"employee1",
-      },{
-        id:2,
-        name:"employee2",
-      }]
-const filteredemployee = employee.filter((item:any)=>{item.id ===1})
+const Logindetails = lazy(() => import("../CustomerInterface/Logindetails"));
 
-      const[employee1,setemploee]=useState<[]>([])
-      const [isdeployed,deployed]=useState<boolean>(false)
-      const [ismodelopen, setmodelopen] = useState<boolean>(false);
-      const [isloading,setisloading]=useState<boolean>(false)
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <>
+      {/* Public Routes */}
+      <Route path="/" element={<Layout />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
 
-      useEffect(()=>{
-        setTimeout(()=>{
-            console.log("hello")
-        },10000)
-
-        return ()=>{
-            clearTimeout
-            //cleanup function
-        }
-      },[employee1])
-
-      const ride = useCallback(()=>{
-        console.log("hello")
-      },[])
-      const ref = useRef(0)
-const context23 = createContext();
-      const computedvalue = useMemo(()=>{
-        let i=3;let j=300;
-        
-        while(i<200){
-            i=i*j
-        }
-        return i;
-      },[])
-      const reducer=(state:number,action:string)=>{
-        switch(action){
-            case "increment":
-                return state+1
-                case"decrement":
-
-                return state-1
-                default:
-                    return state
-        }
-
-      }
-
-      const[state,dispatch]=useReducer(reducer,0);
-
-  return (
-    <context23.Provider value={"hello"}>
-    <div>
-        <table>
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Name</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-           {employee.map((item:any,index:any)=>(
-            <tbody key={index}>
-                <tr>{item.id}</tr>
-                <tr>{item.name}</tr>
-                <tr>{yer}</tr>
-            </tbody>
-           ))} 
-        </table>
-        <div>{state}</div>
-        <button onClick={()=> dispatch("increment")}></button>
-        <button onClick={()=> ride()}></button>
-        <div>{computedvalue}</div>
-        <div>{ref.current}</div>
-        <button onClick={()=> setmodelopen(true)}></button>
-        {isdeployed?(<div>hello</div>):(<div>bye</div>)} 
-        {isdeployed &&(<div>{computedvalue}</div>)}
-
-      <Formik initialValues={{
-        name_:"",
-        email:""
-      }}
-      
-      onSubmit={ async (values,{resetForm})=>{
-        setisloading (true);
-        try{
-            await axios.post(`${API_URL}/product`,values);
-            toast.success("product added successfully");
-            resetForm();
-
-            
-
-
-        }
-        catch{
-            toast.error("something went wrong");
-        }
-        finally{
-            setTimeout(()=>{
-                setisloading(false);
-            },1000)
-        }
-
-      }}
-      validationSchema={Yup.object().shape({})}>
-        {({getFieldProps,resetForm,handleSubmit})=>(
-            <Form onSubmit={handleSubmit}>
-                <input type="text" id='name'{...getFieldProps("name_")}/>
-                <input type="text" id='email'{...getFieldProps("email")}/>
-                <button type='submit'>submit</button>    
-
-                
-            </Form>
-        )}
-        
-        </Formik>  
-     {ismodelopen &&(
-        <Deleteconfirmation/>
-     )}
-    </div>
-    </context23.Provider>
+      {/* Private Routes (Protected) */}
+      <Route element={<PrivateRoutes />}>
+        <Route path="/customer/services" element={<Services />} />
+        <Route path="/customer/addtobooking" element={<Addtobooking />} />
+        <Route path="/customer/category/garlands" element={<Garlends />} />
+        <Route path="/customer/orderhistory" element={<Orderhistory />} />
+        <Route path="/customer/mycart" element={<Mycart />} />
+        <Route
+          path="/customer/services/categorylist/:id"
+          element={<Categorylist />}
+        />
+        <Route
+          path="/customer/services/categorylist/:id/productlist/:id"
+          element={<Productlist />}
+        />
+        <Route path="/customer/services/checkout" element={<Checkout />} />
+        <Route
+          path="/customer/category/candle-decorations"
+          element={<Candledecorations />}
+        />
+        <Route
+          path="/customer/category/flower-bouquets"
+          element={<Flowerboquets />}
+        />
+        <Route
+          path="/customer/category/custom-decorations"
+          element={<Customdecoratons />}
+        />
+        <Route path="/employee" element={<SideNavigationPanel2 />} />
+        <Route path="/employee/pendingorder" element={<Pendingorder />} />
+        <Route path="/employee/requestorder" element={<Requestorder />} />
+        <Route path="/revision" element={<Revision />} />
+        <Route path="/logindetails" element={<Logindetails />} />
+        <Route path="/app" element={<Layoutdash />}>
+          <Route path="employee" element={<Employee />} />
+        </Route>
+      </Route>
+    </>
   )
-}
+);
 
-export default Approutes
+const Approutes = () => {
+  return <RouterProvider router={router} />;
+};
+
+export default Approutes;

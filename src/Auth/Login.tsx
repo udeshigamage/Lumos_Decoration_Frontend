@@ -69,7 +69,10 @@ const Login = () => {
                     navigate("/app");
                   }
                   if (response.data.data.Result[0].Role === "Customer") {
-                    navigate("/customer/service");
+                    navigate("/customer/services");
+                  }
+                  if (response.data.data.Result[0].Role === "Employee") {
+                    navigate("/employee");
                   }
                   toast.success("Login successfully");
                 } catch (error) {

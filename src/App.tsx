@@ -1,10 +1,14 @@
 import { ToastContainer } from "react-toastify";
 import PrivateRoutes from "./routing/privateRoutes";
+import Approutes from "./routing/Approutes";
+import { BrowserRouter } from "react-router-dom";
 
 function App() {
   return (
     <>
-      <PrivateRoutes />
+      {" "}
+      {/* Only add BrowserRouter here */}
+      <Approutes />
       <ToastContainer
         position="top-right"
         autoClose={5000}

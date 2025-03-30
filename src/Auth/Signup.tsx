@@ -73,7 +73,7 @@ const Signup = () => {
                   Contact_no: values.Customer_contact_no,
                   Email: values.Customer_email,
                   PasswordHash: values.Password,
-                  usertype: 1,
+                  Role: "Customer",
                 };
                 console.log(customers);
                 try {
@@ -85,6 +85,7 @@ const Signup = () => {
                     message?.data?.Text ?? "User created successfully!"
                   );
                   resetForm();
+                  navigate("/login");
                 } catch (error) {
                   toast.error("Error Creating Customer");
                 } finally {
