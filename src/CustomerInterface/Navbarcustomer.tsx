@@ -1,7 +1,10 @@
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { logout } from "../reduxstore/Userslice";
 
 const Navbarcustomer = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   return (
     <div>
       <div className="navbar bg-base-100 bg-red-950 top-0 left-0 fixed">
@@ -50,7 +53,7 @@ const Navbarcustomer = () => {
               <li>
                 <a>Settings</a>
               </li>
-              <li>
+              <li onClick={() => dispatch(logout())}>
                 <a>Logout</a>
               </li>
             </ul>
