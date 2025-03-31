@@ -79,9 +79,9 @@ const Productlist = () => {
     setisloading(true);
     try {
       const response = await axios.get(
-        `${API_URL}/product/subcategory/product/${params.id}`
+        `${API_URL}/product/productalllist/list/${params.id}`
       );
-      setCategories(response.data.data);
+      await setCategories(response.data);
     } catch (error) {
       toast.error("Error fetching products");
     } finally {

@@ -90,7 +90,7 @@ const Category = () => {
       await axios.delete(`${API_URL}/Category/${categotyid}`);
 
       toast.success("deleted succcessfully");
-      fetchcategories(currentPage);
+      await fetchcategories(currentPage);
     } catch (error) {
       toast.error("error");
     } finally {
@@ -108,7 +108,7 @@ const Category = () => {
     setmodelopen(false);
   };
   const user = useSelector((state: RootState) => state.user.userData); // Get user data from Redux
-  const dispatch = useDispatch();
+  //const dispatch = useDispatch();
   return (
     <div className="flex flex-col">
       <div className="flex flex-row justify-between items-center">

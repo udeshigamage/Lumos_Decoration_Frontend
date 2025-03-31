@@ -24,10 +24,10 @@ const Services = () => {
   const fetchCategoryList = async () => {
     setisloading(true);
     try {
-      const response = await axios.get(
-        `${API_URL}/Category/category/categorylist`
-      );
-      setCategories(response.data.data);
+      const response =
+        await axios.get(`${API_URL}/Category/listallcategories/list
+`);
+      setCategories(response.data);
     } catch (error) {
       toast.error("error");
     } finally {

@@ -49,7 +49,9 @@ const Subcategory = () => {
   };
   const fetchcategories = async () => {
     try {
-      const response = await axios.get(`${API_URL}/category/categorylist`);
+      const response = await axios.get(
+        `${API_URL}/Category/category/categorylist`
+      );
 
       console.log(response);
       setCategoryList(response?.data.data);
@@ -68,7 +70,7 @@ const Subcategory = () => {
     setisloading(true);
     try {
       const categories = await axios.get(
-        `${API_URL}/subcategory?page=${page}&pagesize=${pageSize}`
+        `${API_URL}/Subcategory?page=${page}&pagesize=${pageSize}`
       );
       setcategories(categories.data.data);
       settotalitems(categories.data.totalItems);
@@ -103,10 +105,10 @@ const Subcategory = () => {
   const subcategorydelete = async () => {
     setisloading(true);
     try {
-      await axios.delete(`${API_URL}/subcategory/${categotyid}`);
+      await axios.delete(`${API_URL}/Subcategory/${categotyid}`);
 
       toast.success("deleted succcessfully");
-      fetchsubcategories(currentPage);
+      await fetchsubcategories(currentPage);
     } catch (error) {
       toast.error("error");
     } finally {

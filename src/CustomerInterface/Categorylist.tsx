@@ -27,9 +27,9 @@ const Categorylist = () => {
     setisloading(true);
     try {
       const response = await axios.get(
-        `${API_URL}/Subcategory/subcategory/category/list/${params.id}`
+        `${API_URL}/Subcategory/getallsubategorieslist/categories/${params.id}`
       );
-      setCategories(response.data.data);
+      await setCategories(response.data);
     } catch (error) {
       toast.error("error");
     } finally {

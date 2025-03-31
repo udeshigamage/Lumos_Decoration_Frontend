@@ -52,9 +52,11 @@ const Product = () => {
   }, [selectedproduct?.Category?.Category_Id]);
   const fetchcategories = async () => {
     try {
-      const response = await axios.get(`${API_URL}/category/categorylist`);
+      const response = await axios.get(
+        `${API_URL}/Category/category/categorylist`
+      );
 
-      console.log(response);
+      console.log(response.data.data);
       setCategoryList(response?.data.data);
     } catch (error) {
       console.log(error);
@@ -63,11 +65,11 @@ const Product = () => {
   const fetchsubcategories = async (category_id: any) => {
     try {
       const response = await axios.get(
-        `${API_URL}/Subcategory/subcategory/category/${category_id}`
+        `${API_URL}/Category/categorylist/${category_id}`
       );
 
-      console.log(response);
-      setSubCategoryList(response?.data.data);
+      console.log(response.data.subcategorys);
+      setSubCategoryList(response.data.subcategorys);
     } catch (error) {
       console.log(error);
     }
@@ -125,7 +127,7 @@ const Product = () => {
       await axios.delete(`${API_URL}/product/${categotyid}`);
 
       toast.success("deleted succcessfully");
-      fetchproduct(currentPage);
+      await fetchproduct(currentPage);
     } catch (error) {
       toast.error("error");
     } finally {
@@ -303,9 +305,8 @@ const Product = () => {
               </div>
               <Formik
                 initialValues={{
-                  Category_Id: selectedproduct?.Category.Category_Id || "",
-                  Subcategory_Id:
-                    selectedproduct?.Subcategory.Subcategory_Id || "",
+                  Category_Id: selectedproduct?.Category_Id || "",
+                  Subcategory_Id: selectedproduct?.Subcategory_Id || "",
 
                   Product_name: selectedproduct?.Product_name || "",
                   Product_price: selectedproduct?.Product_price || "",
