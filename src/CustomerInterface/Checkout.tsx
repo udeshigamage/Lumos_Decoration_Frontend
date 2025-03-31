@@ -8,6 +8,8 @@ import Deleteconfirmation from "../Util/Deleteconfirmation";
 import { toast } from "react-toastify";
 import { Formik } from "formik";
 import axios from "axios";
+import { useSelector } from "react-redux";
+import { RootState } from "../reduxstore/Store_";
 const API_URL = import.meta.env.VITE_API_URL;
 interface CartItem {
   product_id: string;
@@ -25,6 +27,7 @@ const Checkout = () => {
   const [isloading, setisloading] = useState(false);
   const [isconfirmationopen, setisconfirmationopen] = useState(false);
   const [productid, setproductid] = useState("");
+  const user = useSelector((state: RootState) => state.user.userData);
   const handleclose = async () => {
     setisconfirmationopen(false);
   };
@@ -222,26 +225,30 @@ const Checkout = () => {
                 delivery_date: "",
                 added_date: "",
               }}
-              onSubmit={(values, resetForm) => {
+              onSubmit={(values, { resetForm }) => {
                 setisloading(true);
                 try {
                   axios.post(`${API_URL}/Order`, {
-                    Customer_ID: 1,
+                    User_ID: user?.User_ID || 0,
                     orderitems: cartitems.map((item) => ({
-                      Product_ID: item.product_id,
-                      quantity: item.quantity,
+                      Product_ID: item.product_id || 0,
+                      quantity: item.quantity || 0,
                     })),
                     order: {
-                      Order_ID: 0, // Backend might generate this
                       Order_description: values.description || "No description",
-                      Order_deadlinedate: values.delivery_date,
-                      Order_allowance: 0, // Adjust as needed
-                      Order_payment_status: false, // Assuming unpaid initially
-                      Order_allowance_status: false, // Adjust as needed
+                      Order_deadlinedate:
+                        values.delivery_date || new Date().toISOString(),
+                      User_ID: user?.User_ID || 0,
+                      Order_allowance: 0,
+                      Order_payment_status: false,
+                      Order_allowance_status: false,
                       Order_status: "Pending",
-                      TotalCost: 0, // Adjust if needed
+                      TotalCost: 0,
                     },
                   });
+                  toast.success("Order Placed Successfully");
+                  resetForm();
+                  setcartitems([]);
                 } catch (error) {
                 } finally {
                   setTimeout(() => {
@@ -250,7 +257,7 @@ const Checkout = () => {
                 }
               }}
             >
-              {({ values, getFieldProps, handleSubmit }) => (
+              {({ values, getFieldProps, handleSubmit, resetForm }) => (
                 <Form onSubmit={handleSubmit}>
                   <div className="flex flex-col">
                     <div className="flex flex-row justify-start items-center">

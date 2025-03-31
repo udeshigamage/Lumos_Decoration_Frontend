@@ -3,9 +3,12 @@ import { render } from "react-dom";
 import Subcategory from "./Subcategory";
 import Product from "./Product";
 import Category from "./Category";
+import { useSelector } from "react-redux";
+import { RootState } from "../../reduxstore/Store_";
 
 const Categorymaintab = () => {
   const [activeTab, setactivetab] = useState(0);
+  const user = useSelector((state: RootState) => state.user.userData); // Get user data from Redu
   const tab = [
     {
       tab: 1,
@@ -25,7 +28,7 @@ const Categorymaintab = () => {
   ];
   return (
     <div>
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-3 justify-between">
         <div className="flex flex-row gap-2 position:relative">
           {tab.map((tab, index) => (
             <div className="bg-black  p-2">

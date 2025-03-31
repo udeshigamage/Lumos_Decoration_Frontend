@@ -107,13 +107,13 @@ const Category = () => {
     setSelectedCategory(null);
     setmodelopen(false);
   };
-  const user = useSelector((state: RootState) => state.user.userData); // Get user data from Redux
-  //const dispatch = useDispatch();
+
   return (
     <div className="flex flex-col">
+      <div className="flex flex-row justify-end items-end"></div>
       <div className="flex flex-row justify-between items-center">
         <h1 className="text-3xl text-black m-5 font-bold rounded-md">
-          {user?.User_ID}
+          Category management
         </h1>
         <FaPlus
           color="black"

@@ -1,10 +1,12 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../reduxstore/Userslice";
+import { RootState } from "../reduxstore/Store_";
 
 const Navbarcustomer = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const user = useSelector((state: RootState) => state.user.userData);
   return (
     <div>
       <div className="navbar bg-base-100 bg-red-950 top-0 left-0 fixed">
@@ -45,13 +47,16 @@ const Navbarcustomer = () => {
               className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
             >
               <li>
-                <a className="justify-between">
-                  Profile
-                  <span className="badge">New</span>
-                </a>
+                <div className="flex flex-col  text-lg font-serif font-bold">
+                  <p>{user?.Name}</p>
+                  <p>{user?.Email}</p>
+                  <p>{user?.Contact_no}</p>
+
+                  <p>{user?.Role}</p>
+                </div>
               </li>
               <li>
-                <a>Settings</a>
+                <a>Edit</a>
               </li>
               <li onClick={() => dispatch(logout())}>
                 <a>Logout</a>

@@ -11,10 +11,13 @@ import Categorymaintab from "./Categorymaintab/Categorymaintab";
 import pic045 from "../assets/pic56.jpg";
 import Logo from "../Util/Logo";
 import Employeemain from "./Employeemaintab/Employeemain";
+import { useSelector } from "react-redux";
+import { RootState } from "../reduxstore/Store_";
 
 const SideNavigationPanel = () => {
   const [activeComponent, setActiveComponent] = React.useState("Dashboard");
 
+  const user = useSelector((state: RootState) => state.user.userData); // Get user data from Redu
   const renderComponent = () => {
     switch (activeComponent) {
       case "Dashboard":
@@ -312,6 +315,23 @@ const SideNavigationPanel = () => {
               onClick={() => setActiveComponent("Help")}
             >
               Help
+            </li>
+          </div>
+
+          <div className="flex position-relative gap-2  mt-5 text-white rounded-lg bg-opacity-50 rounded-3xl p-5 pl-16 border-b-4 border-t-4 border-red-600 mx-2">
+            <li
+              className={`p-2 cursor-pointer rounded-lg hover:bg-gray-700 ${
+                activeComponent === "Help" ? "bg-gray-700" : ""
+              }`}
+              onClick={() => setActiveComponent("Help")}
+            >
+              <div className="flex flex-col  text-lg font-serif font-bold">
+                <p>{user?.Name}</p>
+                <p>{user?.Email}</p>
+                <p>{user?.Contact_no}</p>
+
+                <p>{user?.Role}</p>
+              </div>
             </li>
           </div>
         </ul>

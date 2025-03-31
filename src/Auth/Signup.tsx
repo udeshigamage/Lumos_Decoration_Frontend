@@ -74,6 +74,10 @@ const Signup = () => {
                   Email: values.Customer_email,
                   PasswordHash: values.Password,
                   Role: "Customer",
+                  RoleName: "Customer",
+                  userimage: "",
+                  NIC: "",
+                  Servicerole: "",
                 };
                 console.log(customers);
                 try {

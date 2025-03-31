@@ -28,7 +28,7 @@ const Role = () => {
   const [selectedroles, setSelectedroles] = useState<any>(null);
   const [categotyid, setrolesid] = useState("");
   const [isconfirmationopen, setisconfirmationopen] = useState(false);
-  const pageSize = 5;
+  const pageSize = 8;
 
   const fetchroles = async (page: number) => {
     setisloading(true);

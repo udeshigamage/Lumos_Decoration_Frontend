@@ -157,28 +157,28 @@ const Customer = () => {
                       <td>
                         <div className="d-flex justify-content-start flex-column">
                           <a className="text-black font-semibold text-lg text-hover-primary fs-6">
-                            {item?.Customer_name ?? "-"}
+                            {item?.Name ?? "-"}
                           </a>
                         </div>
                       </td>
                       <td>
                         <div className="d-flex justify-content-start flex-column">
                           <a className="text-black font-semibold text-lg text-hover-primary fs-6">
-                            {item?.Customer_email ?? "-"}
+                            {item?.Email ?? "-"}
                           </a>
                         </div>
                       </td>
                       <td>
                         <div className="d-flex justify-content-start flex-column">
                           <a className="text-black font-semibold text-lg text-hover-primary fs-6">
-                            {item?.Customer_contact_no ?? "-"}
+                            {item?.Contact_no ?? "-"}
                           </a>
                         </div>
                       </td>
                       <td>
                         <div className="d-flex justify-content-start flex-column">
                           <a className="text-black font-semibold text-lg text-hover-primary fs-6">
-                            {item?.Customer_address ?? "-"}
+                            {item?.Address ?? "-"}
                           </a>
                         </div>
                       </td>
