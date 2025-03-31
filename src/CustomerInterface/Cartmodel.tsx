@@ -45,13 +45,6 @@ const Cartmodel: React.FC<Props> = ({ isopen, isclose, products }) => {
       [item.id]: 0,
     }));
 
-    // Remove "Already Added" message after 2 seconds for this item
-    // setTimeout(() => {
-    //   setAddedItems((prev) => ({
-    //     ...prev,
-    //     [item.id]: false,
-    //   }));
-    // }, 10000);
     isclose();
   };
 
