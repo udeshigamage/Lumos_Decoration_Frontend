@@ -28,6 +28,7 @@ import { lazy } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../reduxstore/Store_";
 import PrivateRoutes from "./privateRoutes";
+import ViewOrderdetails from "../Dashboard/ViewOrderdetails";
 
 const Logindetails = lazy(() => import("../CustomerInterface/Logindetails"));
 
@@ -75,6 +76,10 @@ const router = createBrowserRouter(
         <Route path="/app" element={<Layoutdash />}>
           <Route path="employee" element={<Employee />} />
         </Route>
+        <Route
+          path="/app/ViewOrderdetails/:id"
+          element={<ViewOrderdetails />}
+        />
       </Route>
     </>
   )

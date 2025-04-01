@@ -28,6 +28,8 @@ const Checkout = () => {
   const [isconfirmationopen, setisconfirmationopen] = useState(false);
   const [productid, setproductid] = useState("");
   const user = useSelector((state: RootState) => state.user.userData);
+  const [allowance, setallowance] = useState(0);
+  const [total, settotal] = useState(0);
   const handleclose = async () => {
     setisconfirmationopen(false);
   };
@@ -239,11 +241,11 @@ const Checkout = () => {
                       Order_deadlinedate:
                         values.delivery_date || new Date().toISOString(),
                       User_ID: user?.User_ID || 0,
-                      Order_allowance: 0,
+                      Order_allowance: calculateAllowance(),
                       Order_payment_status: false,
                       Order_allowance_status: false,
                       Order_status: "Pending",
-                      TotalCost: 0,
+                      TotalCost: calculateTotal(),
                     },
                   });
                   toast.success("Order Placed Successfully");

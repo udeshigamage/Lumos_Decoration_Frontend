@@ -1,7 +1,8 @@
 import axios from "axios";
 import { Formik } from "formik";
 import { useEffect, useState } from "react";
-import { Form } from "react-router-dom";
+import { Form, useNavigate } from "react-router-dom";
+import moment from "moment";
 
 import * as Yup from "yup";
 
@@ -25,6 +26,23 @@ const Order = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [totalItems, settotalitems] = useState(0);
+  const navigate = useNavigate();
+  const getStatusColor = (status: string | undefined) => {
+    switch (status?.toLowerCase()) {
+      case "pending":
+        return "bg-yellow-500 text-white";
+      case "denied":
+        return "bg-red-500 text-white";
+      case "confirmed":
+        return "bg-blue-500 text-white";
+      case "completed":
+        return "bg-green-500 text-white";
+      case "processing":
+        return "bg-orange-500 text-white";
+      default:
+        return "bg-gray-500 text-white"; // Default color for unknown status
+    }
+  };
 
   const pageSize = 5;
   const OrderSchema = Yup.object().shape({
@@ -132,11 +150,13 @@ const Order = () => {
           </th> */}
 
                   <th>Customer</th>
+
+                  <th>Order Status</th>
+
+                  <th>Order description</th>
+                  <th>Order Allowance status</th>
                   <th>Order date</th>
                   <th>Deadline date</th>
-                  <th>Status</th>
-                  <th>Order Allowance status</th>
-                  <th>Order description</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -146,43 +166,63 @@ const Order = () => {
                     <tr>
                       <td>
                         <div className="d-flex justify-content-start flex-column">
-                          <a className="text-black text-hover-primary fs-6">
-                            {item?.Customer.Customer_name ?? "-"}
+                          <a className="text-black text-hover-primary fs-6 text-black text-lg text-semibold">
+                            {item?.Customer.Name ?? "-"}
                           </a>
                         </div>
                       </td>
+
                       <td>
-                        <div className="d-flex justify-content-start flex-column">
-                          <a className="text-black text-hover-primary ">
-                            {item?.Order_date ?? "-"}
-                          </a>
-                        </div>
-                      </td>
-                      <td>
-                        <div className="d-flex justify-content-start flex-column">
-                          <a className="text-black text-hover-primary fs-6 ">
-                            {item?.Order_deadlinedate ?? "-"}
-                          </a>
-                        </div>
-                      </td>
-                      <td>
-                        <a className="text-black font-semibold text-lg text-hover-primary fs-6">
+                        <span
+                          className={`px-3 py-1 rounded-full text-sm font-semibold ${getStatusColor(
+                            item?.Order_status
+                          )}`}
+                        >
                           {item?.Order_status ?? "-"}
+                        </span>
+                      </td>
+
+                      <td>
+                        <a className="text-black font-semibold text-lg text-hover-primary fs-6 text-lg text-semibold">
+                          {item?.Order_description ?? "-"}
                         </a>
                       </td>
                       <td>
                         <div className="d-flex justify-center flex-column">
-                          <a className="text-black font-semibold text-lg text-hover-primary fs-6">
-                            {item?.Order_allowance_status === true
-                              ? "paid"
-                              : "not paid"}
+                          <a className="text-black font-semibold text-lg text-hover-primary fs-6 text-lg text-semibold">
+                            <span
+                              className={`px-3 py-2 text-white text-sm font-semibold rounded-lg ${
+                                item?.Order_allowance_status
+                                  ? "bg-green-600"
+                                  : "bg-red-700"
+                              }`}
+                            >
+                              {item?.Order_allowance_status
+                                ? "paid"
+                                : "not paid"}
+                            </span>
                           </a>
                         </div>
                       </td>
                       <td>
-                        <a className="text-black font-semibold text-lg text-hover-primary fs-6">
-                          {item?.Order_description ?? "-"}
-                        </a>
+                        <div className="d-flex justify-content-start flex-column">
+                          <a className="text-black text-hover-primary text-lg text-semibold ">
+                            {item?.Order_date
+                              ? moment(item?.Order_date).format("YYYY-MM-DD")
+                              : "-"}
+                          </a>
+                        </div>
+                      </td>
+                      <td>
+                        <div className="d-flex justify-content-start flex-column">
+                          <a className="text-black text-hover-primary fs-6 text-lg text-semibold ">
+                            {item?.Order_deadlinedate
+                              ? moment(item?.Order_deadlinedate).format(
+                                  "YYYY-MM-DD"
+                                )
+                              : "-"}
+                          </a>
+                        </div>
                       </td>
                       <td>
                         <div className="flex ">
@@ -191,7 +231,9 @@ const Order = () => {
                               className="bg-black text-white px-2 py-2  rounded-md"
                               onClick={() => {
                                 setSelectedOrder(item);
-                                setmodelopen(true);
+                                navigate(`ViewOrderdetails/${item?.Order_ID}`, {
+                                  state: { Order: item },
+                                });
                               }}
                             >
                               View

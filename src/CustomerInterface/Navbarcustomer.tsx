@@ -28,6 +28,7 @@ const Navbarcustomer = () => {
           >
             Order History
           </button>
+          <p>{user?.Name}</p>
 
           <div className="dropdown dropdown-end">
             <div
