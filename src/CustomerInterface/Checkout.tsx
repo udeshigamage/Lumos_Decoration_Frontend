@@ -231,7 +231,7 @@ const Checkout = () => {
                 setisloading(true);
                 try {
                   axios.post(`${API_URL}/Order`, {
-                    User_ID: user?.User_ID || 0,
+                    Customer_ID: user?.User_ID || 0,
                     orderitems: cartitems.map((item) => ({
                       Product_ID: item.product_id || 0,
                       quantity: item.quantity || 0,
@@ -240,7 +240,7 @@ const Checkout = () => {
                       Order_description: values.description || "No description",
                       Order_deadlinedate:
                         values.delivery_date || new Date().toISOString(),
-                      User_ID: user?.User_ID || 0,
+                      Customer_ID: user?.User_ID || 0,
                       Order_allowance: calculateAllowance(),
                       Order_payment_status: false,
                       Order_allowance_status: false,
