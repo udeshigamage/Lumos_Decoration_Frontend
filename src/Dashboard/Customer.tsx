@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Formik } from "formik";
 import React, { useEffect, useState } from "react";
-import { Form } from "react-router-dom";
+import { Form, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import pic045 from "../assets/pic56.jpg";
 
@@ -24,6 +24,7 @@ const Customer = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [totalItems, settotalitems] = useState(0);
+  const navigate = useNavigate();
 
   const pageSize = 5;
 
@@ -190,20 +191,12 @@ const Customer = () => {
                               className="bg-black text-white px-2 py-2  rounded-md"
                               onClick={() => {
                                 setSelectedCustomer(item);
-                                setmodelopen(true);
+                                navigate(`Viewcustomerorder/${item?.User_ID}`, {
+                                  state: { Order: item },
+                                });
                               }}
                             >
-                              Edit
-                            </button>
-                          </div>
-                          <div>
-                            <button
-                              className="bg-black text-white px-2 py-2  rounded-md"
-                              onClick={() => {
-                                handledelete(item?.Customer_ID);
-                              }}
-                            >
-                              Delete
+                              View
                             </button>
                           </div>
                         </div>

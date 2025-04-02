@@ -1,78 +1,39 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Form, useNavigate } from "react-router-dom";
 import Trackorder from "./Trackorder";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
+import { RootState } from "../reduxstore/Store_";
+import { Formik } from "formik";
+import CommonLoading from "../Util/Commonloading";
 
 const Orderhistory = () => {
   const navigate = useNavigate();
+  const API_URL = import.meta.env.VITE_API_URL;
   const [ismodelopen, setmodelopen] = useState<boolean>(false);
-  const mycart = [
-    {
-      Orderid: "01",
-      category: "flowers boquets",
-      item_name: "rose",
-      quantity: 1,
-      price: 1000,
-      total: 1000,
-      Status: "Pending",
-      Employee: "John Doe",
-      AllowanceStatus: "not paid",
-    },
-    {
-      Orderid: "01",
-      category: "flowers boquets",
-      item_name: "rose",
-      quantity: 1,
-      price: 1000,
-      total: 1000,
-      Status: "Pending",
-      Employee: "John Doe",
-      AllowanceStatus: "not paid",
-    },
-    {
-      Orderid: "01",
-      category: "flowers boquets",
-      item_name: "rose",
-      quantity: 1,
-      price: 1000,
-      total: 1000,
-      Status: "Pending",
-      Employee: "John Doe",
-      AllowanceStatus: "not paid",
-    },
-    {
-      Orderid: "01",
-      category: "flowers boquets",
-      item_name: "rose",
-      quantity: 1,
-      price: 1000,
-      total: 1000,
-      Status: "Pending",
-      Employee: "John Doe",
-      AllowanceStatus: "not paid",
-    },
-    {
-      Orderid: "01",
-      category: "flowers boquets",
-      item_name: "rose",
-      quantity: 1,
-      price: 1000,
-      total: 1000,
-      Status: "Pending",
-      Employee: "John Doe",
-      AllowanceStatus: "not paid",
-    },
-    {
-      Orderid: "01",
-      category: "flowers boquets",
-      item_name: "rose",
-      quantity: 1,
-      price: 1000,
-      total: 1000,
-      Status: "Pending",
-      Employee: "John Doe",
-      AllowanceStatus: "not paid",
-    },
-  ];
+  const [customerorder, setcustomerorder] = useState([]);
+  const [isloading, setisloading] = useState(false);
+  const user = useSelector((state: RootState) => state.user.userData);
+  const fetchemployee = async () => {
+    setisloading(true);
+    try {
+      const order_ = await axios.get(
+        `${API_URL}/Order/Orders/${user?.User_ID}`
+      );
+      setcustomerorder(order_.data);
+    } catch {
+      toast.error("error fetching employee list");
+    } finally {
+      setTimeout(() => {
+        setisloading(false);
+      }, 1000);
+    }
+  };
+
+  useEffect(() => {
+    fetchemployee();
+  }, []);
   const handleOpenModal = () => {
     console.log("clicked");
     setmodelopen(true);
@@ -98,117 +59,105 @@ const Orderhistory = () => {
           </button>
         </div>
 
-        <table className="table border-white bg-red-100 opacity-90 text-black  font-serif w-3/4 m-5 ">
-          {/* head */}
-          <thead className="text-black text-xl">
-            <tr>
-              {/* <th>
-            <label>
-              <input type="checkbox" className="checkbox" />
-            </label>
-          </th> */}
-
-              <th>Order id</th>
-              <th> Category</th>
-              <th>Item name</th>
-              <th>Quantity</th>
-              <th>Price</th>
-              <th>Total</th>
-              <th>Status </th>
-              <th>Employee</th>
-              <th>Allowance Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {mycart?.length > 0 ? (
-              mycart?.map((item: any, index: any) => (
-                <tr>
-                  <td>
-                    <div className="d-flex justify-content-start flex-column">
-                      <a className="text-black text-hover-primary fs-6">
-                        {item?.Orderid ?? "-"}
-                      </a>
-                    </div>
+        <div className="overflow-x-auto">
+          <table className="min-w-full bg-white border border-gray-200">
+            <thead>
+              <tr className="bg-gray-100">
+                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">
+                  Order ID
+                </th>
+                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">
+                  Order Date
+                </th>
+                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">
+                  Order Description
+                </th>
+                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">
+                  Items
+                </th>
+                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">
+                  Total Cost
+                </th>
+                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">
+                  Order Status
+                </th>
+                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">
+                  Assigned Employee
+                </th>
+                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {customerorder.map((order: any) => (
+                <tr key={order?.Order_ID} className="border-b">
+                  <td className="px-6 py-4 text-sm text-gray-700">
+                    {order.Order_ID}
                   </td>
-
-                  <td>
-                    <div className="d-flex justify-content-start flex-column">
-                      <a className="text-black text-hover-primary fs-6">
-                        {item?.category ?? "-"}
-                      </a>
-                    </div>
+                  <td className="px-6 py-4 text-sm text-gray-700">
+                    {new Date(order.Order_date).toLocaleString()}
                   </td>
-                  <td>
-                    <div className="d-flex justify-content-start flex-column">
-                      <a className="text-black text-hover-primary ">
-                        {item?.item_name ?? "-"}
-                      </a>
-                    </div>
+                  <td className="px-6 py-4 text-sm text-gray-700">
+                    {order.Order_description || "No Description"}
                   </td>
-                  <td>
-                    <div className="d-flex justify-content-start flex-column">
-                      <a className="text-black text-hover-primary fs-6 ">
-                        {item?.quantity ?? "-"}
-                      </a>
-                    </div>
+                  <td className="px-6 py-4 text-sm text-gray-700">
+                    {order.Orderitems && order.Orderitems.length > 0
+                      ? order.Orderitems.map((item: any, index: any) => (
+                          <span key={index} className="block">
+                            {item.Product_Name} (Qty: {item.Quantity})
+                          </span>
+                        ))
+                      : "No Items"}
                   </td>
-                  <td>
-                    <a className=" text-hover-primary fs-6 px-5 py-5 rounded-md ">
-                      {item?.price ?? "-"}
-                    </a>
+                  <td className="px-6 py-4 text-sm text-gray-700">
+                    {order.TotalCost || "Not Available"}
                   </td>
-                  <td>
-                    <a className=" text-hover-primary fs-6 px-5 py-5 rounded-md ">
-                      {item.price * item.quantity}
-                    </a>
+                  <td className="px-6 py-4 text-sm text-gray-700">
+                    {order.Order_status}
                   </td>
-                  <td>
-                    <a className=" text-hover-primary  rounded-md text-white bg-black p-2  ">
-                      {item?.Status ?? "not started"}
-                    </a>
+                  <td className="px-6 py-4 text-sm text-gray-700">
+                    {order.Employee ? order.Employee.Name : "Not Assigned"}
                   </td>
-                  <td>
-                    <a className=" text-hover-primary fs-6 px-5 py-5 rounded-md ">
-                      {item?.Employee ?? "-"}
-                    </a>
-                  </td>
-                  <td>
-                    <a className=" text-hover-primary fs-6 px-5 py-5 rounded-md ">
-                      {item?.AllowanceStatus ?? "-"}
-                    </a>
-                  </td>
-                  <td>
-                    <button
-                      className="btn btn-md btn-primary text-black p-2"
-                      onClick={() => handleOpenModal()}
-                    >
-                      track order
+                  <td className="px-6 py-4 text-sm text-gray-700">
+                    <button className="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md transition hover:bg-blue-700">
+                      Edit Order
                     </button>
+                    {order.Order_status === "completed" && (
+                      <>
+                        <button className="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md transition hover:bg-blue-700">
+                          Add feedback
+                        </button>
+                      </>
+                    )}
                   </td>
                 </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan={7}>
-                  <div className="py-5 d-flex flex-column align-content-center justify-content-center">
-                    <div className="text-center">
-                      <div className="symbol symbol-200px ">
-                        <img src="/media/other/nodata.png" alt="" />
-                      </div>
-                    </div>
-                    <div className="d-flex text-center w-100 align-content-center justify-content-center fw-semibold fs-3 text-gray-400">
-                      No matching records found
-                    </div>
-                  </div>
-                </td>
-              </tr>
-            )}
-          </tbody>
-          {/* foot */}
-        </table>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
+      {ismodelopen && (
+        <>
+          <div className="fixed inset-0 flex flex-justify z-50 ">
+            <div className="w-[500px] h-[200px] bg-white">
+              <Formik
+                initialValues={{}}
+                onSubmit={(values) => {
+                  try {
+                  } catch {
+                  } finally {
+                  }
+                }}
+              >
+                {({}) => <Form></Form>}
+              </Formik>
+            </div>
+          </div>
+        </>
+      )}
       <Trackorder isopen={ismodelopen} isclose={handleCloseModal} />
+      {isloading && <CommonLoading />}
     </div>
   );
 };

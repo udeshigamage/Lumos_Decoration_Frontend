@@ -1,10 +1,13 @@
-import React, { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Form, useLocation, useNavigate } from "react-router-dom";
 import pic045 from "../assets/pic56.jpg";
 import moment from "moment";
 import CommonLoading from "../Util/Commonloading";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { Formik } from "formik";
+import Employee from "./Employee";
+import Select from "react-select";
 
 const ViewOrderdetails = () => {
   const navigate = useNavigate();
@@ -17,7 +20,11 @@ const ViewOrderdetails = () => {
   const [finanicialdata, setfinancialdata] = useState<any>([]);
 
   const [isOrderstatusmodelopen, setOrderstatusmodelopen] = useState(false);
+  const [selectemployee, setselectedemployee] = useState("");
+  const [employee, setemployee] = useState([]);
   const [selectedStatus, setselecetdstatus] = useState("");
+  const [isAssignemployeemodelopen, setisAssignemployeemodelopen] =
+    useState(false);
   const order = location?.state?.Order;
   const updateallowancestatus = async () => {
     setisloading(true);
@@ -36,6 +43,27 @@ const ViewOrderdetails = () => {
       setAllowancestatusmodelopen(false);
     }
   };
+  const fetchemployee = async () => {
+    setisloading(true);
+    try {
+      const employee = await axios.get(`${API_URL}/Employee/EmployeeList`);
+      setemployee(employee.data);
+    } catch {
+      toast.error("error fetching employee list");
+    } finally {
+      setTimeout(() => {
+        setisloading(false);
+      }, 1000);
+    }
+  };
+
+  const options = employee.map((item: any) => ({
+    value: item.User_ID,
+    label: item.Name,
+  }));
+  useEffect(() => {
+    fetchemployee();
+  }, []);
   const updatepaymentstatus = async () => {
     setisloading(true);
     try {
@@ -198,7 +226,7 @@ const ViewOrderdetails = () => {
               {order?.OrderItems?.length > 0 ? (
                 order.OrderItems.map((item: any, index: number) => (
                   <tr key={index} className="border">
-                    <td className="py-3 px-4">{item?.productName ?? "-"}</td>
+                    <td className="py-3 px-4">{item?.ProductName ?? "-"}</td>
                     <td className="py-3 px-4">{item?.quantity ?? "-"}</td>
                   </tr>
                 ))
@@ -220,96 +248,95 @@ const ViewOrderdetails = () => {
           Order Financial Details
         </h2>
         <div className="text-gray-700 space-y-3">
-          <div className="flex flex-row position-relative ">
-            <div>
-              {" "}
-              <p>
-                <strong>Order Status:</strong>{" "}
-                <span
-                  className={`px-3 py-1 ml-3 rounded-full text-sm font-semibold ${getStatusColor(
-                    order?.Order_status
-                  )}`}
-                >
-                  {order?.Order_status ?? "-"}
-                </span>
-              </p>
-            </div>
-            <div>
-              <button
-                className="ml-5 bg-black text-white px-3 py-1 rounded-md"
-                onClick={() => {
-                  setOrderstatusmodelopen(true);
-                }}
+          {/* Order Status */}
+          <div className="flex items-center gap-4">
+            <p>
+              <strong>Order Status:</strong>{" "}
+              <span
+                className={`px-3 py-1 rounded-full text-sm font-semibold ${getStatusColor(
+                  order?.Order_status
+                )}`}
               >
-                Edit
-              </button>
-            </div>
-            <div>
-              <button className="ml-5 bg-black text-white px-3 py-1 rounded-md">
-                Assign employee
-              </button>
-            </div>
+                {order?.Order_status ?? "-"}
+              </span>
+            </p>
+            <button
+              className="bg-gray-800 text-white px-4 py-2 rounded-lg shadow-md transition hover:bg-gray-900 hover:scale-105"
+              onClick={() => setOrderstatusmodelopen(true)}
+            >
+              Edit
+            </button>
+            {order?.Order_status === "confirmed" && (
+              <>
+                <button
+                  className="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md transition hover:bg-blue-700 hover:scale-105"
+                  onClick={() => setisAssignemployeemodelopen(true)}
+                >
+                  {order?.Employee?.Name != null
+                    ? "Edit Assign"
+                    : "Assign Employee"}
+                </button>
+              </>
+            )}
+            {order?.Employee?.Name && (
+              <p className="mt-2 text-gray-700">
+                Assigned Employee: {order?.Employee?.Name}
+              </p>
+            )}
           </div>
 
+          {/* Display Employee Details if Assigned */}
+
+          {/* Order Allowance */}
           <p>
-            <strong>Order Allowance:</strong>${order?.Order_allowance ?? "-"}
+            <strong>Order Allowance:</strong> ${order?.Order_allowance ?? "-"}
           </p>
 
-          <div className="flex flex-row position-relative ">
-            <div>
-              {" "}
-              <p>
-                <strong>Allowance Status:</strong>{" "}
-                <span
-                  className={`px-3 py-2 text-white text-sm font-semibold rounded-lg ${
-                    order?.Order_allowance_status
-                      ? "bg-green-600"
-                      : "bg-red-700"
-                  }`}
-                >
-                  {order?.Order_allowance_status ? "paid" : "not paid"}
-                </span>
-              </p>
-            </div>
-            <div>
-              <button
-                className="ml-5 bg-black text-white px-3 py-1 rounded-md"
-                onClick={() => setAllowancestatusmodelopen(true)}
+          <div className="flex items-center gap-4">
+            <p>
+              <strong>Allowance Status:</strong>{" "}
+              <span
+                className={`px-3 py-2 text-white text-sm font-semibold rounded-lg ${
+                  order?.Order_allowance_status ? "bg-green-600" : "bg-red-700"
+                }`}
               >
-                Edit
-              </button>
-            </div>
+                {order?.Order_allowance_status ? "Paid" : "Not Paid"}
+              </span>
+            </p>
+            <button
+              className="bg-gray-800 text-white px-4 py-2 rounded-lg shadow-md transition hover:bg-gray-900 hover:scale-105"
+              onClick={() => setAllowancestatusmodelopen(true)}
+            >
+              Edit
+            </button>
           </div>
 
+          {/* Total Cost */}
           <p>
             <strong>Total Cost:</strong> ${order?.Total_cost ?? "-"}
           </p>
 
-          <div className="flex flex-row position-relative ">
-            <div>
-              {" "}
-              <p>
-                <strong>Payment Status:</strong>{" "}
-                <span
-                  className={`px-3 py-2 text-white text-sm font-semibold rounded-lg  ${
-                    order?.Order_payment_status ? "bg-green-600" : "bg-red-700"
-                  }`}
-                >
-                  {order?.Order_payment_status ? "paid" : "not paid"}
-                </span>
-              </p>
-            </div>
-            <div>
-              <button
-                className="ml-5 bg-black text-white px-3 py-1 rounded-md"
-                onClick={() => setPaymentstatusmodelopen(true)}
+          <div className="flex items-center gap-4">
+            <p>
+              <strong>Payment Status:</strong>{" "}
+              <span
+                className={`px-3 py-2 text-white text-sm font-semibold rounded-lg ${
+                  order?.Order_payment_status ? "bg-green-600" : "bg-red-700"
+                }`}
               >
-                Edit
-              </button>
-            </div>
+                {order?.Order_payment_status ? "Paid" : "Not Paid"}
+              </span>
+            </p>
+            <button
+              className="bg-gray-800 text-white px-4 py-2 rounded-lg shadow-md transition hover:bg-gray-900 hover:scale-105"
+              onClick={() => setPaymentstatusmodelopen(true)}
+            >
+              Edit
+            </button>
           </div>
         </div>
       </div>
+
       {isPaymentstatusmodelopen && (
         <>
           <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
@@ -433,6 +460,69 @@ const ViewOrderdetails = () => {
             )}
           </>
           )
+        </>
+      )}
+
+      {isAssignemployeemodelopen && (
+        <>
+          <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+            <div className="bg-white w-[300px] p-6 rounded-lg shadow-lg">
+              <h2 className="text-xl font-semibold text-center text-gray-700 mb-4">
+                Please select employee
+              </h2>
+              <Formik
+                initialValues={{
+                  Employee_Id: "",
+                }}
+                onSubmit={async (values, { resetForm }) => {
+                  setisloading(true);
+                  try {
+                    const emloyee_ = values.Employee_Id;
+                    console.log(emloyee_);
+                    await axios.post(
+                      `${API_URL}/Order/${order.Order_ID}/assignemployee/${emloyee_}`
+                    );
+                    toast.success("assigned successfully");
+                    fetchorder_financials();
+                  } catch {
+                    toast.error("error in assigning employee");
+                  } finally {
+                    setTimeout(() => {
+                      setisloading(false);
+                    }, 1000);
+                    resetForm();
+                    setisAssignemployeemodelopen(false);
+                  }
+                }}
+              >
+                {({ values, setFieldValue, handleSubmit, resetForm }) => (
+                  <>
+                    <Form onSubmit={handleSubmit}>
+                      <Select
+                        options={options}
+                        value={options.find(
+                          (option) => option.value === values.Employee_Id
+                        )}
+                        onChange={(option: any) =>
+                          setFieldValue("Employee_Id", option?.value)
+                        }
+                      />
+                      <div className="flex flex-row position-relative gap-3">
+                        <button type="submit">Submit</button>
+                        <button
+                          onClick={() => {
+                            setisAssignemployeemodelopen(false);
+                          }}
+                        >
+                          Close
+                        </button>
+                      </div>
+                    </Form>
+                  </>
+                )}
+              </Formik>
+            </div>
+          </div>
         </>
       )}
       {isloading && <CommonLoading />}
