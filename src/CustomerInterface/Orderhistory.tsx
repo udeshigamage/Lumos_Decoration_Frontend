@@ -15,6 +15,23 @@ const Orderhistory = () => {
   const [customerorder, setcustomerorder] = useState([]);
   const [isloading, setisloading] = useState(false);
   const user = useSelector((state: RootState) => state.user.userData);
+
+  const getStatusColor = (status: string | undefined) => {
+    switch (status?.toLowerCase()) {
+      case "pending":
+        return "bg-yellow-500 text-white";
+      case "denied":
+        return "bg-red-500 text-white";
+      case "confirmed":
+        return "bg-blue-500 text-white";
+      case "completed":
+        return "bg-green-500 text-white";
+      case "processing":
+        return "bg-orange-500 text-white";
+      default:
+        return "bg-gray-500 text-white"; // Default color for unknown status
+    }
+  };
   const fetchemployee = async () => {
     setisloading(true);
     try {
@@ -113,8 +130,14 @@ const Orderhistory = () => {
                   <td className="px-6 py-4 text-sm text-gray-700">
                     {order.TotalCost || "Not Available"}
                   </td>
-                  <td className="px-6 py-4 text-sm text-gray-700">
-                    {order.Order_status}
+                  <td>
+                    <span
+                      className={`px-3 py-1 rounded-full text-sm font-semibold ${getStatusColor(
+                        order.Order_status
+                      )}`}
+                    >
+                      {order?.Order_status ?? "-"}
+                    </span>
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-700">
                     {order.Employee ? order.Employee.Name : "Not Assigned"}
@@ -150,7 +173,11 @@ const Orderhistory = () => {
                   }
                 }}
               >
-                {({}) => <Form></Form>}
+                {({ getFieldProps, resetForm, handleSubmit }) => (
+                  <Form>
+                    <input type="text" {...getFieldProps("Order_ID")} />
+                  </Form>
+                )}
               </Formik>
             </div>
           </div>

@@ -159,7 +159,7 @@ const ViewCustomerOrderdetails = () => {
         {/* Order Details Card */}
 
         {/* Customer Details Card */}
-        <div className="bg-white p-6 rounded-lg shadow-lg">
+        <div className="bg-red-300 p-6 rounded-lg shadow-lg">
           <h2 className="text-xl font-bold text-red-600 mb-4">
             Customer Details
           </h2>
@@ -183,7 +183,7 @@ const ViewCustomerOrderdetails = () => {
       {/* Order Items Table */}
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white border border-gray-200">
-          <thead>
+          <thead className="bg-rose-300">
             <tr className="bg-gray-100">
               <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">
                 Order ID
@@ -211,7 +211,7 @@ const ViewCustomerOrderdetails = () => {
               </th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="bg-red-200">
             {customerorder.map((order: any) => (
               <tr key={order?.Order_ID} className="border-b">
                 <td className="px-6 py-4 text-sm text-gray-700">
@@ -235,8 +235,14 @@ const ViewCustomerOrderdetails = () => {
                 <td className="px-6 py-4 text-sm text-gray-700">
                   {order.TotalCost || "Not Available"}
                 </td>
-                <td className="px-6 py-4 text-sm text-gray-700">
-                  {order.Order_status}
+                <td>
+                  <span
+                    className={`px-3 py-1 rounded-full text-sm font-semibold ${getStatusColor(
+                      order?.Order_status
+                    )}`}
+                  >
+                    {order?.Order_status ?? "-"}
+                  </span>
                 </td>
                 <td className="px-6 py-4 text-sm text-gray-700">
                   {order.Employee ? order.Employee.Name : "Not Assigned"}

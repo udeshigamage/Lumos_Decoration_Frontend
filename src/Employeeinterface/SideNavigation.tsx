@@ -6,6 +6,10 @@ import Allowances from "./Allowances";
 import Setting from "./Setting";
 import Logout from "./Logout";
 import Help from "./Help";
+import pic09 from "../assets/pic56.jpg";
+import { useSelector } from "react-redux";
+import { RootState } from "../reduxstore/Store_";
+import Logo from "../Util/Logo";
 
 const SideNavigationPanel2 = () => {
   const [activeComponent, setActiveComponent] = React.useState("Dashboard");
@@ -32,12 +36,22 @@ const SideNavigationPanel2 = () => {
       // return <Employee />;
     }
   };
+  const user = useSelector((state: RootState) => state.user.userData);
 
   return (
     <div className="flex h-screen">
       {/* Side Navigation Panel */}
       <div className="w-1/4 bg-black text-white p-4">
-        <h2 className="text-2xl font-bold mb-4">Lumos Decorations</h2>
+        <div className="flex flex-row position-relative gap-3">
+          <div className="bg-white rounded-full p-2">
+            {" "}
+            <Logo />
+          </div>
+          <h2 className="text-2xl font-bold mb-4 mt-4">
+            <span className="text-red-600">L</span>umos{" "}
+            <span className="text-red-600">D</span>ecorations
+          </h2>
+        </div>
         <ul className="space-y-2 mt-10">
           <div className="flex position-relative gap-2 mt-5">
             <svg
@@ -217,10 +231,26 @@ const SideNavigationPanel2 = () => {
             </div>
           </div>
         </ul>
+        <div className="flex position-relative gap-2  mt-5 text-white rounded-lg bg-opacity-50 rounded-3xl p-5 pl-16 border-b-4 border-t-4 border-red-600 mx-2">
+          <div className="flex flex-col  text-lg font-serif font-bold">
+            <p>{user?.Name}</p>
+            <p>{user?.Email}</p>
+            <p>{user?.Contact_no}</p>
+          </div>
+        </div>
       </div>
 
       {/* Content Display */}
-      <div className="w-3/4 p-6">{renderComponent()}</div>
+      <div
+        className="w-3/4 p-6 "
+        style={{
+          backgroundImage: `url(${pic09})`,
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+        }}
+      >
+        {renderComponent()}
+      </div>
     </div>
   );
 };
