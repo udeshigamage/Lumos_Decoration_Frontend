@@ -144,11 +144,11 @@ const Orderhistory = () => {
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-700">
                     <button className="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md transition hover:bg-blue-700">
-                      Edit Order
+                      Track Order
                     </button>
                     {order.Order_status === "completed" && (
                       <>
-                        <button className="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md transition hover:bg-blue-700">
+                        <button className="bg-blue-600 text-white ml-3 px-4 py-2 rounded-lg shadow-md transition hover:bg-blue-700">
                           Add feedback
                         </button>
                       </>

@@ -8,6 +8,8 @@ interface UserState {
     Email: string;
     Role: string;
     Name: string;
+    userimage: string;
+    Servicerole: string;
   } | null;
 }
 

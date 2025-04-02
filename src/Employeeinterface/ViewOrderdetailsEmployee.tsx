@@ -6,11 +6,11 @@ import CommonLoading from "../Util/Commonloading";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { Formik } from "formik";
-import Employee from "./Employee";
+
 import Select from "react-select";
 import { MdModeEdit } from "react-icons/md";
 
-const ViewOrderdetails = () => {
+const ViewOrderdetailsEmployee = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const API_URL = import.meta.env.VITE_API_URL;
@@ -208,6 +208,10 @@ const ViewOrderdetails = () => {
               <strong>Customer Address:</strong>{" "}
               {order?.Customer?.Address ?? "-"}
             </p>
+            <p>
+              <strong>Customer Contact no:</strong>{" "}
+              {order?.Customer?.Contact_no ?? "-"}
+            </p>
           </div>
         </div>
       </div>
@@ -267,23 +271,6 @@ const ViewOrderdetails = () => {
             >
               <MdModeEdit />
             </button>
-            {order?.Order_status === "confirmed" && (
-              <>
-                <button
-                  className="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md transition hover:bg-blue-700 hover:scale-105"
-                  onClick={() => setisAssignemployeemodelopen(true)}
-                >
-                  {order?.Employee?.Name != null
-                    ? "Edit Assign"
-                    : "Assign Employee"}
-                </button>
-              </>
-            )}
-            {order?.Employee?.Name && (
-              <p className="mt-2 text-gray-700">
-                Assigned Employee: {order?.Employee?.Name}
-              </p>
-            )}
           </div>
 
           {/* Display Employee Details if Assigned */}
@@ -304,12 +291,6 @@ const ViewOrderdetails = () => {
                 {order?.Order_allowance_status ? "Paid" : "Not Paid"}
               </span>
             </p>
-            <button
-              className="bg-gray-800 text-white px-4 py-2 rounded-lg shadow-md transition hover:bg-gray-900 hover:scale-105"
-              onClick={() => setAllowancestatusmodelopen(true)}
-            >
-              <MdModeEdit />
-            </button>
           </div>
 
           {/* Total Cost */}
@@ -328,12 +309,6 @@ const ViewOrderdetails = () => {
                 {order?.Order_payment_status ? "Paid" : "Not Paid"}
               </span>
             </p>
-            <button
-              className="bg-gray-800 text-white px-4 py-2 rounded-lg shadow-md transition hover:bg-gray-900 hover:scale-105"
-              onClick={() => setPaymentstatusmodelopen(true)}
-            >
-              <MdModeEdit />
-            </button>
           </div>
         </div>
       </div>
@@ -428,10 +403,8 @@ const ViewOrderdetails = () => {
                       >
                         <option value="pending">Pending</option>
                         <option value="denied">Denied</option>
-                        <option value="accepted">Accepted</option>
                         <option value="confirmed">Confirmed</option>
                         <option value="completed">Completed</option>
-                        <option value="todelivered">todelivered</option>
                         <option value="processing">Processing</option>
                       </select>
                     </div>
@@ -533,4 +506,4 @@ const ViewOrderdetails = () => {
   );
 };
 
-export default ViewOrderdetails;
+export default ViewOrderdetailsEmployee;

@@ -191,7 +191,7 @@ const Order = () => {
                         <div className="d-flex justify-center flex-column">
                           <a className="text-black font-semibold text-lg text-hover-primary fs-6 text-lg text-semibold">
                             <span
-                              className={`px-3 py-2 text-white text-sm font-semibold rounded-lg ${
+                              className={`px-3 py-1 rounded-full text-sm font-semibold ${
                                 item?.Order_allowance_status
                                   ? "bg-green-600"
                                   : "bg-red-700"

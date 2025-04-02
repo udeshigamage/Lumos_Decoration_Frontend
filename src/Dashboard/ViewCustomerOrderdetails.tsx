@@ -183,7 +183,7 @@ const ViewCustomerOrderdetails = () => {
       {/* Order Items Table */}
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white border border-gray-200">
-          <thead className="bg-rose-300">
+          <thead className="bg-rose-300 ">
             <tr className="bg-gray-100">
               <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">
                 Order ID
