@@ -1,50 +1,55 @@
-# React + TypeScript + Vite
+# Lumos Decoration - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Overview
 
-Currently, two official plugins are available:
+Lumos Decoration is an e-commerce platform where customers can order garlands, bouquets, and decorations. Employees manage orders and track earnings, while admins oversee the entire system.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+This repository contains the **React (TypeScript) frontend**, built with **Tailwind CSS**, **Redux**, and **React hooks**.
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Tech Stack
 
-- Configure the top-level `parserOptions` property like this:
+- **React (TypeScript)** - UI Development
+- **Tailwind CSS** - Styling
+- **React Router** - Navigation
+- **Redux** - Global state management
+- **React Hooks** - (`useState`, `useEffect`, `useContext`)
+- **Axios** - API requests
+- **LocalStorage** - Cart item storage
+- **JWT Authentication** - Secure login & access
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+---
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## Features
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+### **Customer**
+- Browse & search for decorations (garlands, bouquets, etc.)
+- Add/remove items from the cart (stored in `localStorage`)
+- Place orders & track order history
+- Secure login with **JWT Authentication**
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+### **Employee**
+- View assigned orders & update statuses
+- Track earnings & allowances
+
+### **Admin**
+- Manage users, employees & products
+- Monitor orders and overall system operations
+
+### **Authentication & Authorization**
+- JWT authentication for secure access
+- Role-based access control (Admin, Employee, Customer)
+
+### **State Management**
+- Redux is used for **global state management**.
+- LocalStorage is used for **persisting cart items**.
+
+---
+
+## Installation & Setup
+
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/your-frontend-repo-url.git
+   cd frontend
