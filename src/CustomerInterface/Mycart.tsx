@@ -120,7 +120,7 @@ const Mycart = () => {
         <button
           className="btn btn-danger text-lg bg-white bg-opacity-25 p-2 m-2 text-black font-serif hover:bg-white hover:text-black rounded-lg animate-pulse"
           onClick={() => {
-            navigate("/customer/mycart/checkout");
+            navigate("/customer/services");
           }}
         >
           <svg

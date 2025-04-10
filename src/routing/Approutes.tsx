@@ -24,6 +24,7 @@ import Mycart from "../CustomerInterface/Mycart";
 import Categorylist from "../CustomerInterface/Categorylist";
 import Productlist from "../CustomerInterface/Productlist";
 import Checkout from "../CustomerInterface/Checkout";
+import Feedback from "../CustomerInterface/Feedback";
 import { lazy } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../reduxstore/Store_";
@@ -48,6 +49,7 @@ const router = createBrowserRouter(
         <Route path="/customer/addtobooking" element={<Addtobooking />} />
         <Route path="/customer/category/garlands" element={<Garlends />} />
         <Route path="/customer/orderhistory" element={<Orderhistory />} />
+        <Route path="/customer/feedback" element={<Feedback />} />
         <Route path="/customer/mycart" element={<Mycart />} />
         <Route
           path="/customer/services/categorylist/:id"

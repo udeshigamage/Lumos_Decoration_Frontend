@@ -107,6 +107,12 @@ const Candledecorations = () => {
           >
             Order History
           </button>
+          <button
+            className="btn-primary text-white font-serif font-bold bg-gray-500 bg-opacity-50 hover:bg-white hover:text-black rounded-lg p-2"
+            onClick={() => navigate("/customer/orderhistory")}
+          >
+            Feedback
+          </button>
         </div>
       </div>
 

@@ -146,6 +146,12 @@ const Orderhistory = () => {
                     <button className="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md transition hover:bg-blue-700">
                       Track Order
                     </button>
+                    <button
+                      className="bg-blue-600 text-white px-4 py-2 ml-2 rounded-lg shadow-md transition hover:bg-blue-700"
+                      onClick={() => navigate("/customer/feedback")}
+                    >
+                      feedback
+                    </button>
                     {order.Order_status === "completed" && (
                       <>
                         <button className="bg-blue-600 text-white ml-3 px-4 py-2 rounded-lg shadow-md transition hover:bg-blue-700">
