@@ -46,10 +46,3 @@ This repository contains the **React (TypeScript) frontend**, built with **Tailw
 - LocalStorage is used for **persisting cart items**.
 
 ---
-
-## Installation & Setup
-
-1. Clone the repository:
-   ```sh
-   git clone https://github.com/your-frontend-repo-url.git
-   cd frontend
