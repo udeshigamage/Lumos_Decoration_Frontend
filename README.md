@@ -14,6 +14,7 @@ This repository contains the **React (TypeScript) frontend**, built with **Tailw
 - **Tailwind CSS** - Styling
 - **React Router** - Navigation
 - **Redux** - Global state management
+- **Websocket** - Realtime chatting
 - **React Hooks** - (`useState`, `useEffect`, `useContext`)
 - **Axios** - API requests
 - **LocalStorage** - Cart item storage
